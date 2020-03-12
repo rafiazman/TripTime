@@ -1,0 +1,26 @@
+{
+  "name": "triptime",
+  "version": "0.0.0",
+  "description": "TripTime is an application for groups of friends to plan a trip together. Users will be able to collaborate in real-time plotting activities over a geographical map interface.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafiazman/TripTime.git"
+  },
+  "author": "Rafi Azman, Anran Niu, Shakeel Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafiazman/TripTime/issues"
+  },
+  "homepage": "https://github.com/rafiazman/TripTime",
+  "dependencies": {
+    "next": "^9.3.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  }
+}
