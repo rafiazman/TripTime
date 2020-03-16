@@ -24,5 +24,10 @@
     "rules": {
         "no-await-in-loop": "warn",
         "no-console": "warn"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

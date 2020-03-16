@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint pages/** --max-warnings=0 --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint pages/** --max-warnings=0 --no-error-on-unmatched-pattern --fix",
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,12 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-plugin-react": "^7.19.0"
+    "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
   }
 }
