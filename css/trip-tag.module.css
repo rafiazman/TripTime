@@ -1,0 +1,39 @@
+.tag {
+    width: 140px;
+
+    position: relative;
+    height: 11vh;
+    cursor: pointer;
+    transition: background-color 0.7s 0s;
+    box-shadow: -1px 2px 5px #888;
+    border-top-left-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+
+}
+
+.active {
+    width: 160px;
+
+    position: relative;
+    color: white;
+    background-color: var(--trip-orange);
+    cursor: pointer;
+    transition: background-color 0.7s 0s;
+    box-shadow: -1px 2px 5px #888;
+    border-top-left-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+}
+
+
+.name {
+    position: relative;
+    pointer-events: none;
+    z-index: 2;
+    line-height: 11vh;
+    font-weight: bolder;
+    font-size: 20px;
+    padding-left:20px;
+
+}
+
+
