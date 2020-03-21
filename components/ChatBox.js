@@ -2,6 +2,8 @@
 
 import React from 'react';
 import styles from '../css/chat-box.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 export default class ChatBox extends React.Component {
   constructor(props) {
@@ -30,7 +32,7 @@ export default class ChatBox extends React.Component {
     return (
       <div style={styles.chatBox}>
         <div style={styles.chatBoxHead} onClick={() => this.togglePop()}>
-          <i className='far fa-comment' />
+          <FontAwesomeIcon icon={['far', 'comment']}/>
         </div>
         {this.state.popUp && (
           <div style={styles.chatBoxBody}>
