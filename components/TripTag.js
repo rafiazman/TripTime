@@ -7,12 +7,12 @@ import style from '../css/trip-tag.module.css';
 export default function TripTag({ tagName, isActive }) {
   const backgroundImageStyle = {
     backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
-    url('/tag-img/${tagName.toLowerCase()}-tag.jpg')`,
+    url('/decor-img/${tagName.toLowerCase()}-tag.jpg')`,
   };
 
   const activeBackgroundStyle = {
     backgroundImage: `linear-gradient(to right, rgba(255,66,0,0.8), rgba(255,66,0,0.8)), 
-    url('/tag-img/${tagName.toLowerCase()}-tag.jpg')`,
+    url('/decor-img/${tagName.toLowerCase()}-tag.jpg')`,
   };
 
   return (

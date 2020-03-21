@@ -13,15 +13,13 @@ const tripAnchorStyle = {
 
 function TripLink({ linkName }) {
   const router = useRouter();
-  const href = linkName.toLowerCase();
+  const href =
+    linkName.toLowerCase() === 'dashboard' ? '' : linkName.toLowerCase();
 
   return (
     <Link href={href}>
       <a style={tripAnchorStyle}>
-        <TripTag
-          tagName={linkName}
-          isActive={router.pathname === '/' + href.toLowerCase()}
-        />
+        <TripTag tagName={linkName} isActive={router.pathname === '/' + href} />
       </a>
     </Link>
   );
