@@ -1,12 +1,13 @@
 /** @format */
 import React from 'react';
-import TripLink from '../components/TripLink';
+import withLayout from '../components/Layout';
 
-export default function Index() {
+function Index() {
   return (
     <div>
-      <TripLink linkName={'Map'} />
       <p>Hello Next.js</p>
     </div>
   );
 }
+
+export default withLayout(Index);
