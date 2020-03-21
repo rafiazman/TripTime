@@ -10,10 +10,15 @@ export default function TripTag({ tagName, isActive }) {
     url('/tag-img/${tagName.toLowerCase()}-tag.jpg')`,
   };
 
+  const activeBackgroundStyle = {
+    backgroundImage: `linear-gradient(to right, rgba(255,66,0,0.8), rgba(255,66,0,0.8)), 
+    url('/tag-img/${tagName.toLowerCase()}-tag.jpg')`,
+  };
+
   return (
     <div
       className={isActive ? style.active : style.tag}
-      style={backgroundImageStyle}
+      style={isActive ? activeBackgroundStyle : backgroundImageStyle}
     >
       <span className={style.name}>{tagName}</span>
     </div>

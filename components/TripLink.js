@@ -18,7 +18,10 @@ function TripLink({ linkName }) {
   return (
     <Link href={href}>
       <a style={tripAnchorStyle}>
-        <TripTag tagName={linkName} isActive={router.pathname === href} />
+        <TripTag
+          tagName={linkName}
+          isActive={router.pathname === '/' + href.toLowerCase()}
+        />
       </a>
     </Link>
   );
