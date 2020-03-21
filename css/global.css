@@ -5,3 +5,13 @@
     --page-border-color: #eee;
     --box-shadow-color: #aaa;
 }
+
+. {
+    box-sizing: border-box;
+}
+
+
+body html{
+    padding: 0;
+    margin: 0;
+}
