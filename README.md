@@ -19,7 +19,7 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 
 ### Live application
 
-TripTime is currently hosted on a [Host Name Here] instance located [here](https://www.youtube.com/watch?v=dQw4w9WgXcQ).
+TripTime is currently hosted as a heroku app instance located [here](https://trip-time.herokuapp.com).
 
 ### Self-hosted
 
