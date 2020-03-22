@@ -17,10 +17,6 @@ export default function withLayout(Page) {
             name='viewport'
             content='initial-scale=1.0, width=device-width'
           />
-          <link
-            href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
-            rel='stylesheet'
-          />
         </Head>
         <SideBar />
         <TopBar />
