@@ -2,12 +2,12 @@
 import React from 'react';
 import withLayout from '../components/Layout';
 
-function Map() {
+function Tools() {
   return (
     <div>
-      <p>This is the map</p>
+      <p>This is the tools</p>
     </div>
   );
 }
 
-export default withLayout(Map);
+export default withLayout(Tools);

@@ -2,12 +2,12 @@
 import React from 'react';
 import withLayout from '../components/Layout';
 
-function Map() {
+function Dashboard() {
   return (
     <div>
-      <p>This is the map</p>
+      <p>This is the summary of the trip</p>
     </div>
   );
 }
 
-export default withLayout(Map);
+export default withLayout(Dashboard);
