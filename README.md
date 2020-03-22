@@ -1,6 +1,6 @@
 # TripTime
 
-<img src="https://github.com/rafiazman/TripTime/blob/feature/triptime-logo/assets/bw_logo_github.png" align="right" title="TripTime Logo by Shakeel Khan">
+<img src="/assets/bw_logo_github.png" align="right" title="TripTime Logo by Shakeel Khan">
 
 TripTime is an application for groups of friends to plan a trip together. Users will be able to collaborate in real-time plotting activities over a geographical map interface.
 
