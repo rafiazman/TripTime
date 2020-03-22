@@ -3,13 +3,18 @@
 import React from 'react';
 import styles from '../css/chat-box.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faComment,
+  faCaretSquareUp,
+  faCaretSquareDown,
+} from '@fortawesome/free-regular-svg-icons';
 
 export default class ChatBox extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      newMessage: 0,
+      newMessageNum: 1,
       popUp: true,
     };
   }
@@ -17,24 +22,33 @@ export default class ChatBox extends React.Component {
   togglePop() {
     this.setState(state => ({
       popUp: !state.popUp,
-      newMessage: 0,
+      newMessageNum: 1,
     }));
   }
 
-  addNewMessage(messageNum) {
+  addNewMessage(incomeMessageNum) {
     this.setState(state => ({
-      newMessage: state.newMessage + messageNum,
+      newMessageNum: state.newMessageNum + incomeMessageNum,
     }));
   }
 
   render() {
     return (
-      <div style={styles.chatBox}>
-        <div style={styles.chatBoxHead} onClick={() => this.togglePop()}>
-          <FontAwesomeIcon icon={['far', 'comment']} />
+      <div className={styles.chatBox}>
+        <div className={styles.chatBoxHead} onClick={() => this.togglePop()}>
+          <FontAwesomeIcon icon={faComment} />
+          {!this.state.popUp && this.state.newMessageNum > 0 && (
+            <span className={styles.newMessageNum}>
+              {this.state.newMessageNum}
+            </span>
+          )}
+          <FontAwesomeIcon
+            icon={this.state.popUp ? faCaretSquareDown : faCaretSquareUp}
+            className={styles.popButton}
+          />
         </div>
         {this.state.popUp && (
-          <div style={styles.chatBoxBody}>
+          <div className={styles.chatBoxBody}>
             This is where the chat content comes in
           </div>
         )}

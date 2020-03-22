@@ -11,6 +11,7 @@
 
 .container > aside {
     grid-area: side;
+    z-index: 0;
 }
 
 
@@ -30,6 +31,7 @@
 }
 
 .container > main {
+    z-index: 2;
     grid-area: main;
     overflow: auto;
     display: grid;
