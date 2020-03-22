@@ -3,11 +3,11 @@
 import React from 'react';
 import styles from '../css/chat-box.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment } from '@fortawesome/free-regular-svg-icons';
 import {
-  faComment,
-  faCaretSquareUp,
-  faCaretSquareDown,
-} from '@fortawesome/free-regular-svg-icons';
+  faChevronCircleUp,
+  faChevronCircleDown,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default class ChatBox extends React.Component {
   constructor(props) {
@@ -33,19 +33,20 @@ export default class ChatBox extends React.Component {
   }
 
   render() {
+    const alerting = !this.state.popUp && this.state.newMessageNum > 0;
+    const popUp = this.state.popUp;
     return (
       <div className={styles.chatBox}>
         <div className={styles.chatBoxHead} onClick={() => this.togglePop()}>
-          <FontAwesomeIcon icon={faComment} />
-          {!this.state.popUp && this.state.newMessageNum > 0 && (
-            <span className={styles.newMessageNum}>
-              {this.state.newMessageNum}
-            </span>
+          {alerting ? (
+            <div className={styles.chatBoxHeadAlert}>
+              <FontAwesomeIcon icon={faComment} /> {this.state.newMessageNum}
+            </div>
+          ) : (
+            <FontAwesomeIcon
+              icon={popUp ? faChevronCircleDown : faChevronCircleUp}
+            />
           )}
-          <FontAwesomeIcon
-            icon={this.state.popUp ? faCaretSquareDown : faCaretSquareUp}
-            className={styles.popButton}
-          />
         </div>
         {this.state.popUp && (
           <div className={styles.chatBoxBody}>
