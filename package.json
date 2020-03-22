@@ -28,11 +28,15 @@
     "dotenv": "^8.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "mongoose": "^5.9.5",
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-regular-svg-icons": "^5.12.1",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "prop-types": "^15.7.2",
     "next": "^9.3.2",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0",
     "validator": "^13.0.0"
+    "react-dom": "^16.13.0",
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
