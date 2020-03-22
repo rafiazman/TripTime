@@ -10,36 +10,63 @@
     width: 100%;
     cursor: pointer;
     box-sizing: border-box;
-    padding: 10px;
-    background-image: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
+    background-image: linear-gradient(to right, rgba(244,244,244,0.9), rgba(244,244,244,0.9)),
     url('../public/decor-img/chat-head.jpg');
     /*Photo by Naomi Irons on Unsplash*/
     background-size: cover;
-    box-shadow: var(--box-shadow-color) -1px -1px 1px;
+    box-shadow: var(--outer-background-color) -1px -1px 1px;
+    line-height: 3rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #999999;
+
+}
+
+.chatBoxHeadAlert{
+    animation-name: chat-box-head-alert;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    display: block;
+    top:0;
+    bottom:0;
+    left: 0;
+    right:0;
+    position: absolute;
+    font-size: 1.5rem;
+
+}
+
+@keyframes chat-box-head-alert {
+    0% {
+        background-color: rgba(244,244,244,0.2);
+        color: var(--trip-orange);
+    }
+
+    75% {
+        background-color: rgba(255,66,0,0.6);
+        color: white;
+    }
+
+
 }
 
 .chatBoxBody {
-    min-height: 300px;
-    max-height: 40vh;
+    max-height: 250px;
+    min-height: 40vh;
     width: 100%;
 
 }
 
 .popButton {
     position: absolute;
-    right: 0;
+    right: 5px;
+    font-size: 1.5rem;
+    color: #777;
+
 }
 
 .newMessageNum {
-    min-width: 0.5em;
-    height: 0.5em;
-    color: white;
-    display: inline-block;
-    border-radius: 100%;
-    background-color: var(--trip-orange);
-    position: relative;
-    right: 0.5em;
-    font-size: 0.2em;
-    bottom: 0.5em;
+
 
 }
