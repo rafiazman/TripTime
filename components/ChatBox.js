@@ -15,7 +15,7 @@ export default class ChatBox extends React.Component {
 
     this.state = {
       newMessageNum: 1,
-      popUp: true,
+      popUp: false,
     };
   }
 
