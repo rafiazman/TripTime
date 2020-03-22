@@ -14,7 +14,9 @@ const tripAnchorStyle = {
 function TripLink({ linkName }) {
   const router = useRouter();
 
-  const isActive = router.pathname === '/' + linkName.toLowerCase() || router.pathname === '/' && linkName.toLowerCase() ==='dashboard';
+  const isActive =
+    router.pathname === '/' + linkName.toLowerCase() ||
+    (router.pathname === '/' && linkName.toLowerCase() === 'dashboard');
 
   return (
     <Link href={'/' + linkName.toLowerCase()}>
