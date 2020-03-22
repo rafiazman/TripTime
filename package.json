@@ -7,6 +7,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
     "lint": "eslint \"**/*.{js,jsx}\" --max-warnings=0 --no-error-on-unmatched-pattern",
     "lint:fix": "eslint \"**/*.{js,jsx}\" --max-warnings=0 --no-error-on-unmatched-pattern --fix",
     "prettier": "prettier --write \"**/*.{js,jsx}\""
@@ -22,15 +24,26 @@
   },
   "homepage": "https://github.com/rafiazman/TripTime",
   "dependencies": {
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.5",
     "next": "^9.3.0",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-jest": "^25.1.0",
     "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.19.0",
     "husky": "^4.2.3",
-    "prettier": "1.19.1"
+    "jest": "^25.1.0",
+    "prettier": "1.19.1",
+    "test-listen": "^1.1.0"
   },
   "husky": {
     "hooks": {
