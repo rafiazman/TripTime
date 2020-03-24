@@ -40,6 +40,10 @@
     border-left: 1px solid var(--page-border-color);
 }
 
+.container > main:first-child {
+    overflow-y: scroll;
+}
+
 .container > header {
     display: flex;
     flex-direction: row;

@@ -1,0 +1,34 @@
+.calendarContainer {
+    color:var(--trip-orange);
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    overflow: scroll;
+    padding: 3rem;
+}
+
+.calendarContainer button:focus {
+    outline: none;
+    color: white;
+    background-color: var(--trip-orange);
+    border-style: inset;
+}
+
+.calendarContainer button {
+    height: 3rem;
+    width: 3rem;
+    border: 2px var(--trip-orange) outset;
+    border-radius:2px;
+    font-size: 1rem;
+    color: var(--trip-orange);
+
+}
+
+.calendarContainer div:nth-child(even) {
+    color: white;
+    background-color: var(--trip-orange);
+}
+
+.calendarContainer > div > div:nth-child(2) > div > div >div:nth-child(even) {
+    color: white;
+    background-color: var(--trip-orange);
+}
