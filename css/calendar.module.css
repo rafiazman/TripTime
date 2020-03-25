@@ -2,8 +2,16 @@
     color:var(--trip-orange);
     display: grid;
     grid-template-columns: 60% 1fr;
+    padding: 2rem;
     overflow: scroll;
-    padding: 3rem;
+    grid-column-gap: 2rem;
+}
+
+@media screen and (max-width: 900px){
+    .calendarContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
 }
 
 .calendarContainer button:focus {
@@ -14,7 +22,7 @@
 }
 
 .calendarContainer button {
-    height: 3rem;
+    height: 4rem;
     width: 3rem;
     border: 2px var(--trip-orange) outset;
     border-radius:2px;
@@ -23,10 +31,6 @@
 
 }
 
-.calendarContainer div:nth-child(even) {
-    color: white;
-    background-color: var(--trip-orange);
-}
 
 .calendarContainer > div > div:nth-child(2) > div > div >div:nth-child(even) {
     color: white;
@@ -34,5 +38,13 @@
 }
 
 .calendarSummary {
+    max-height: 60vh;
+    padding: 1rem;
+    border: 2px var(--trip-orange) solid;
 
+}
+
+.calendarSummary > h1 {
+    background-color: var(--trip-orange);
+    color: white;
 }
