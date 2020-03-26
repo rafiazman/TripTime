@@ -22,3 +22,7 @@ body html{
     position: relative;
     top: 2px;
 }
+
+textarea:focus, input:focus {
+    outline-color: var(--trip-orange);
+}
