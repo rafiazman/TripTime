@@ -14,8 +14,11 @@ body html{
 }
 
 .inline-avatar {
-    max-height: 1.4em;
-    max-width: 1.4em;
+    max-height: 1em;
+    max-width: 1em;
     border: 1px var(--box-shadow-color) solid;
     border-radius: 100%;
+    margin: 0 2px;
+    position: relative;
+    top: 2px;
 }
