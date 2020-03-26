@@ -1,5 +1,6 @@
 :root {
     --trip-orange:#ff4200;
+    --secondary-text-color: #555555;
     --outer-background-color: #fefefe;
     --page-background-color: #f5f5f5;
     --page-border-color: #eee;
@@ -12,3 +13,9 @@ body html{
     margin: 0;
 }
 
+.inline-avatar {
+    max-height: 1.4em;
+    max-width: 1.4em;
+    border: 1px var(--box-shadow-color) solid;
+    border-radius: 100%;
+}
