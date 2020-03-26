@@ -35,7 +35,7 @@ export default function CalendarSummary({ events }) {
       <h3>Next:</h3>
       <UpcomingEvent event={nextEvent} />
 
-      {numEventsThisMonth && (
+      {numEventsThisMonth > 0 && (
         <div>
           <h3>Coming up later...</h3>
           <p>
