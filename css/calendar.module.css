@@ -38,7 +38,8 @@
 }
 
 .calendarSummary {
-    max-height: 60vh;
+    max-height: 100%;
+    overflow: scroll;
     padding: 1rem;
     border: 2px var(--trip-orange) solid;
 
