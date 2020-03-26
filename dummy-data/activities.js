@@ -12,7 +12,7 @@ const activities = [
     address: '3 Mount Street, Wellington',
     gps: {
       latitude: '132.39132',
-      longitude: '23.39011'
+      longitude: '23.39011',
     },
     notes: [
       {
@@ -20,7 +20,7 @@ const activities = [
         authorName: 'Bob',
         authorAvatarPath: '/dummy-img/cat-avatar.png',
         content: 'Bring warm clothes and water bottle',
-        updated: '2020-03-10T14:00:00+13:00'
+        updated: '2020-03-10T14:00:00+13:00',
       },
       {
         id: '16b020e1-1214-4977-a40b-1930938ab',
@@ -42,7 +42,7 @@ const activities = [
     address: 'ASB Event Centre, Rotorua',
     gps: {
       latitude: '132.10031',
-      longitude: '22.01342'
+      longitude: '22.01342',
     },
     notes: [],
   },
@@ -57,7 +57,7 @@ const activities = [
     address: '10 Remuera Street, Auckland',
     gps: {
       latitude: '131.34211',
-      longitude: '22.39490'
+      longitude: '22.39490',
     },
     notes: [
       {
@@ -80,7 +80,7 @@ const activities = [
     address: '184 Khyber Pass Road, Newmarket',
     gps: {
       latitude: '223.23413',
-      longitude: '24.23412'
+      longitude: '24.23412',
     },
     notes: [],
   },
