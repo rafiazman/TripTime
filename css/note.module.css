@@ -3,3 +3,42 @@
     font-size: 0.8em;
 }
 
+.notesCard {
+    border: 2px solid var(--trip-orange);
+    width: 80%;
+    padding: 5px;
+
+}
+
+.notesCard button {
+    font-size: 0.8em;
+    width: fit-content;
+    height: 1.5rem;
+    background-color: var(--trip-orange);
+    color: white;
+}
+
+.oneNote {
+    margin: 2px 5px;
+    color: var(--secondary-text-color);
+    font-size: 0.8em;
+    border-bottom: 1px dotted var(--trip-orange);
+}
+
+.authorField {
+    color: var(--secondary-text-color);
+
+}
+
+.contentFiled {
+
+}
+
+.addNoteField {
+    margin: 5px;
+}
+
+.noteInput {
+    width: 100%;
+
+}

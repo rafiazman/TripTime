@@ -4,13 +4,13 @@ import withLayout from '../components/Layout';
 import ReactCalendar from 'react-calendar';
 import styles from '../css/calendar.module.css';
 import CalendarSummary from '../components/CalendarSummary';
-import events from '../dummy-data/events';
+import activities from '../dummy-data/activities';
 
 function Calendar() {
   return (
     <div className={styles.calendarContainer}>
       <ReactCalendar />
-      <CalendarSummary events={events} />
+      <CalendarSummary events={activities} />
     </div>
   );
 }

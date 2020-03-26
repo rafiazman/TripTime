@@ -44,8 +44,9 @@ OneNote.propTypes = {
 function AddNote() {
   return (
     <div>
-      <form>
+      <form className={styles.addNoteField}>
         <textarea
+          rows={3}
           className={styles.noteInput}
           placeholder='Enter your note to friends here'
         />

@@ -4,6 +4,7 @@ import React from 'react';
 import styles from '../css/calendar.module.css';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import EventCard from './EventCard';
 
 export default function CalendarSummary({ events }) {
   const now = moment();
@@ -27,13 +28,14 @@ export default function CalendarSummary({ events }) {
       <h1>Your Scheduled Adventures</h1>
 
       <h3>Current:</h3>
-      <UpcomingEvent
+      <EventCard
         event={currentEvent}
         messageIfNoEvent='Nothing on right now'
+        onMap={false}
       />
 
       <h3>Next:</h3>
-      <UpcomingEvent event={nextEvent} />
+      <EventCard event={nextEvent} onMap={false} />
 
       {numEventsThisMonth > 0 && (
         <div>
@@ -54,26 +56,3 @@ export default function CalendarSummary({ events }) {
 CalendarSummary.propTypes = {
   events: PropTypes.array.isRequired,
 };
-
-function UpcomingEvent({ event, messageIfNoEvent }) {
-  if (event) {
-    let timeText = moment(event.start).calendar();
-    const now = moment();
-    if (now.isAfter(event.start) && now.isBefore(event.end)) {
-      timeText = 'happening now';
-    }
-
-    return (
-      <div>
-        <p>
-          <strong>{event.name}</strong>{' '}
-          <span className='text-secondary text-it'>({timeText})</span>
-          <br />
-          {event.description}
-        </p>
-      </div>
-    );
-  } else {
-    return <p>{messageIfNoEvent ? messageIfNoEvent : 'No upcoming events'}</p>;
-  }
-}
