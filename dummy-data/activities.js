@@ -1,6 +1,6 @@
 /** @format */
 
-const events = [
+const activities = [
   {
     id: '16b020e1-1214-4977-a40b-3df1b7407149',
     type: 'outdoor',
@@ -9,17 +9,18 @@ const events = [
     name: 'Wind Turbine Walkway',
     description: 'Hike through the wind turbine walkway',
     modified: '2020-03-09T15:00:00+13:00',
-    place: '3 Mount Street, Wellington', // we might need to keep unique record of places in the future.
+    address: '3 Mount Street, Wellington',
+    gps: {
+      latitude: '132.39132',
+      longitude: '23.39011'
+    },
     notes: [
       {
         id: '16b020e1-1214-4977-a40b-3400193841',
         authorName: 'Bob',
         authorAvatarPath: '/dummy-img/cat-avatar.png',
-        //These will be data queried through author ID
         content: 'Bring warm clothes and water bottle',
-        updated: '2020-03-10T14:00:00+13:00',
-        // I am thinking if we could just simplify the date field, and just
-        // keep an "updated" time, instead of created + modified, as people really care about the latest info.
+        updated: '2020-03-10T14:00:00+13:00'
       },
       {
         id: '16b020e1-1214-4977-a40b-1930938ab',
@@ -38,7 +39,11 @@ const events = [
     name: 'Musical Party',
     description: 'Musical Party at Campus',
     modified: '2020-03-09T15:00:00+13:00',
-    place: 'ASB Event Centre, Rotorua',
+    address: 'ASB Event Centre, Rotorua',
+    gps: {
+      latitude: '132.10031',
+      longitude: '22.01342'
+    },
     notes: [],
   },
   {
@@ -49,7 +54,11 @@ const events = [
     name: 'Lunch',
     description: 'Lunch at 88 Restaurant',
     modified: '2020-03-09T15:00:00+13:00',
-    place: '10 Remuera Street, Auckland',
+    address: '10 Remuera Street, Auckland',
+    gps: {
+      latitude: '131.34211',
+      longitude: '22.39490'
+    },
     notes: [
       {
         id: '142020e1-1214-4977-a40b-1090938ab',
@@ -68,9 +77,13 @@ const events = [
     name: 'Hotel relax time',
     description: 'Relax at hotel and play cards',
     modified: '2020-03-26T15:00:00+13:00',
-    place: '184 Khyber Pass Road, Newmarket',
+    address: '184 Khyber Pass Road, Newmarket',
+    gps: {
+      latitude: '223.23413',
+      longitude: '24.23412'
+    },
     notes: [],
   },
 ];
 
-export default events;
+export default activities;
