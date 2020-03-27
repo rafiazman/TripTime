@@ -1,5 +1,5 @@
 .calendarContainer {
-    color:var(--trip-orange);
+    color: var(--trip-orange);
     display: grid;
     grid-template-columns: 60% 1fr;
     padding: 2rem;
@@ -7,39 +7,36 @@
     grid-column-gap: 2rem;
 }
 
-@media screen and (max-width: 900px){
+@media screen and (max-width: 900px) {
     .calendarContainer {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+    .calendarSummary{
+       max-height: fit-content;
     }
 }
 
-.calendarContainer button:focus {
+.calendarContainer > div:first-child button:focus {
     outline: none;
     color: white;
     background-color: var(--trip-orange);
     border-style: inset;
 }
 
-.calendarContainer button {
+.calendarContainer > div:first-child button {
     height: 4rem;
     width: 3rem;
     border: 2px var(--trip-orange) outset;
-    border-radius:2px;
+    border-radius: 2px;
     font-size: 1rem;
-    color: var(--trip-orange);
-
-}
-
-
-.calendarContainer > div > div:nth-child(2) > div > div >div:nth-child(even) {
-    color: white;
-    background-color: var(--trip-orange);
+    color: var(--secondary-text-color);
 }
 
 .calendarSummary {
     max-height: 100%;
-    overflow: scroll;
+    min-height: 20rem;
+    overflow: auto;
     padding: 1rem;
     border: 2px var(--trip-orange) solid;
 
@@ -48,4 +45,9 @@
 .calendarSummary > h1 {
     background-color: var(--trip-orange);
     color: white;
+    text-align: center;
+}
+
+.calendarSummary h3 {
+    color: var(--secondary-text-color);
 }
