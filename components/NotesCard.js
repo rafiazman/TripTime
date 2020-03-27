@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../css/note.module.css';
+import TimeAgo from 'react-timeago/lib';
 
 function NotesCard({ notes }) {
   return (
@@ -28,7 +29,13 @@ function OneNote({ note }) {
     <div className={styles.oneNote}>
       <div className={styles.authorField}>
         <img className='inline-avatar' src={note.authorAvatarPath} alt='' />
-        <span>{note.authorName}:</span>
+        <span>{note.authorName}, </span>
+        <TimeAgo
+          date={note.updated}
+          minPeriod={10}
+          className={styles.timeUpdated}
+        />
+        :
       </div>
       <div className={styles.contentFiled}>
         <p>{note.content}</p>
@@ -50,7 +57,9 @@ function AddNote() {
           className={styles.noteInput}
           placeholder='Enter your note to friends here'
         />
-        <button type='submit'>Add note</button>
+        <button type='submit' className={styles.addNoteButton}>
+          Add Note
+        </button>
       </form>
     </div>
   );

@@ -4,10 +4,10 @@
 }
 
 .notesCard {
-    border: 2px solid var(--trip-orange);
-    width: 80%;
-    padding: 5px;
-
+    width: 100%;
+    border-top: 1px var(--trip-orange) dashed;
+    max-height: 20rem;
+    overflow: auto;
 }
 
 .notesCard button {
@@ -21,13 +21,14 @@
 .oneNote {
     margin: 2px 5px;
     color: var(--secondary-text-color);
-    font-size: 0.8em;
     border-bottom: 1px dotted var(--trip-orange);
+    line-height: 1em;
+    font-size: 1rem;
 }
 
 .authorField {
     color: var(--secondary-text-color);
-
+    font-size: 0.8rem;
 }
 
 .contentFiled {
@@ -35,10 +36,19 @@
 }
 
 .addNoteField {
-    margin: 5px;
+    margin: 0.5rem;
 }
 
 .noteInput {
+    box-sizing: border-box;
     width: 100%;
+}
 
+.addNoteButton {
+    font-size: 1rem;
+    color: white;
+}
+
+.timeUpdated {
+    font-size: 0.7rem;
 }

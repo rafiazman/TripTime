@@ -8,7 +8,7 @@ const activities = [
     end: '2020-03-30T16:00:00+13:00',
     name: 'Wind Turbine Walkway',
     description: 'Hike through the wind turbine walkway',
-    modified: '2020-03-09T15:00:00+13:00',
+    updated: '2020-03-09T15:00:00+13:00',
     address: '3 Mount Street, Wellington',
     gps: {
       latitude: '132.39132',
@@ -20,14 +20,14 @@ const activities = [
         authorName: 'Bob',
         authorAvatarPath: '/dummy-img/cat-avatar.png',
         content: 'Bring warm clothes and water bottle',
-        updated: '2020-03-10T14:00:00+13:00',
+        updated: '2020-03-27T14:00:00+13:00',
       },
       {
         id: '16b020e1-1214-4977-a40b-1930938ab',
         authorName: 'Alice',
         authorAvatarPath: '/dummy-img/dog-avatar.png',
         content: 'Remember to tie your hair girls!',
-        updated: '2020-03-11T14:03:00+13:00',
+        updated: '2020-03-27T22:33:00+13:00',
       },
     ],
   },
@@ -38,7 +38,7 @@ const activities = [
     end: '2020-04-01T11:00:00+13:00',
     name: 'Musical Party',
     description: 'Musical Party at Campus',
-    modified: '2020-03-09T15:00:00+13:00',
+    updated: '2020-03-09T15:00:00+13:00',
     address: 'ASB Event Centre, Rotorua',
     gps: {
       latitude: '132.10031',
@@ -53,7 +53,7 @@ const activities = [
     end: '2020-04-05T13:00:00+13:00',
     name: 'Lunch',
     description: 'Lunch at 88 Restaurant',
-    modified: '2020-03-09T15:00:00+13:00',
+    updated: '2020-03-09T15:00:00+13:00',
     address: '10 Remuera Street, Auckland',
     gps: {
       latitude: '131.34211',
@@ -76,7 +76,7 @@ const activities = [
     end: '2020-03-31T11:00:00+13:00',
     name: 'Hotel relax time',
     description: 'Relax at hotel and play cards',
-    modified: '2020-03-26T15:00:00+13:00',
+    updated: '2020-03-26T15:00:00+13:00',
     address: '184 Khyber Pass Road, Newmarket',
     gps: {
       latitude: '223.23413',

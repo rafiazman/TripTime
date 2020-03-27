@@ -10,7 +10,7 @@ import {
   faMapMarkerAlt,
   faChevronCircleUp,
   faChevronCircleDown,
-  faTimes
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Tooltip from './Tooltip';
@@ -44,11 +44,18 @@ export default class EventCard extends React.Component {
 
       return (
         <div className={styles.eventCard}>
-          {this.props.onClose && <span className={styles.closeButton} onClick={() => this.props.onClose()}><FontAwesomeIcon icon={faTimes}/></span>}
+          {this.props.onClose && (
+            <span
+              className={styles.closeButton}
+              onClick={() => this.props.onClose()}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
+          )}
           <div>
             <strong>{event.name}</strong>{' '}
             <span className='text-secondary text-it'>({timeText})</span>
-            <br/>
+            <br />
             <span>{event.description}</span>
             <div className={styles.options}>
               {!onMap && (
@@ -89,5 +96,5 @@ EventCard.propTypes = {
   event: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
 };
