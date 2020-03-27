@@ -35,10 +35,9 @@
     "prop-types": "^15.7.2",
     "next": "^9.3.2",
     "react": "^16.13.0",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
     "react-dom": "^16.13.0",
-    "react-calendar": "^3.0.0",
-    "react-dom": "^16.13.0"
+    "react-calendar": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
