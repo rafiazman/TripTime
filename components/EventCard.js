@@ -8,8 +8,12 @@ import styles from '../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapMarkerAlt,
-  faStickyNote,
+  faChevronCircleUp,
+  faChevronCircleDown,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
+
+import Tooltip from './Tooltip';
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -19,6 +23,12 @@ export default class EventCard extends React.Component {
       notePopped: false,
       unreadNote: false,
     };
+  }
+
+  toggleNotes() {
+    this.setState(state => ({
+      notePopped: !state.notePopped,
+    }));
   }
 
   render() {
@@ -34,27 +44,37 @@ export default class EventCard extends React.Component {
 
       return (
         <div className={styles.eventCard}>
+          {this.props.onClose && <span className={styles.closeButton} onClick={() => this.props.onClose()}><FontAwesomeIcon icon={faTimes}/></span>}
           <div>
             <strong>{event.name}</strong>{' '}
             <span className='text-secondary text-it'>({timeText})</span>
-            <br />
-            {event.description}
-            <br />
-            <span className={styles.options}>
+            <br/>
+            <span>{event.description}</span>
+            <div className={styles.options}>
               {!onMap && (
                 <span>
-                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                  Show on Map{' '}
+                  <Tooltip
+                    text={'Show on Map'}
+                    component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
+                  />
                 </span>
               )}
-              <span>
-                <FontAwesomeIcon icon={faStickyNote} />
-                Show notes
+              <span onClick={() => this.toggleNotes()}>
+                {this.state.notePopped ? (
+                  <Tooltip
+                    text={'Hide Notes'}
+                    component={<FontAwesomeIcon icon={faChevronCircleUp} />}
+                  />
+                ) : (
+                  <Tooltip
+                    text={'Show Notes'}
+                    component={<FontAwesomeIcon icon={faChevronCircleDown} />}
+                  />
+                )}
               </span>
-            </span>
+            </div>
           </div>
-
-          <NotesCard notes={event.notes} />
+          {this.state.notePopped && <NotesCard notes={event.notes} />}
         </div>
       );
     } else {
@@ -69,4 +89,5 @@ EventCard.propTypes = {
   event: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
+  onClose: PropTypes.func
 };

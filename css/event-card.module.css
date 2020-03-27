@@ -1,6 +1,24 @@
 .eventCard {
+    max-width: 20rem;
+    border: 2px var(--trip-orange) solid;
+    border-radius: 1rem;
+    padding: 1rem;
+    position: relative;
 
 }
-.options {
 
+.options {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.options > span {
+    padding: 0 0.5rem;
+}
+
+.closeButton {
+    position: relative;
+    left: calc(100% - 5px);
+    bottom: 5px;
 }
