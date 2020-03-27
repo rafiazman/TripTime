@@ -26,3 +26,11 @@ body html{
 textarea:focus, input:focus {
     outline-color: var(--trip-orange);
 }
+
+::selection {
+    background: #ffa; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+    background: #ffa; /* Gecko Browsers */
+}
+
