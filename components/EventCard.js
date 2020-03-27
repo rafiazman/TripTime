@@ -5,6 +5,11 @@ import NotesCard from './NotesCard';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../css/event-card.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMapMarkerAlt,
+  faStickyNote,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -29,13 +34,26 @@ export default class EventCard extends React.Component {
 
       return (
         <div className={styles.eventCard}>
-          <p>
+          <div>
             <strong>{event.name}</strong>{' '}
             <span className='text-secondary text-it'>({timeText})</span>
             <br />
             {event.description}
-          </p>
-          <div className={styles.options}></div>
+            <br />
+            <span className={styles.options}>
+              {!onMap && (
+                <span>
+                  <FontAwesomeIcon icon={faMapMarkerAlt} />
+                  Show on Map{' '}
+                </span>
+              )}
+              <span>
+                <FontAwesomeIcon icon={faStickyNote} />
+                Show notes
+              </span>
+            </span>
+          </div>
+
           <NotesCard notes={event.notes} />
         </div>
       );
