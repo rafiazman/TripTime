@@ -29,13 +29,13 @@ export default function CalendarSummary({ events }) {
 
       <h3>Current:</h3>
       <EventCard
-        event={currentEvent}
+        activity={currentEvent}
         messageIfNoEvent='Nothing on right now'
         onMap={false}
       />
 
       <h3>Next:</h3>
-      <EventCard event={nextEvent} onMap={false} />
+      <EventCard activity={nextEvent} onMap={false} />
 
       {numEventsThisMonth > 0 && (
         <div>
