@@ -4,7 +4,7 @@
     border-radius: 1rem;
     padding: 1rem;
     position: relative;
-
+    background-color: rgba(256,256,256,0.9);
 }
 
 .options {

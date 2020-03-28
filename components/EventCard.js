@@ -32,13 +32,13 @@ export default class EventCard extends React.Component {
   }
 
   render() {
-    const event = this.props.event;
+    const activity = this.props.activity;
     const messageIfNoEvent = this.props.messageIfNoEvent;
     const onMap = this.props.onMap;
-    if (event) {
-      let timeText = moment(event.start).calendar();
+    if (activity) {
+      let timeText = moment(activity.start).calendar();
       const now = moment();
-      if (now.isAfter(event.start) && now.isBefore(event.end)) {
+      if (now.isAfter(activity.start) && now.isBefore(activity.end)) {
         timeText = 'happening now';
       }
 
@@ -53,10 +53,10 @@ export default class EventCard extends React.Component {
             </span>
           )}
           <div>
-            <strong>{event.name}</strong>{' '}
+            <strong>{activity.name}</strong>{' '}
             <span className='text-secondary text-it'>({timeText})</span>
             <br />
-            <span>{event.description}</span>
+            <span>{activity.description}</span>
             <div className={styles.options}>
               {!onMap && (
                 <span>
@@ -81,7 +81,7 @@ export default class EventCard extends React.Component {
               </span>
             </div>
           </div>
-          {this.state.notePopped && <NotesCard notes={event.notes} />}
+          {this.state.notePopped && <NotesCard notes={activity.notes} />}
         </div>
       );
     } else {
@@ -93,7 +93,7 @@ export default class EventCard extends React.Component {
 }
 
 EventCard.propTypes = {
-  event: PropTypes.object,
+  activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
