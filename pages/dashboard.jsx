@@ -1,13 +1,11 @@
 /** @format */
 import React from 'react';
 import withLayout from '../components/Layout';
+import TripSummary from '../components/TripSummary';
+import trip from '../dummy-data/trip';
 
 function Dashboard() {
-  return (
-    <div>
-      <p>This is the summary of the trip</p>
-    </div>
-  );
+  return <TripSummary trip={trip} />;
 }
 
 export default withLayout(Dashboard);

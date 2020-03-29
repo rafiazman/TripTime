@@ -1,0 +1,78 @@
+.tripTimelineContainer {
+    position: relative;
+}
+
+.tripTimeline {
+    position: relative;
+    max-width: 1200px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.tripTimeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: #888;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+}
+
+.timelineLeft, .timelineRight {
+    border: 1px solid black;
+}
+
+.timelineLeft, .timelineRight {
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+}
+
+.timelineLeft::after, .timelineRight::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: -17px;
+    background-color: #888;
+    border: 4px solid #FF9F55;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timelineLeft{
+    left: 0;
+}
+.timelineRight{
+    left: 50%;
+}
+
+.timelineLeft::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    right: 30px;
+    border: medium solid #888;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent #888;
+}
+
+.timelineRight::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    left: 30px;
+    border: medium solid #888;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #888 transparent transparent;
+}
+
