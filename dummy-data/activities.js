@@ -14,18 +14,32 @@ const activities = [
       latitude: '132.39132',
       longitude: '23.39011',
     },
+    people: [
+      {
+        name: 'Bob',
+        avatarPath: '/dummy-img/cat-avatar.png',
+      },
+      {
+        name: 'Alice',
+        avatarPath: '/dummy-img/dog-avatar.png',
+      },
+    ],
     notes: [
       {
         id: '16b020e1-1214-4977-a40b-3400193841',
-        authorName: 'Bob',
-        authorAvatarPath: '/dummy-img/cat-avatar.png',
+        author: {
+          name: 'Bob',
+          avatarPath: '/dummy-img/cat-avatar.png'
+        },
         content: 'Bring warm clothes and water bottle',
         updated: '2020-03-27T14:00:00+13:00',
       },
       {
         id: '16b020e1-1214-4977-a40b-1930938ab',
-        authorName: 'Alice',
-        authorAvatarPath: '/dummy-img/dog-avatar.png',
+        author: {
+          name: 'Alice',
+          avatarPath: '/dummy-img/dog-avatar.png'
+        },
         content: 'Remember to tie your hair girls!',
         updated: '2020-03-27T22:33:00+13:00',
       },
@@ -44,6 +58,12 @@ const activities = [
       latitude: '132.10031',
       longitude: '22.01342',
     },
+    people: [
+      {
+        name: 'Bob',
+        avatarPath: '/dummy-img/cat-avatar.png',
+      }
+    ],
     notes: [],
   },
   {
@@ -59,11 +79,23 @@ const activities = [
       latitude: '131.34211',
       longitude: '22.39490',
     },
+    people: [
+      {
+        name: 'Bob',
+        avatarPath: '/dummy-img/cat-avatar.png',
+      },
+      {
+        name: 'Alice',
+        avatarPath: '/dummy-img/dog-avatar.png',
+      },
+    ],
     notes: [
       {
         id: '142020e1-1214-4977-a40b-1090938ab',
-        authorName: 'Alice',
-        authorAvatarPath: '/dummy-img/dog-avatar.png',
+        author: {
+          name: 'Alice',
+          avatarPath: '/dummy-img/dog-avatar.png'
+        },
         content: 'Let me know if anyone is vegetarian',
         updated: '2020-03-19T15:03:00+13:00',
       },
@@ -82,6 +114,16 @@ const activities = [
       latitude: '223.23413',
       longitude: '24.23412',
     },
+    people: [
+      {
+        name: 'Bob',
+        avatarPath: '/dummy-img/cat-avatar.png',
+      },
+      {
+        name: 'Alice',
+        avatarPath: '/dummy-img/dog-avatar.png',
+      },
+    ],
     notes: [],
   },
 ];

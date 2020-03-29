@@ -21,6 +21,7 @@ body html {
     margin: 0 2px;
     position: relative;
     top: 2px;
+    display: inline;
 }
 
 .global-avatar {
@@ -41,4 +42,9 @@ textarea:focus, input:focus {
 
 ::-moz-selection {
     background: #ffa; /* Gecko Browsers */
+}
+
+.horizontal-list{
+    display: flex;
+    flex-direction: row;
 }

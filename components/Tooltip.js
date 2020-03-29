@@ -6,10 +6,10 @@ import styles from '../css/tooltip.module.css';
 
 function Tooltip({ component, text }) {
   return (
-    <div className={styles.tooltip}>
+    <span className={styles.tooltip}>
       {component}
       <div className={styles.text}>{text}</div>
-    </div>
+    </span>
   );
 }
 

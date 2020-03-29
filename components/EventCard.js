@@ -13,6 +13,7 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
+import PeopleList from './PeopleList';
 
 import Tooltip from './Tooltip';
 
@@ -61,6 +62,7 @@ export default class EventCard extends React.Component {
           )}
           <div>
             <strong>{activity.name}</strong>{' '}
+            <PeopleList people={activity.people} />
             <span className={styles.startTime}>
               <FontAwesomeIcon icon={faClock} /> From: {startTime}
             </span>
