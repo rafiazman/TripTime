@@ -12,6 +12,12 @@
     flex-direction: row;
     justify-content: flex-end;
 }
+.startTime, .endTime {
+    color: var(--trip-orange);
+    font-weight: 500;
+    display: block;
+}
+
 
 .options > span {
     padding: 0 0.5rem;

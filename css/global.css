@@ -1,5 +1,5 @@
 :root {
-    --trip-orange:#ff4200;
+    --trip-orange: #ff4200;
     --secondary-text-color: #555555;
     --outer-background-color: #fefefe;
     --page-background-color: #f5f5f5;
@@ -8,7 +8,7 @@
 }
 
 
-body html{
+body html {
     padding: 0;
     margin: 0;
 }
@@ -23,6 +23,14 @@ body html{
     top: 2px;
 }
 
+.global-avatar {
+    max-height: 3rem;
+    max-width: 3rem;
+    border: 2px var(--box-shadow-color) solid;
+    border-radius: 100%;
+    display: inline-block;
+}
+
 textarea:focus, input:focus {
     outline-color: var(--trip-orange);
 }
@@ -30,7 +38,7 @@ textarea:focus, input:focus {
 ::selection {
     background: #ffa; /* WebKit/Blink Browsers */
 }
+
 ::-moz-selection {
     background: #ffa; /* Gecko Browsers */
 }
-

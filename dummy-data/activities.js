@@ -49,8 +49,8 @@ const activities = [
   {
     id: '2172269c-2437-418a-85d5-82f8ebfa372e',
     type: 'eating',
-    start: '2020-04-05T11:00:00+13:00',
-    end: '2020-04-05T13:00:00+13:00',
+    start: '2020-04-01T11:00:00+13:00',
+    end: '2020-04-01T13:00:00+13:00',
     name: 'Lunch',
     description: 'Lunch at 88 Restaurant',
     updated: '2020-03-09T15:00:00+13:00',
