@@ -16,7 +16,6 @@ export default class TripTimeline extends React.Component {
         key={index}
         className={index % 2 === 0 ? styles.timelineLeft : styles.timelineRight}
       >
-        {index % 2 === 0 ? 'left' : 'right'}
         <EventCard onMap={false} activity={activity} onClose={null} />
       </div>
     ));

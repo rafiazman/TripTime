@@ -11,7 +11,6 @@ import {
   faChevronCircleUp,
   faChevronCircleDown,
   faTimes,
-  faLongArrowAltRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
