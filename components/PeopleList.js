@@ -12,7 +12,7 @@ function PeopleList({ people }) {
           key={index}
           text={person.name}
           component={
-            <img src={person.avatarPath} alt='' className={'inline-avatar'} />
+            <img src={person.avatarPath} alt='' className={'block-avatar'} />
           }
         />
       ))}

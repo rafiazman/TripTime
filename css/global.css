@@ -14,13 +14,13 @@ body html {
 }
 
 .inline-avatar {
-    max-height: 1em;
-    max-width: 1em;
+    max-height: 2em;
+    max-width: 2em;
     border: 1px var(--box-shadow-color) solid;
     border-radius: 100%;
-    margin: 0 2px;
+    margin: 0 6px 0 0;
     position: relative;
-    top: 2px;
+    top: 0.5em;
     display: inline;
 }
 
@@ -30,6 +30,7 @@ body html {
     border: 2px var(--box-shadow-color) solid;
     border-radius: 100%;
     display: inline-block;
+    margin: 3px;
 }
 
 textarea:focus, input:focus {

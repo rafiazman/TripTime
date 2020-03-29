@@ -3,6 +3,14 @@
     display: inline-block;
 }
 
+.tooltip:hover{
+    color:var(--trip-orange);
+}
+
+.tooltip:hover img{
+    border-color: var(--trip-orange);
+}
+
 /* Tooltip text */
 .text {
     visibility: hidden;
@@ -15,8 +23,8 @@
     color: white;
     position: absolute;
     z-index: 100;
-
 }
+
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover > .text {
