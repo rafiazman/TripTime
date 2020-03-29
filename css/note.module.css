@@ -27,12 +27,11 @@
 }
 
 .authorField {
+    padding: 5px 0 0 0;
     color: var(--secondary-text-color);
     font-size: 0.8rem;
-}
-
-.contentFiled {
-
+    line-height: 2em;
+    vertical-align: middle;
 }
 
 .addNoteField {

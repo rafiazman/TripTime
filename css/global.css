@@ -18,10 +18,9 @@ body html {
     max-width: 2em;
     border: 1px var(--box-shadow-color) solid;
     border-radius: 100%;
-    margin: 0 6px 0 0;
     position: relative;
-    top: 0.5em;
     display: inline;
+    vertical-align: middle;
 }
 
 .block-avatar {

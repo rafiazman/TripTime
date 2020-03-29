@@ -29,7 +29,7 @@ function OneNote({ note }) {
     <div className={styles.oneNote}>
       <div className={styles.authorField}>
         <img className='inline-avatar' src={note.author.avatarPath} alt='' />
-        <span>{note.author.name}, </span>
+        <span> &nbsp;{note.author.name}, </span>
         <TimeAgo
           date={note.updated}
           minPeriod={10}
