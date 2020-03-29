@@ -55,9 +55,13 @@
     z-index: 1;
 }
 
-.timelineLeft::after {
-    right: -17px;
+@media screen and (min-width: 900px){
+    .timelineLeft::after {
+        right: -17px;
+    }
 }
+
+
 .timelineRight::after {
     left: -17px;
 }
@@ -94,4 +98,29 @@
     border: solid;
     border-width: 10px 14px 10px 0;
     border-color: transparent var(--trip-orange) transparent transparent;
+}
+
+@media screen and (max-width: 900px) {
+    .tripTimeline::after {
+        left: 5%;
+        margin-left: -3px;
+    }
+    .timelineRight, .timelineLeft {
+        left: 5%;
+        width: 90%;
+        padding-right: 0;
+        padding-left: 42px;
+
+    }
+    .timelineLeft::before {
+        left: 26px;
+        border-width: 10px 14px 10px 0;
+        border-color: transparent var(--trip-orange) transparent transparent;
+    }
+    .timelineLeft::after {
+        left: -17px;
+    }
+
+
+
 }
