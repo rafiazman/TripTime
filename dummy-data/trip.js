@@ -1,8 +1,11 @@
 /** @format */
 
 import activities from './activities';
+import travels from './travel-between';
 const trip = {
   name: 'Around New Zealand',
+  description:
+    'Our 17 days trip around NZ, highlighting music party at Rotorua',
   people: [
     {
       name: 'Alice',
@@ -20,6 +23,7 @@ const trip = {
   start: '2020-03-27',
   end: '2020-04-10',
   activities: activities,
+  travels: travels,
 };
 
 export default trip;

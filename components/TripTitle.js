@@ -10,24 +10,24 @@ export default class TripTitle extends React.Component {
   }
 
   render() {
-    const tripName = this.props.name;
-    const people = this.props.people;
-
     return (
       <div className={styles.tripTitleContainer}>
-        <h1>{tripName}</h1>
-        {people.map((person, index) => (
-          <div key={index}>
-            <div>
-              <img
-                src={`${person.avatarPath}`}
-                alt={''}
-                className={'block-avatar'}
-              />
+        <h1 className={styles.tripName}>{this.props.name}</h1>
+        <p>{this.props.description}</p>
+        <div className={'horizontal-list'}>
+          {this.props.people.map((person, index) => (
+            <div key={index} className={styles.summaryPerson}>
+              <div>
+                <img
+                  src={`${person.avatarPath}`}
+                  alt={''}
+                  className={'block-avatar'}
+                />
+              </div>
+              <div>{person.name}</div>
             </div>
-            <div>{person.name}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   }
@@ -36,4 +36,5 @@ export default class TripTitle extends React.Component {
 TripTitle.propTypes = {
   name: PropTypes.string.isRequired,
   people: PropTypes.array.isRequired,
+  description: PropTypes.string,
 };

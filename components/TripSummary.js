@@ -9,8 +9,12 @@ import styles from '../css/trip-summary.module.css';
 function TripSummary({ trip }) {
   return (
     <div className={styles.tripSummary}>
-      <TripTitle name={trip.name} people={trip.people} />
-      <TripTimeline activities={trip.activities} />
+      <TripTitle
+        name={trip.name}
+        people={trip.people}
+        description={trip.description}
+      />
+      <TripTimeline activities={trip.activities.concat(trip.travels)} />
     </div>
   );
 }

@@ -1,12 +1,12 @@
 :root {
     --trip-orange: #ff4200;
+    --trip-gray: #888;
     --secondary-text-color: #555555;
     --outer-background-color: #fefefe;
     --page-background-color: #f5f5f5;
     --page-border-color: #eee;
     --box-shadow-color: #aaa;
 }
-
 
 body html {
     padding: 0;
@@ -24,9 +24,9 @@ body html {
     display: inline;
 }
 
-.global-avatar {
-    max-height: 3rem;
-    max-width: 3rem;
+.block-avatar {
+    max-height: 2rem;
+    max-width: 2rem;
     border: 2px var(--box-shadow-color) solid;
     border-radius: 100%;
     display: inline-block;
