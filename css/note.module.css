@@ -1,0 +1,53 @@
+.noNote {
+    color: var(--secondary-text-color);
+    font-size: 0.8em;
+}
+
+.notesCard {
+    width: 100%;
+    border-top: 1px var(--trip-orange) dashed;
+    max-height: 20rem;
+    overflow: auto;
+}
+
+.notesCard button {
+    font-size: 0.8em;
+    width: fit-content;
+    height: 1.5rem;
+    background-color: var(--trip-orange);
+    color: white;
+}
+
+.oneNote {
+    margin: 2px 5px;
+    color: var(--secondary-text-color);
+    border-bottom: 1px dotted var(--trip-orange);
+    line-height: 1em;
+    font-size: 1rem;
+}
+
+.authorField {
+    padding: 5px 0 0 0;
+    color: var(--secondary-text-color);
+    font-size: 0.8rem;
+    line-height: 2em;
+    vertical-align: middle;
+}
+
+.addNoteField {
+    margin: 0.5rem;
+}
+
+.noteInput {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.addNoteButton {
+    font-size: 1rem;
+    color: white;
+}
+
+.timeUpdated {
+    font-size: 0.7rem;
+}

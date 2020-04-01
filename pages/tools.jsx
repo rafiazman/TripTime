@@ -2,12 +2,12 @@
 import React from 'react';
 import withLayout from '../components/Layout';
 
-function Index() {
+function Tools() {
   return (
     <div>
-      <p>Hello Next.js</p>
+      <p>This is the tools</p>
     </div>
   );
 }
 
-export default withLayout(Index);
+export default withLayout(Tools);

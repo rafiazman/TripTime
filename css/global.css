@@ -1,0 +1,50 @@
+:root {
+    --trip-orange: #ff4200;
+    --trip-gray: #888;
+    --secondary-text-color: #555555;
+    --outer-background-color: #fefefe;
+    --page-background-color: #f5f5f5;
+    --page-border-color: #eee;
+    --box-shadow-color: #aaa;
+}
+
+body html {
+    padding: 0;
+    margin: 0;
+}
+
+.inline-avatar {
+    max-height: 2em;
+    max-width: 2em;
+    border: 1px var(--box-shadow-color) solid;
+    border-radius: 100%;
+    position: relative;
+    display: inline;
+    vertical-align: middle;
+}
+
+.block-avatar {
+    max-height: 2rem;
+    max-width: 2rem;
+    border: 2px var(--box-shadow-color) solid;
+    border-radius: 100%;
+    display: inline-block;
+    margin: 3px;
+}
+
+textarea:focus, input:focus {
+    outline-color: var(--trip-orange);
+}
+
+::selection {
+    background: #ffa; /* WebKit/Blink Browsers */
+}
+
+::-moz-selection {
+    background: #ffa; /* Gecko Browsers */
+}
+
+.horizontal-list{
+    display: flex;
+    flex-direction: row;
+}

@@ -1,0 +1,11 @@
+.travelCard {
+    color: var(--trip-orange);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.travelTitle{
+    font-weight: bold;
+}
