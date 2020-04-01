@@ -1,0 +1,55 @@
+.calendarContainer {
+    color: var(--trip-orange);
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    padding: 2rem;
+    overflow: scroll;
+    grid-column-gap: 2rem;
+}
+
+@media screen and (max-width: 900px) {
+    .calendarContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    .calendarSummary{
+       max-height: fit-content;
+    }
+}
+
+.calendarContainer > div:first-child button:focus {
+    outline: none;
+    color: white;
+    background-color: var(--trip-orange);
+    border-style: inset;
+}
+
+.calendarContainer > div:first-child button {
+    height: 4rem;
+    width: 3rem;
+    border: 2px var(--trip-orange) outset;
+    border-radius: 2px;
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+}
+
+.calendarSummary {
+    max-height: 100%;
+    min-height: 20rem;
+    overflow: auto;
+    padding: 0 1rem;
+    position: relative;
+    bottom: 1rem;
+    border: 2px var(--trip-orange) solid;
+
+}
+
+.calendarSummary > h1 {
+    background-color: var(--trip-orange);
+    color: white;
+    text-align: center;
+}
+
+.calendarSummary h3 {
+    color: var(--secondary-text-color);
+}

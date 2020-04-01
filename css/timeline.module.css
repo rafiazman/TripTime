@@ -1,0 +1,154 @@
+.tripTimelineContainer {
+    position: relative;
+}
+
+.tripTimeline, .timelineLeft, .timelineRight {
+    box-sizing: border-box;
+}
+
+.tripTimeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.tripTimeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: #888;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+}
+
+
+.timelineLeft > div, .timelineRight > div {
+    max-width: calc(100% - 30px);
+}
+
+
+.timelineLeft, .timelineRight {
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+    padding-top: 15px;
+}
+
+.timelineLeft {
+    padding-right: 42px;
+}
+
+.timelineRight {
+    padding-left: 42px;
+}
+
+.timelineLeft::after, .timelineRight::after {
+    content: '';
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    background-color: var(--trip-orange);
+    border: 8px solid #888;
+    top: 25px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+@media screen and (min-width: 900px) {
+    .timelineLeft::after {
+        right: -17px;
+    }
+}
+
+
+.timelineRight::after {
+    left: -17px;
+}
+
+.timelineLeft {
+    left: 0;
+}
+
+.timelineRight {
+    left: 50%;
+}
+
+.timelineLeft::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 32px;
+    width: 0;
+    z-index: 1;
+    right: 26px;
+    border: solid;
+    border-width: 10px 0 10px 14px;
+    border-color: transparent transparent transparent var(--trip-orange);
+}
+
+.travelCardContainer {
+    position: relative;
+    width: 80%;
+    margin: 20px auto;
+    z-index: 2;
+    background: white;
+    min-height: 2rem;
+    border-radius: 20px;
+    border: 3px solid var(--trip-gray);
+}
+
+.timelineRight::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 32px;
+    width: 0;
+    z-index: 1;
+    left: 26px;
+    border: solid;
+    border-width: 10px 14px 10px 0;
+    border-color: transparent var(--trip-orange) transparent transparent;
+}
+
+@media screen and (max-width: 900px) {
+    .tripTimeline::after {
+        left: 5%;
+        margin-left: -3px;
+    }
+
+    .timelineRight, .timelineLeft {
+        left: 5%;
+        width: 90%;
+        padding-right: 0;
+        padding-left: 42px;
+
+    }
+
+    .timelineLeft::before {
+        left: 26px;
+        border-width: 10px 14px 10px 0;
+        border-color: transparent var(--trip-orange) transparent transparent;
+    }
+
+    .timelineLeft::after {
+        left: -17px;
+    }
+
+    .travelCardContainer::before {
+        content: "";
+        z-index: 3;
+        width: 0;
+        height: 0;
+        border: solid;
+        border-width: 10px 14px 10px 0;
+        border-color: transparent var(--trip-gray) transparent transparent;
+        position: absolute;
+        left: -18px;
+        top: 15px;
+    }
+
+}
+
+
