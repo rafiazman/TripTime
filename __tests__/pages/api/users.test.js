@@ -26,10 +26,6 @@ describe('/api/users handler', () => {
     server.close(done);
   });
 
-  afterEach(done => {
-    User.collection.drop(done);
-  });
-
   it('responds 405 Method Not Allowed to GET requests', async () => {
     const response = await fetch(url);
 
@@ -50,5 +46,7 @@ describe('/api/users handler', () => {
 
     expect(newDocumentCount).toEqual(1);
     expect(response.status).toEqual(201);
+
+    await User.collection.drop();
   });
 });
