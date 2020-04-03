@@ -6,7 +6,8 @@ function Index() {
   return (
     <div>
       <p>Hello Next.js
-          Deployed via heroku and travis success</p>
+      Deployed via travis
+      Powered by heroku</p>
     </div>
   );
 }

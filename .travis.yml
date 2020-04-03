@@ -14,5 +14,6 @@ deploy:
   api_key:
     secure: T2Cvy33I4BVK9OwbaNXYYOLlxSD53wQEwNJvBBhsnQWX7SpMXiqdoPOFX1HG3FUA7pxl4Y2ZxXgHG+wIBLIqCoL5rhG/YrYc/zYxpYV4EBakWxbFoehPwG72OQY96Z+iDlHCwjACYAlErB/klY8WJM07IL38geh+l/VTmZYPiPa229JnKA8z0IBG11Hd9W8eQpQle2QleanduwTyVN+IioKE2WjuIpjPs2NNtDPghgQBgb5SVPWXokD9sBqxU28/5qp7m9oSpUVgeBgUp+tH9v0PBMLZVJWfjiQu4AG2ucce9d/veYAwKhU/T9hV3BGDhmiJSsxIooosaGpcgc1Hk+wHopDZxXv6L4SzV3C6GBJ0SPS3/eF5rldUsWDndjt3zo4boiBNaynqo6GJrKqD7mNbt7C0CdzrhN8Q9rQk4kI0WECUTDoetKeFQ53T/e8xhIhiHxnBvbl8XC57QSycK1OZBF6bvMURO2iBQ0WnVGJhUZMrkFVRbOXVfQWqV+KBgIkivMShdJ7I8wxMuvLLb3sad78mH0qOcbfky+8U45YqIoejdioMpAD5oq4fsya5GW+bOrGrTvqplkB7yH78xr24Cz8C7/YxWtur42a2WbhAAGCkD6jrCxikds0fCCAgoSQ9SB/NNjto1CMWoEmPnI/M+i7DqtygQNWgI7+ZvzE=
   app:
+    #branch: appname
     master: trip-time
-    feature/cd-pipeline: trip-time-develop
+    develop: trip-time-develop
