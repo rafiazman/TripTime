@@ -1,11 +1,29 @@
 /** @format */
 import React from 'react';
-import withLayout from '../components/Layout';
-import TripSummary from '../components/TripSummary';
+import TripSummary from '../components/dashboard/TripSummary';
 import trip from '../dummy-data/trip';
+import TripTeamLayout from '../components/layout/TripTeamLayout';
+import PropTypes from 'prop-types';
 
-function Dashboard() {
-  return <TripSummary trip={trip} />;
+export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { user: null };
+  }
+
+  componentDidMount() {
+    this.props.setUser(this);
+  }
+
+  render() {
+    return (
+      <TripTeamLayout user={this.state.user}>
+        <TripSummary trip={trip} user={this.state.user} />
+      </TripTeamLayout>
+    );
+  }
 }
 
-export default withLayout(Dashboard);
+Dashboard.propTypes = {
+  setUser: PropTypes.func,
+};
