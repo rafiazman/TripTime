@@ -48,3 +48,8 @@ textarea:focus, input:focus {
     display: flex;
     flex-direction: row;
 }
+
+.fit-center{
+    width: fit-content;
+    margin: 0 auto;
+}

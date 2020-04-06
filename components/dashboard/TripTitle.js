@@ -1,14 +1,10 @@
 /** @format */
 
 import React from 'react';
-import styles from '../css/trip-summary.module.css';
+import styles from '../../css/trip-summary.module.css';
 import PropTypes from 'prop-types';
 
 export default class TripTitle extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className={styles.tripTitleContainer}>

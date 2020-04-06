@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../css/travel-card.module.css';
+import styles from '../../css/travel-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWalking,
@@ -15,7 +15,7 @@ import {
   faTrain,
   faHorse,
 } from '@fortawesome/free-solid-svg-icons';
-import PeopleList from './PeopleList';
+import PeopleList from '../shared-elements/PeopleList';
 
 const travelModeIcons = {
   bus: faBus,
@@ -28,19 +28,21 @@ const travelModeIcons = {
   walk: faWalking,
   horse: faHorse,
 };
-function TravelCard({ travel }) {
-  return (
-    <div className={styles.travelCard}>
-      <span className={styles.travelTitle}>
-        <FontAwesomeIcon icon={travelModeIcons[travel.mode]} />{' '}
-        {travel.description}
-      </span>
-      <PeopleList people={travel.people} />
-    </div>
-  );
+export default class TravelCard extends React.Component {
+  render() {
+    const travel = this.props.travel;
+    return (
+      <div className={styles.travelCard}>
+        <span className={styles.travelTitle}>
+          <FontAwesomeIcon icon={travelModeIcons[travel.mode]} />{' '}
+          {travel.description}
+        </span>
+        <PeopleList people={travel.people} />
+      </div>
+    );
+  }
 }
 
 TravelCard.propTypes = {
   travel: PropTypes.object.isRequired,
 };
-export default TravelCard;

@@ -1,21 +1,29 @@
-.container {
+.mainContainer{
     position: fixed;
     left: 0;
     top: 0;
     display: grid;
     height: 100vh;
+    width: 100vw;
     grid-template-rows: 3em 1fr;
-    grid-template-columns: auto 1fr;
-    grid-template-areas: "header header" "side main";
+    grid-template-areas: "header" "content";
 }
 
-.container > aside {
+.tripTeamContainer {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: calc(100vh - 3em);
+    grid-template-areas:"side main";
+    grid-area: content;
+}
+
+.tripTeamContainer > aside {
     grid-area: side;
     z-index: 0;
 }
 
 
-.container > aside > div {
+.tripTeamContainer > aside > div {
     position: relative;
     top: 15%;
     width: 100%;
@@ -26,11 +34,10 @@
     justify-content: space-between;
 }
 
-.container a:first-child {
+.tripTeamContainer a:first-child {
     margin-bottom: 15px;
 }
-
-.container > main {
+.tripTeamContainer > main {
     z-index: 2;
     grid-area: main;
     overflow: auto;
@@ -40,26 +47,14 @@
     border-left: 1px solid var(--page-border-color);
 }
 
-.container > main:first-child {
-    overflow-y: scroll;
+
+.tripTeamContainer > main:first-child {
+    overflow: auto;
 }
 
-.container > header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: 0 20px;
-    grid-area: header;
-    font-size: larger;
-    line-height: 2em;
-    font-weight: bolder;
-    background-color: var(--page-background-color);
-    width: 100vw;
-}
 
 @media screen and (min-width: 1080px) {
-    .container > aside {
+    .tripTeamContainer > aside {
         width: 165px;
 
     }

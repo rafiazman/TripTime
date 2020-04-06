@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import styles from '../css/map.module.css';
+import styles from '../../css/map.module.css';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -17,7 +17,7 @@ import {
   faPalette,
   faPaw,
 } from '@fortawesome/free-solid-svg-icons';
-import EventCard from './EventCard';
+import EventCard from '../shared-elements/EventCard';
 
 const activityTypes = {
   outdoors: faHiking,
