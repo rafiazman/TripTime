@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../css/tooltip.module.css';
+import styles from '../../css/tooltip.module.css';
 
 function Tooltip({ component, text }) {
   return (

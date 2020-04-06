@@ -1,16 +1,12 @@
 /** @format */
 
 import React from 'react';
-import styles from '../css/timeline.module.css';
-import EventCard from './EventCard';
+import styles from '../../css/timeline.module.css';
+import EventCard from '../shared-elements/EventCard';
 import PropTypes from 'prop-types';
 import TravelCard from './TravelCard';
 
 export default class TripTimeline extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   populateTimeline(activities) {
     let left = true;
     return activities.map((activity, index) => {

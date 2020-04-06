@@ -4,7 +4,7 @@ import moment from 'moment';
 import NotesCard from './NotesCard';
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../css/event-card.module.css';
+import styles from '../../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapMarkerAlt,

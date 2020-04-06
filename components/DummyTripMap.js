@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from '../css/map.module.css';
 import PropTypes from 'prop-types';
-import MapMarker from './MapMarker';
+import MapMarker from './map/MapMarker';
 
 function TripMap({ activities }) {
   return (
