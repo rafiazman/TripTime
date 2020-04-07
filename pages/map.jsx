@@ -1,11 +1,10 @@
 /** @format */
 import React from 'react';
 import withLayout from '../components/Layout';
-import activities from '../dummy-data/activities';
-import TripMap from '../components/DummyTripMap';
+import TripMap from '../components/TripMap';
 
 function Map() {
-  return <TripMap activities={activities} />;
+  return <TripMap />;
 }
 
 export default withLayout(Map);

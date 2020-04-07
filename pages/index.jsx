@@ -5,9 +5,7 @@ import withLayout from '../components/Layout';
 function Index() {
   return (
     <div>
-      <p>Hello Next.js
-      Deployed via travis
-      Powered by heroku</p>
+      <p>Hello Next.js Deployed via travis Powered by heroku</p>
     </div>
   );
 }
