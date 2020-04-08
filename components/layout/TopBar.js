@@ -52,11 +52,7 @@ export default class TopBar extends React.Component {
       <header style={headerStyle}>
         <Link href={'/'}>
           <a>
-            <img
-              src='/decor-img/top_bar_logo.svg'
-              alt=''
-              style={topBarImgStyle}
-            />
+            <img src='/img/logo.svg' alt='' style={topBarImgStyle} />
           </a>
         </Link>
         <span style={topBarSpanStyle}>TripTime!</span>

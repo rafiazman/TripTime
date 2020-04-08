@@ -41,12 +41,12 @@ class TripLink extends React.Component {
     const isActive = this.props.isActive;
     const backgroundImageStyle = {
       backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
-    url('/decor-img/${linkName.toLowerCase()}-tag.jpg')`,
+    url('/img/menu-bg/${linkName.toLowerCase()}.jpg')`,
     };
 
     const activeBackgroundStyle = {
       backgroundImage: `linear-gradient(to right, rgba(255,66,0,0.8), rgba(255,66,0,0.8)), 
-    url('/decor-img/${linkName.toLowerCase()}-tag.jpg')`,
+    url('/img/menu-bg/${linkName.toLowerCase()}.jpg')`,
     };
     return (
       <Link href={'/' + linkName.toLowerCase()}>

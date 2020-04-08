@@ -1,6 +1,6 @@
 /** @format */
 import React from 'react';
-import activities from '../dummy-data/activities';
+import activities from '../app/dummy-data/activities';
 import TripMap from '../components/map/TripMap';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
