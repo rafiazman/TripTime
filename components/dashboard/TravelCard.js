@@ -15,7 +15,7 @@ import {
   faTrain,
   faHorse,
 } from '@fortawesome/free-solid-svg-icons';
-import PeopleList from '../shared-elements/PeopleList';
+import PeopleList from '../PeopleList';
 
 const travelModeIcons = {
   bus: faBus,

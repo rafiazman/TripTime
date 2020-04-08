@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '../../css/timeline.module.css';
-import EventCard from '../shared-elements/EventCard';
+import EventCard from '../EventCard';
 import PropTypes from 'prop-types';
 import TravelCard from './TravelCard';
 
