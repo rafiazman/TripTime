@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from '../../css/layout.module.css';
 import SideBar from './SideBar';
-import ChatBox from '../shared-elements/ChatBox';
+import ChatBox from '../ChatBox';
 import PropTypes from 'prop-types';
 
 export default class TripTeamLayout extends React.Component {

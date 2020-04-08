@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../../css/note.module.css';
+import styles from '../css/note.module.css';
 import TimeAgo from 'react-timeago/lib';
 
 class NotesCard extends React.Component {

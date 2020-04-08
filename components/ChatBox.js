@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import styles from '../../css/chat-box.module.css';
+import styles from '../css/chat-box.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import {

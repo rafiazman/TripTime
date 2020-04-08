@@ -1,7 +1,7 @@
 /** @format */
 import React from 'react';
 import activities from '../dummy-data/activities';
-import TripMap from '../components/DummyTripMap';
+import TripMap from '../components/map/TripMap';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';

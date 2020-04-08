@@ -17,7 +17,7 @@ import {
   faPalette,
   faPaw,
 } from '@fortawesome/free-solid-svg-icons';
-import EventCard from '../shared-elements/EventCard';
+import EventCard from '../EventCard';
 
 const activityTypes = {
   outdoors: faHiking,
