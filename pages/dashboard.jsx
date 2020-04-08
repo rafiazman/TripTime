@@ -1,7 +1,7 @@
 /** @format */
 import React from 'react';
 import TripSummary from '../components/dashboard/TripSummary';
-import trip from '../dummy-data/trip';
+import trip from '../app/dummy-data/trip';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
 import PropTypes from 'prop-types';
 

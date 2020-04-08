@@ -3,7 +3,7 @@ import React from 'react';
 import ReactCalendar from 'react-calendar';
 import styles from '../css/calendar.module.css';
 import CalendarSummary from '../components/calendar/CalendarSummary';
-import activities from '../dummy-data/activities';
+import activities from '../app/dummy-data/activities';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
 import PropTypes from 'prop-types';

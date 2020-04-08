@@ -11,7 +11,7 @@
     cursor: pointer;
     box-sizing: border-box;
     background-image: linear-gradient(to right, rgba(244,244,244,0.9), rgba(244,244,244,0.9)),
-    url('../public/decor-img/chat-head.jpg');
+    url('../assets/chat-bar.jpg');
     /*Photo by Naomi Irons on Unsplash*/
     background-size: cover;
     box-shadow: var(--outer-background-color) -1px -1px 1px;
