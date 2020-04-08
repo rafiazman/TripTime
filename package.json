@@ -4,6 +4,7 @@
   "description": "TripTime is an application for groups of friends to plan a trip together. Users will be able to collaborate in real-time plotting activities over a geographical map interface.",
   "main": "index.js",
   "scripts": {
+    "cypress:open": "cypress open",
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
@@ -49,6 +50,7 @@
     "@babel/preset-env": "^7.9.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
+    "cypress": "^4.3.0",
     "eslint": "^6.8.0",
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-react": "^7.19.0",
