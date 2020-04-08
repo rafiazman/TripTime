@@ -3,7 +3,7 @@
 import isEmail from 'validator/lib/isEmail';
 import bcrypt from 'bcryptjs';
 import User from '../../app/models/User';
-import connectToDb from '../../connectToDb';
+import connectToDb from '../../app/connectToDb';
 
 const handler = async (req, res) => {
   await connectToDb();
