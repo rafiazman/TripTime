@@ -1,10 +1,16 @@
 /** @format */
 import React from 'react';
 import activities from '../app/dummy-data/activities';
-import TripMap from '../components/map/TripMap';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
+import dynamic from "next/dynamic";
+
+
+const TripMapNoSSR = dynamic(
+  () => import('../components/map/TripMap'),
+  { ssr: false }
+)
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -20,7 +26,7 @@ export default class Map extends React.Component {
     return (
       <TripTeamLayout user={this.state.user}>
         {this.state.user ? (
-          <TripMap activities={activities} />
+          <TripMapNoSSR activities={activities} />
         ) : (
           <div className={'fit-center'}>
             <Link href={'api/login'}>
