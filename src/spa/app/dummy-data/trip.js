@@ -9,15 +9,15 @@ const trip = {
   people: [
     {
       name: 'Alice',
-      avatarPath: '/avatar/cat-avatar.png',
+      avatarPath: '/img/avatar/cat-avatar.png',
     },
     {
       name: 'Bob',
-      avatarPath: '/avatar/dog-avatar.png',
+      avatarPath: '/img/avatar/dog-avatar.png',
     },
     {
       name: 'Caroline',
-      avatarPath: '/avatar/cat-avatar.png',
+      avatarPath: '/img/avatar/cat-avatar.png',
     },
   ],
   start: '2020-03-27',

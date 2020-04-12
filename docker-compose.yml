@@ -1,0 +1,19 @@
+version: '3'
+
+networks:
+  triptime:
+
+services:
+  spa:
+    container_name: react-spa
+    build:
+      context: ./src/spa
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    networks:
+      - triptime
