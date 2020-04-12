@@ -18,11 +18,11 @@ const travels = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/cat-avatar.png',
       },
       {
         name: 'Alice',
-        avatarPath: '/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/dog-avatar.png',
       },
     ],
     notes: [],
@@ -44,11 +44,11 @@ const travels = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/cat-avatar.png',
       },
       {
         name: 'Alice',
-        avatarPath: '/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/dog-avatar.png',
       },
     ],
     notes: [],
@@ -70,7 +70,7 @@ const travels = [
     people: [
       {
         name: 'Alice',
-        avatarPath: '/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/dog-avatar.png',
       },
     ],
     notes: [
@@ -78,7 +78,7 @@ const travels = [
         id: '16b020e1-1214-4977-a40b-193093345',
         author: {
           name: 'Alice',
-          avatarPath: '/avatar/dog-avatar.png',
+          avatarPath: '/img/avatar/dog-avatar.png',
         },
         content: 'Bring snacks',
         updated: '2020-03-27T22:33:00+13:00',
