@@ -19,4 +19,11 @@ module.exports = {
     // Reference a specific variable that was defined in process.env or the .env file.
     TEST: process.env.TEST,
   },
+  webpackDevMiddleware: config => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300,
+    }
+    return config
+  },
 }

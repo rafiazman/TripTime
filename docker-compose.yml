@@ -6,14 +6,11 @@ networks:
 services:
   spa:
     container_name: react-spa
+    environment:
+      - NEXT_TELEMETRY_DISABLED=1
     build:
       context: ./src/spa
       dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=production
-      - NEXT_TELEMETRY_DISABLED=1
-      - PORT=3000
-    ports:
-      - "3000:3000"
+    restart: always
     networks:
       - triptime

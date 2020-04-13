@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  spa:
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src/spa:/usr/app/
+      - /usr/app/node_modules
+      - /usr/app/.next
+    command: npm run dev
