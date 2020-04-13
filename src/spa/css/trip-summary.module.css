@@ -15,8 +15,9 @@
     min-width: 5rem;
 }
 
+
 .tripSummary {
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 .tripName {
