@@ -22,13 +22,15 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 * Get an overview of your planned trip from Day 1 to Finish!
 
 ## Usage
-### Development
+Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
 
-To run the web application with hot module reload, execute and go to http://localhost:3000.
+### Development
+To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
 ```shell script
 $ docker-compose up
 ```
 
+### Production
 To run the web application in production:
 ```shell script
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
@@ -36,6 +38,13 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 This deploys all three services using the configuration in `docker-compose.yml` and `docker-compose.prod.yml` (but not the dev configuration in `docker-compose.override.yml`).
 
 The application will be served on http://localhost
+
+### Termination
+
+To terminate the application and stop the Docker container:
+```shell script
+$ docker-compose down
+```
 
 ## Screenshots
 &ensp;
