@@ -11,7 +11,8 @@
 
 <p align="center">
   <a href="#usage">Usage</a> •
-  <a href="#screenshots">Screenshots</a>
+  <a href="#screenshots">Screenshots</a> •
+  <a href="#contributors">Contributors</a>
 </p>
 
 TripTime is an application for groups of friends to plan a trip together. Users will be able to collaborate in real-time plotting activities over a geographical map interface.
@@ -42,3 +43,8 @@ The application will be served on http://localhost
 <p align="center">
   <img src="/docs/map-screenshot.png?raw=true" width="800" alt="TripTime Map">
 </p>
+
+## Contributors
+Thank you to the contributors below who have helped advance this project.
+
+[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/0)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/0)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/1)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/1)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/2)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/2)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/3)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/3)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/4)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/4)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/5)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/5)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/6)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/6)[![](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/images/7)](https://sourcerer.io/fame/rafiazman/tantigers/TripTime/links/7)
