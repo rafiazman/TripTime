@@ -4,9 +4,12 @@ FROM node:12.16.2-stretch as build
 COPY . /src
 WORKDIR /src
 
-RUN npm ci
-RUN npm run build
-RUN npm prune --production
+RUN if [ "$NODE_ENV" = "production" ]; then \
+        npm ci --only=prod && \
+        npm run build; \
+    else \
+        npm ci; \
+    fi
 
 FROM node:12.16.2-stretch
 
@@ -18,4 +21,4 @@ COPY --from=build /src/.next /usr/app/.next
 COPY --from=build /src/public /usr/app/public
 
 EXPOSE 3000
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
