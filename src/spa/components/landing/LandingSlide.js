@@ -17,7 +17,7 @@ class LandingSlide extends React.Component {
   render() {
     const image = this.props.image;
     const title = this.props.title;
-    const alignLeft = this.props.previewAtLeft;
+    const alignLeft = this.props.alignLeft;
     const description = this.props.description;
 
     return (
@@ -48,10 +48,6 @@ class LandingSlide extends React.Component {
 }
 
 LandingSlide.propTypes = {
-  intro: PropTypes.object.isRequired,
-  invitation: PropTypes.string.isRequired,
-  previewAtLeft: PropTypes.bool.isRequired,
-
   image: PropTypes.string,
   alignLeft: PropTypes.bool,
   title: PropTypes.string,
