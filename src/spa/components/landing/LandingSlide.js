@@ -18,12 +18,21 @@ class LandingSlide extends React.Component {
     const intro = this.props.intro;
     return (
       <div className={scrollStyle['slide']}>
-        <div className={styles.container}>
+        <div
+          className={
+            this.props.previewAtLeft
+              ? styles.containerLeft
+              : styles.containerRight
+          }
+        >
           <div className={previewStyles[intro.title]}>
             <img src={intro.preview} alt={intro.title} />
           </div>
-
-          <div className={styles.intro}>
+          <div
+            className={
+              this.props.previewAtLeft ? styles.introLeft : styles.introRight
+            }
+          >
             <div>
               <h1 className={styles.title}>{intro.title}</h1>
 
@@ -47,6 +56,7 @@ class LandingSlide extends React.Component {
 LandingSlide.propTypes = {
   intro: PropTypes.object.isRequired,
   invitation: PropTypes.string.isRequired,
+  previewAtLeft: PropTypes.bool.isRequired,
 };
 
 export default LandingSlide;

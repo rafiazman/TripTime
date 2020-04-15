@@ -1,5 +1,5 @@
-.container {
-    width: 100%;
+.containerLeft, .containerRight {
+    width: 100vw;
     height: 100%;
     background-color: white;
     overflow: hidden;
@@ -7,7 +7,6 @@
     color: #333;
     outline: solid #eee 2px;
 }
-
 
 .descriptions > p:nth-child(even) {
     position: relative;
@@ -18,14 +17,12 @@
     position: relative;
     left: 1rem;
     top: 1rem;
-
 }
 
 .title {
     position: relative;
     left: -1rem;
 }
-
 
 
 .timelinePreview img, .logoPreview img, .chatPreview img, .mapPreview img {
@@ -62,43 +59,60 @@
     top: 5vh;
 }
 
+.introLeft, .introRight {
+    grid-area: intro;
+    max-width: 30rem;
+}
 
-@media screen and (min-width: 800px) {
-    .container {
+.logoPreview, .timelinePreview, .chatPreview, .mapPreview {
+    grid-area: preview;
+}
+
+@media screen and (min-width: 700px) {
+    .containerLeft {
         display: grid;
-        grid-template-columns: 25rem auto;
+        grid-template-columns: 20rem auto;
+        grid-template-areas: 'preview intro';
         grid-gap: 6vw;
-        left: 1rem;
+    }
+    .containerRight {
+        display: grid;
+        grid-template-columns: 2rem 18rem 20rem 3rem;
+        grid-template-areas: '. intro preview .';
+        grid-gap: 2vw;
     }
 
-    .intro {
+    .introRight, .introLeft {
         font-size: 1.5rem;
         position: relative;
         top: 6rem;
     }
 
-    .container form {
+    .containerLeft form, .containerRight form {
         position: relative;
         top: 2rem;
     }
-    .chatPreview, .mapPreview {
+
+    .chatPreview, .mapPreview, .timelinePreview {
         top: 16vh;
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 700px) {
     .logoPreview {
         width: 18rem;
         top: 2vh;
     }
-    .chatPreview, .mapPreview{
+
+    .chatPreview, .mapPreview {
         top: 2vh;
     }
+
     .timelinePreview {
         top: 5vh;
     }
 
-    .intro {
+    .introRight, .introLeft {
         position: absolute;
         bottom: 0;
         left: 0;
@@ -108,50 +122,69 @@
         font-size: 3.5vw;
     }
 
-    .intro::after {
+    .introLeft::after, .introRight::after {
         z-index: 2;
         content: "";
         position: absolute;
         bottom: 100%;
         left: 0;
-        border-bottom: 60vw solid rgba(256, 256, 256, 0.95);
-        border-left: 100vw solid transparent;
         width: 0;
         height: 0;
+        border-bottom: 60vw solid rgba(256, 256, 256, 0.95);
+
     }
 
-    .intro > div {
+    .introLeft::after {
+        border-left: 100vw solid transparent;
+    }
+
+    .introRight::after {
+        border-right: 100vw solid transparent;
+    }
+
+    .introRight > div {
         z-index: 3;
         position: absolute;
-        right: 3rem;
+        width: fit-content;
+        left: 1rem;
+        bottom: 6rem;
+    }
+    .introLeft > div{
+        z-index: 3;
+        position: absolute;
+        width: fit-content;
+        right: 1rem;
         bottom: 6rem;
     }
 
-    .intro h1, .intro p {
+    .introRight h1, .introLeft h1, .introRight p, .introLeft p {
         position: relative;
         left: 1rem;
     }
 
-    .container form {
+    .containerLeft form, .containerRight form {
         position: relative;
         top: 1rem;
     }
 
 }
 
-@media screen and (min-width: 1080px) {
-    .container {
-        grid-template-columns: 42rem auto;
+@media screen and (min-width: 1000px) {
+    .containerLeft {
+        grid-template-columns: 7rem 30rem auto;
+        grid-template-areas: '. preview intro';
         grid-gap: 5vw;
         left: 0;
     }
-    .timelinePreview {
-        width: 40rem;
-        left: 3rem;
+
+    .containerRight {
+        grid-template-columns: 10rem 25rem 35rem;
+        grid-template-areas: '. intro preview';
+        right: 0;
     }
 
-    .logoPreview, .chatPreview, .mapPreview {
-        left: 10rem;
+    .timelinePreview {
+        width: 40rem;
     }
 
 }
