@@ -1,0 +1,143 @@
+.container {
+    position: relative;
+    scroll-snap-align: center;
+    background-color: var(--trip-orange);
+    margin: 0;
+    width: 100vw;
+    color: #eeeeee;
+    padding-bottom: 3rem;
+    text-align: left;
+    height: 12rem;
+}
+
+.links .follow {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+
+
+.follow {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.logo {
+    max-width: 3rem !important;
+    max-height: 3rem !important;
+}
+
+.copyright {
+    font-size: 0.7em;
+    color: #dddddd;
+}
+
+.container a:hover {
+    color: white;
+}
+
+.container a {
+    color: #eeeeee;
+}
+
+.container h2 {
+    font-size: 1.2rem;
+}
+
+
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.5fr 1.2fr;
+    grid-template-rows: 2rem 6rem 1rem 1rem;
+    grid-template-areas: 'links follow . .' 'links follow . title' 'links follow . copyright' 'links follow . .';
+    width: 85%;
+    margin: auto;
+    padding: 1rem;
+}
+
+
+.logo {
+    max-width: 2rem !important;
+    max-height: 2rem !important;
+}
+
+
+.content > h1 {
+    grid-area: title;
+}
+
+.links {
+    grid-area: links;
+    padding-top: 0.5rem;
+
+}
+
+.copyright {
+    grid-area: copyright;
+}
+
+.follow {
+    grid-area: follow;
+    padding-top: 0.5rem;
+}
+
+
+.bigScreenContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media screen and (min-width: 950px) {
+    .content {
+        grid-template-columns: 1fr 1fr 0.5fr 1fr;
+        width: 60%;
+    }
+    .icons {
+        width: 70%;
+        margin: 2rem auto;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .container h2 {
+        font-size: 1.5em;
+    }
+
+    .container {
+        height: fit-content;
+    }
+
+    .follow {
+        padding-bottom: 1rem;
+        width: 8rem;
+    }
+
+    .copyright {
+        text-align: center;
+    }
+
+    .links > p {
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
