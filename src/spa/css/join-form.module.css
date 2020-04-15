@@ -1,0 +1,23 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 4.5rem;
+    justify-content: space-between;
+}
+
+.form input {
+    font-size: 1.5rem;
+    border: var(--trip-orange) solid 1px;
+    margin-bottom: 4px;
+}
+
+.form button {
+    background-color: var(--trip-orange);
+    font-size: 1.5rem;
+}
+
+.form button {
+    color: white;
+    padding: 3px;
+}
