@@ -1,8 +1,9 @@
 /** @format */
 
 import React from 'react';
-import { Map, TileLayer } from 'react-leaflet';
-import ReactLeafletSearch from 'react-leaflet-search';
+import { Map, TileLayer, withLeaflet } from 'react-leaflet';
+import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
+//import MarkerIcon from '../../css/images/marker-icon.png';
 
 class TripMap extends React.Component {
   state = {
@@ -19,20 +20,25 @@ class TripMap extends React.Component {
     }
 
     const position = [-36.8485, 174.7633];
+    const prov = OpenStreetMapProvider();
+    const GeoSearchControlElement = withLeaflet(SearchControl);
+    //GeoSearchControlElement.marker.icon = {MarkerIcon};
     return (
       <Map center={position} zoom={13}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        //Add values here to change properties of the search functionality
-        <ReactLeafletSearch
-          position='topleft'
-          inputPlaceholder='Search for a location...'
+        <GeoSearchControlElement
+          provider={prov}
           showMarker={true}
-          openSearchOnLoad={false}
-          provider='OpenStreetMap'
-          providerOptions={{ region: 'nz' }}
+          showPopup={false}
+          maxMarkers={3}
+          retainZoomLevel={false}
+          animateZoom={true}
+          autoClose={false}
+          searchLabel={'Enter address, please'}
+          keepResult={true}
         />
       </Map>
     );
