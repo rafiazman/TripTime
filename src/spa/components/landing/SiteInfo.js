@@ -44,19 +44,13 @@ class SiteInfo extends React.Component {
             <h2>Follow Us</h2>
             <div className={infoStyles.icons}>
               <a href='https://github.com/tantigers'>
-                <div>
-                  <FontAwesomeIcon icon={faGithub} />
-                </div>
+                <FontAwesomeIcon icon={faGithub} />
               </a>
               <a href='https://www.youtube.com/'>
-                <div>
-                  <FontAwesomeIcon icon={faYoutube} />
-                </div>
+                <FontAwesomeIcon icon={faYoutube} />
               </a>
               <a href='https://www.facebook.com/'>
-                <div>
-                  <FontAwesomeIcon icon={faFacebook} />
-                </div>
+                <FontAwesomeIcon icon={faFacebook} />
               </a>
             </div>
           </div>
