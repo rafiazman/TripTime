@@ -13,9 +13,13 @@ body html {
     margin: 0;
 }
 
+div, input, button {
+    font-family: 'Quicksand', sans-serif;
+}
+
 .inline-avatar {
-    max-height: 2em;
-    max-width: 2em;
+    max-height: 2rem;
+    max-width: 2rem;
     border: 1px var(--box-shadow-color) solid;
     border-radius: 100%;
     position: relative;
@@ -44,12 +48,51 @@ textarea:focus, input:focus {
     background: #ffa; /* Gecko Browsers */
 }
 
-.horizontal-list{
+.horizontal-list {
     display: flex;
     flex-direction: row;
 }
 
-.fit-center{
+.fit-center {
     width: fit-content;
     margin: 0 auto;
+}
+
+.logo-span img {
+    max-height: 1.8rem;
+    max-width: 1.8rem;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 5px;
+}
+
+.logo-span span {
+    line-height: 1.5rem;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+a {
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--trip-orange);
+}
+
+@media screen and (max-width: 650px) {
+    .not-on-small-screen {
+        display: none;
+    }
+}
+
+::placeholder {
+    color: var(--trip-orange);
+    opacity: 0.3;
+}
+
+.svg-inline--fa {
+    max-width: 1em;
 }

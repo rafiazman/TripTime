@@ -31,6 +31,10 @@ export default class MyApp extends App {
             name='viewport'
             content='initial-scale=1.0, width=device-width'
           />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap'
+            rel='stylesheet'
+          />
         </Head>
         <MainLayout setUser={this.setUser()}>
           <Component {...pageProps} setUser={this.setUser()} />
