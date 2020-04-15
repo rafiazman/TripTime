@@ -1,7 +1,7 @@
 .tripTitleContainer {
     border: 6px solid #888;
     border-radius: 12px;
-    max-width: 1000px;
+    max-width: 80%;
     margin: 15px auto 0 auto;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,8 @@
     padding: 5px 10px 10px 15px;
 
 }
-.summaryPerson{
+
+.summaryPerson {
     margin: 0 4px;
     text-align: center;
     min-width: 5rem;
@@ -24,5 +25,12 @@
     color: var(--trip-orange);
 }
 
+
+@media screen and (max-width: 900px) {
+    .tripTitleContainer {
+        margin: 15px 0 0 3%;
+    }
+
+}
 
 
