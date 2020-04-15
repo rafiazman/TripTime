@@ -25,7 +25,7 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
 
 ### Development
-To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
+To run the web application with hot module reload, execute the following command and go to http://localhost:3000. The Laravel application is located at http://localhost:8080
 ```shell script
 $ docker-compose up
 ```
@@ -37,13 +37,26 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 This deploys all three services using the configuration in `docker-compose.yml` and `docker-compose.prod.yml` (but not the dev configuration in `docker-compose.override.yml`).
 
-The application will be served on http://localhost
+The Next.js application will be served on http://localhost and the Laravel application on http://localhost:8080
 
 ### Termination
 
 To terminate the application and stop the Docker container:
 ```shell script
 $ docker-compose down
+```
+
+### Laravel
+The containerised MySQL server can be accessed at `127.0.0.1:4306` using any client of choice.
+
+To run `composer` commands within the container
+```shell script
+$ docker-compose run --rm composer --version
+```
+
+To run `artisan` commands within the container
+```shell script
+$ docker-compose run --rm artisan --version
 ```
 
 ## Screenshots
