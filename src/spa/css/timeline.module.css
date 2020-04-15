@@ -8,7 +8,7 @@
 
 .tripTimeline {
     position: relative;
-    max-width: 900px;
+    max-width: 90%;
     margin: 0 auto;
 }
 
@@ -113,14 +113,18 @@
 }
 
 @media screen and (max-width: 900px) {
-    .tripTimeline::after {
+    .travelCardContainer{
+        width: 70%;
         left: 5%;
+    }
+    .tripTimeline::after {
+        left: 15%;
         margin-left: -3px;
     }
 
     .timelineRight, .timelineLeft {
-        left: 5%;
-        width: 90%;
+        left: 15%;
+        width: 70%;
         padding-right: 0;
         padding-left: 42px;
 
@@ -147,6 +151,7 @@
         position: absolute;
         left: -18px;
         top: 15px;
+
     }
 
 }
