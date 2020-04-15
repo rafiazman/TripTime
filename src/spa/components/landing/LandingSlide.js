@@ -8,48 +8,42 @@ import JoinUsForm from './JoinUsForm';
 
 const previewStyles = {
   'TripTime!': styles.logoPreview,
-  'Review Timeline': styles.timelinePreview,
-  'Plot Destinations': styles.mapPreview,
-  Collaborate: styles.chatPreview,
+  'Review': styles.timelinePreview,
+  'Plot': styles.mapPreview,
+  'Collaborate': styles.chatPreview,
 };
 
 class LandingSlide extends React.Component {
   render() {
-    const intro = this.props.intro;
+    const image = this.props.image;
+    const title = this.props.title;
+    const alignLeft = this.props.previewAtLeft;
+    const description = this.props.description;
+
     return (
       <div className={scrollStyle['slide']}>
-        <div
-          className={
-            this.props.previewAtLeft
-              ? styles.containerLeft
-              : styles.containerRight
-          }
-        >
-          <div className={previewStyles[intro.title]}>
-            <img src={intro.preview} alt={intro.title} />
+        <div className={alignLeft ? styles.containerLeft : styles.containerRight}>
+
+          <div className={previewStyles[title]}>
+            <img src={image} alt={title} />
           </div>
-          <div
-            className={
-              this.props.previewAtLeft ? styles.introLeft : styles.introRight
-            }
-          >
-            <div>
-              <h1 className={styles.title}>{intro.title}</h1>
 
-              <div className={styles.descriptions}>
-                {intro.descriptions.map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
-              </div>
+          <div className={alignLeft ? styles.introLeft : styles.introRight}>
+            <h1 className={styles.title}>{title}</h1>
 
-              {this.props.invitation && (
-                <JoinUsForm invitation={this.props.invitation} />
-              )}
+            <div className={styles.descriptions}>
+              {description}
             </div>
+
+            {this.props.invitation && (
+              <JoinUsForm invitation={this.props.invitation} />
+            )}
           </div>
+
         </div>
       </div>
     );
+
   }
 }
 
@@ -57,6 +51,11 @@ LandingSlide.propTypes = {
   intro: PropTypes.object.isRequired,
   invitation: PropTypes.string.isRequired,
   previewAtLeft: PropTypes.bool.isRequired,
+
+  image: PropTypes.string,
+  alignLeft: PropTypes.bool,
+  title: PropTypes.string,
+  description: PropTypes.string,
 };
 
 export default LandingSlide;
