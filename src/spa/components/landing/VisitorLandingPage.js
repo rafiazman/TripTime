@@ -8,7 +8,7 @@ import SiteInfo from './SiteInfo';
 const tripTimeIntro = {
   title: 'TripTime!',
   preview: '/img/bw_logo_trans.png',
-  descriptions: ['Plan a trip,', 'Together,', 'LIVE.'],
+  descriptions: ['Plan a trip together,', 'LIVE.'],
 };
 
 const featureIntros = [
@@ -18,14 +18,14 @@ const featureIntros = [
     descriptions: [
       'Pin new destinations',
       'on the map,',
-      'and your friends will see immediately.',
+      'and your friends will see them immediately.',
     ],
     invitation: 'Join Today - pin your trip!',
   },
   {
     title: 'Collaborate',
     preview: '/img/feature-preview/chat-box.jpg',
-    descriptions: ['Chat with your friends', 'while contributing to the plan'],
+    descriptions: ['Chat with your friends', 'while planning'],
     invitation: 'Join Today - start a team!',
   },
   {
@@ -47,12 +47,14 @@ class VisitorLandingPage extends React.Component {
         <LandingSlide
           intro={tripTimeIntro}
           invitation={"Join Today - It's Free!"}
+          previewAtLeft={true}
         />
         {featureIntros.map((featureIntro, index) => (
           <LandingSlide
             intro={featureIntro}
             key={index}
             invitation={featureIntro.invitation}
+            previewAtLeft={index % 2 === 1}
           />
         ))}
         <SiteInfo />
