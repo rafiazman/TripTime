@@ -4,13 +4,11 @@ import activities from '../app/dummy-data/activities';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-
-const TripMapNoSSR = dynamic(
-  () => import('../components/map/TripMap'),
-  { ssr: false }
-)
+const TripMapNoSSR = dynamic(() => import('../components/map/TripMap'), {
+  ssr: false,
+});
 
 export default class Map extends React.Component {
   constructor(props) {
