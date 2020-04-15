@@ -1,0 +1,13 @@
+.container {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+}
+
+.slide {
+    height: calc(100vh - 3em);
+    width: 100vw;
+    box-sizing: border-box;
+    scroll-snap-align: center;
+    position: relative;
+}
+
