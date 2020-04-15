@@ -7,14 +7,15 @@
 }
 
 .form input {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    padding: 10px;
     border: var(--trip-orange) solid 1px;
     margin-bottom: 4px;
 }
 
 .form button {
     background-color: var(--trip-orange);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .form button {
