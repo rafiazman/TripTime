@@ -9,6 +9,6 @@ services:
       - "3000:3000"
     volumes:
       - ./src/spa:/usr/app/
-      - /usr/app/node_modules
+      - ./src/spa/node_modules:/usr/app/node_modules
       - /usr/app/.next
     command: npm run dev
