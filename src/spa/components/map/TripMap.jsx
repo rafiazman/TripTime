@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Map, TileLayer } from 'react-leaflet';
+import ReactLeafletSearch from 'react-leaflet-search';
 
 class TripMap extends React.Component {
   state = {
@@ -23,6 +24,15 @@ class TripMap extends React.Component {
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        //Add values here to change properties of the search functionality
+        <ReactLeafletSearch
+          position='topleft'
+          inputPlaceholder='Search for a location...'
+          showMarker={true}
+          openSearchOnLoad={false}
+          provider='OpenStreetMap'
+          providerOptions={{ region: 'nz' }}
         />
       </Map>
     );

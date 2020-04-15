@@ -7,6 +7,7 @@ import MainLayout from '../components/layout/MainLayout';
 import Head from 'next/head';
 import fetch from 'isomorphic-unfetch';
 import '../css/leaflet.css';
+import '../css/leaflet-search.css';
 
 export default class MyApp extends App {
   setUser() {
