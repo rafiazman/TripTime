@@ -9,7 +9,7 @@ class JoinUsForm extends React.Component {
     return (
       <form className={styles.form}>
         <input type='email' placeholder='Enter your email' />
-        <button type='submit'>{this.props.invitation}</button>
+        <button type='submit'>Join Today - It&apos;s Free!</button>
       </form>
     );
   }

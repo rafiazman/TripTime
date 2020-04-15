@@ -35,9 +35,7 @@ class LandingSlide extends React.Component {
               {description}
             </div>
 
-            {this.props.invitation && (
-              <JoinUsForm invitation={this.props.invitation} />
-            )}
+            <JoinUsForm invitation />
           </div>
 
         </div>
