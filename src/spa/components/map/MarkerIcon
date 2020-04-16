@@ -1,0 +1,12 @@
+import * as L from 'leaflet';
+import IconImageRetina from '../../css/images/marker-icon-2x.png';
+import IconImage from '../../css/images/marker-icon.png';
+import IconShadow from '../../css/images/marker-shadow.png';
+
+let MarkerIcon = L.icon({
+  iconRetinaUrl: IconImageRetina,
+  iconUrl: IconImage,
+  shadowUrl: IconShadow
+});
+
+export { MarkerIcon };

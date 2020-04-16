@@ -33,6 +33,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
+    "file-loader": "^6.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "leaflet": "^1.6.0",
     "leaflet-geosearch": "^2.7.0",
@@ -46,11 +47,13 @@
     "react-leaflet": "^2.6.3",
     "react-leaflet-geosearch": "^0.3.0",
     "react-timeago": "^4.4.0",
+    "url-loader": "^4.1.0",
     "validator": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "cypress": "^4.3.0",
@@ -60,6 +63,7 @@
     "eslint-plugin-react": "^7.19.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "next-images": "^1.4.0",
     "prettier": "1.19.1",
     "test-listen": "^1.1.0"
   },

@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { Map, TileLayer, withLeaflet } from 'react-leaflet';
-import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
-//import MarkerIcon from '../../css/images/marker-icon.png';
+import {
+  SearchControl,
+  OpenStreetMapProvider,
+} from 'react-leaflet-geosearch';
 
 class TripMap extends React.Component {
   state = {
@@ -22,7 +24,7 @@ class TripMap extends React.Component {
     const position = [-36.8485, 174.7633];
     const prov = OpenStreetMapProvider();
     const GeoSearchControlElement = withLeaflet(SearchControl);
-    //GeoSearchControlElement.marker.icon = {MarkerIcon};
+
     return (
       <Map center={position} zoom={13}>
         <TileLayer
@@ -31,14 +33,13 @@ class TripMap extends React.Component {
         />
         <GeoSearchControlElement
           provider={prov}
-          showMarker={true}
           showPopup={false}
-          maxMarkers={3}
+          showMarker={false}
           retainZoomLevel={false}
           animateZoom={true}
-          autoClose={false}
-          searchLabel={'Enter address, please'}
-          keepResult={true}
+          autoClose={true}
+          searchLabel={'Search for a location...'}
+          keepResult={false}
         />
       </Map>
     );
