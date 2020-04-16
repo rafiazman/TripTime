@@ -1,7 +1,6 @@
 /** @format */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from '../../css/join-form.module.css';
 
 class JoinUsForm extends React.Component {
@@ -14,9 +13,5 @@ class JoinUsForm extends React.Component {
     );
   }
 }
-
-JoinUsForm.propTypes = {
-  invitation: PropTypes.string.isRequired,
-};
 
 export default JoinUsForm;
