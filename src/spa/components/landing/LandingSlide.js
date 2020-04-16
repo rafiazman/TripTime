@@ -6,13 +6,6 @@ import scrollStyle from '../../css/snap-scroll.module.css';
 import PropTypes from 'prop-types';
 import JoinUsForm from './JoinUsForm';
 
-const previewStyles = {
-  'TripTime!': styles.logoPreview,
-  'Review': styles.timelinePreview,
-  'Plot': styles.mapPreview,
-  'Collaborate': styles.chatPreview,
-};
-
 class LandingSlide extends React.Component {
   render() {
     const image = this.props.image;
@@ -22,26 +15,22 @@ class LandingSlide extends React.Component {
 
     return (
       <div className={scrollStyle['slide']}>
-        <div className={alignLeft ? styles.containerLeft : styles.containerRight}>
-
-          <div className={previewStyles[title]}>
+        <div
+          className={alignLeft ? styles.containerLeft : styles.containerRight}
+        >
+          <div className={title === 'TripTime!' ? styles.logo : styles.preview}>
             <img src={image} alt={title} />
           </div>
-
           <div className={alignLeft ? styles.introLeft : styles.introRight}>
-            <h1 className={styles.title}>{title}</h1>
-
-            <div className={styles.descriptions}>
-              {description}
+            <div>
+              <h1>{title}</h1>
+              <div>{description}</div>
+              <JoinUsForm />
             </div>
-
-            <JoinUsForm invitation />
           </div>
-
         </div>
       </div>
     );
-
   }
 }
 

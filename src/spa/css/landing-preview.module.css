@@ -1,125 +1,19 @@
-.containerLeft, .containerRight {
-    width: 100vw;
-    height: 100%;
-    background-color: white;
-    overflow: hidden;
-    position: relative;
-    color: #333;
-    outline: solid #eee 2px;
-}
-
-.descriptions > p:nth-child(even) {
-    position: relative;
-    left: 2rem;
-}
-
-.descriptions > p:last-child {
-    position: relative;
-    left: 1rem;
-    top: 1rem;
-}
-
-.title {
-    position: relative;
-    left: -0.5rem;
-}
-
-
-.timelinePreview img, .logoPreview img, .chatPreview img, .mapPreview img {
-    width: 100%;
-    position: relative;
-    top: 0;
-    bottom: 0;
-    margin-left: 10px;
-    overflow: hidden;
-}
-
-
-.timelinePreview {
-    position: relative;
-    top: 10vh;
-    bottom: 0;
-    left: 3%;
-    width: 25rem;
-    max-width: 95%;
-    height: 100%;
-    overflow: hidden;
-}
-
-
-.logoPreview, .chatPreview, .mapPreview {
-    position: relative;
-    left: 3%;
-    width: 25rem;
-    height: 30rem;
-    max-width: 95%;
-}
-
-.logoPreview {
-    top: 5vh;
-}
-
-.introLeft, .introRight {
-    grid-area: intro;
-    max-width: 30rem;
-}
-
-.logoPreview, .timelinePreview, .chatPreview, .mapPreview {
-    grid-area: preview;
-}
-
-@media screen and (min-width: 700px) {
-    .containerLeft {
-        display: grid;
-        grid-template-columns: 20rem auto;
-        grid-template-areas: 'preview intro';
-        grid-gap: 6vw;
-    }
-    .containerRight {
-        display: grid;
-        grid-template-columns: 2rem 18rem 20rem 3rem;
-        grid-template-areas: '. intro preview .';
-        grid-gap: 2vw;
-    }
-
-    .introRight, .introLeft {
-        font-size: 1.5rem;
-        position: relative;
-        top: 6rem;
-    }
-
-    .containerLeft form, .containerRight form {
-        position: relative;
-        top: 2rem;
-    }
-
-    .chatPreview, .mapPreview, .timelinePreview {
-        top: 16vh;
-    }
-}
-
 @media screen and (max-width: 700px) {
-    .logoPreview {
-        width: 18rem;
-        top: 2vh;
-    }
 
-    .chatPreview, .mapPreview {
-        top: 2vh;
-    }
+    .containerRight, .containerLeft {
+        width: 100vw;
+        height: 100%;
+        position: relative;
 
-    .timelinePreview {
-        top: 5vh;
     }
-
     .introRight, .introLeft {
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 100%;
-        height: 42vmax;
+        width: 100vw;
+        height: 40vh;
         background-color: rgba(256, 256, 256, 0.95);
-        font-size: 3.5vw;
+        font-size: 4.5vw
     }
 
     .introLeft::after, .introRight::after {
@@ -130,8 +24,7 @@
         left: 0;
         width: 0;
         height: 0;
-        border-bottom: 60vw solid rgba(256, 256, 256, 0.95);
-
+        border-bottom: 40vh solid rgba(256, 256, 256, 0.95);
     }
 
     .introLeft::after {
@@ -145,46 +38,116 @@
     .introRight > div {
         z-index: 3;
         position: absolute;
-        width: fit-content;
-        left: 1rem;
-        bottom: 6rem;
-    }
-    .introLeft > div{
-        z-index: 3;
-        position: absolute;
-        width: fit-content;
-        right: 1rem;
-        bottom: 6rem;
+        width: 20rem;
+        left: 4rem;
+        bottom: 8rem;
     }
 
-    .introRight h1, .introLeft h1, .introRight p, .introLeft p {
+    .introLeft > div {
+        z-index: 3;
+        position: absolute;
+        width: 20rem;
+        right: 4rem;
+        bottom: 8rem;
+    }
+
+    .logo {
         position: relative;
-        left: 1rem;
+        top: 1rem;
+        width: 70vw;
+    }
+    .preview {
+        width: 100vw;
     }
 
     .containerLeft form, .containerRight form {
         position: relative;
-        top: 1rem;
+        top: 2rem;
+    }
+
+}
+
+@media screen and (min-width: 700px) {
+    .containerLeft, .containerRight {
+        width: 80vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-size: 3vw;
+    }
+
+    .containerLeft {
+        display: grid;
+        grid-template-columns: 36vw 40vw;
+        grid-template-areas: 'preview intro';
+        grid-gap: 4vw;
+    }
+
+    .containerRight {
+        display: grid;
+        grid-template-columns: 40vw 36vw;
+        grid-template-areas: 'intro preview';
+        grid-gap: 4vw;
+    }
+
+    .containerLeft form, .containerRight form {
+        position: relative;
+        top: 2.5rem;
+    }
+
+    .introLeft, .introRight {
+        position: relative;
+        bottom: 3rem;
+    }
+
+    .logo {
+        position: relative;
+        bottom: 2rem;
     }
 
 }
 
 @media screen and (min-width: 1000px) {
+    .containerLeft, .containerRight {
+        width: 62vw;
+        font-size: 2.5vw;
+    }
+
     .containerLeft {
-        grid-template-columns: 7rem 30rem auto;
-        grid-template-areas: '. preview intro';
-        grid-gap: 5vw;
-        left: 0;
+        grid-template-columns: 28vw 30vw;
+        grid-template-areas: 'preview intro';
+        grid-gap: 4vw;
     }
 
     .containerRight {
-        grid-template-columns: 10rem 25rem 35rem;
-        grid-template-areas: '. intro preview';
-        right: 0;
-    }
-
-    .timelinePreview {
-        width: 40rem;
+        grid-template-columns: 30vw 28vw;
+        grid-template-areas: 'intro preview';
+        grid-gap: 4vw;
     }
 
 }
+
+.containerLeft, .containerRight {
+    color: #333;
+}
+
+.introLeft, .introRight {
+    grid-area: intro;
+}
+
+.preview, .logo {
+    grid-area: preview;
+}
+
+.preview img, .logo img {
+    width: 100%;
+}
+
+.containerLeft h1 {
+    position: relative;
+    left: -0.5rem;
+}
+
+

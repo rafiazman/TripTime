@@ -20,21 +20,27 @@ class VisitorLandingPage extends React.Component {
           alignLeft={false}
           image={'/img/feature-preview/map-plot.jpg'}
           title={'Plot'}
-          description={'Pin new destinations on the map and your friends will see them immediately.'}
+          description={
+            'Pin new destinations on the map and your friends will see them immediately.'
+          }
         />
 
         <LandingSlide
           alignLeft={true}
           image={'/img/feature-preview/chat-box.jpg'}
           title={'Collaborate'}
-          description={'Chat with your friends as you plan your next trip together.'}
+          description={
+            'Chat with your friends as you plan your next trip together.'
+          }
         />
 
         <LandingSlide
           alignLeft={false}
           image={'/img/feature-preview/timeline.jpg'}
           title={'Review'}
-          description={'Review where you are planning to go at a glance in a timeline.'}
+          description={
+            'Review where you are planning to go at a glance in a timeline.'
+          }
         />
 
         <SiteInfo />
