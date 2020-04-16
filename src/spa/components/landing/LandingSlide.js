@@ -18,7 +18,9 @@ class LandingSlide extends React.Component {
         <div
           className={alignLeft ? styles.containerLeft : styles.containerRight}
         >
-          <div className={title === 'TripTime!' ? styles.logo : styles.preview}>
+          <div
+            className={this.props.isTitleSlide ? styles.logo : styles.preview}
+          >
             <img src={image} alt={title} />
           </div>
           <div className={alignLeft ? styles.introLeft : styles.introRight}>
@@ -35,6 +37,7 @@ class LandingSlide extends React.Component {
 }
 
 LandingSlide.propTypes = {
+  isTitleSlide: PropTypes.bool,
   image: PropTypes.string,
   alignLeft: PropTypes.bool,
   title: PropTypes.string,

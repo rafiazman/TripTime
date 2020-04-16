@@ -14,6 +14,7 @@ class VisitorLandingPage extends React.Component {
           image={'/img/bw_logo_trans.png'}
           title={'TripTime!'}
           description={'Plan a trip together, live.'}
+          isTitleSlide={true}
         />
 
         <LandingSlide
@@ -23,6 +24,7 @@ class VisitorLandingPage extends React.Component {
           description={
             'Pin new destinations on the map and your friends will see them immediately.'
           }
+          isTitleSlide={false}
         />
 
         <LandingSlide
@@ -32,6 +34,7 @@ class VisitorLandingPage extends React.Component {
           description={
             'Chat with your friends as you plan your next trip together.'
           }
+          isTitleSlide={false}
         />
 
         <LandingSlide
@@ -41,6 +44,7 @@ class VisitorLandingPage extends React.Component {
           description={
             'Review where you are planning to go at a glance in a timeline.'
           }
+          isTitleSlide={false}
         />
 
         <SiteInfo />
