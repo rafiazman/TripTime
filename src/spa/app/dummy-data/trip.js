@@ -4,6 +4,7 @@ import activities from './activities';
 import travels from './travel-between';
 const trip = {
   name: 'Around New Zealand',
+  type: 'sightseeing',
   description:
     'Our 17 days trip around NZ, highlighting music party at Rotorua',
   people: [
@@ -17,11 +18,11 @@ const trip = {
     },
     {
       name: 'Caroline',
-      avatarPath: '/img/avatar/cat-avatar.png',
+      avatarPath: '/img/avatar/fox-avatar.jpg',
     },
   ],
-  start: '2020-03-27',
-  end: '2020-04-10',
+  start: '2020-04-17',
+  end: '2020-05-17',
   activities: activities,
   travels: travels,
 };
