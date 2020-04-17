@@ -1,0 +1,66 @@
+.page {
+    overflow-y: auto;
+    margin: 0 auto;
+    width: 100vw;
+}
+.content {
+    margin: 0 auto;
+}
+.component {
+    padding: 0 1rem 1rem 1rem;
+}
+.page svg{
+    font-size: 0.9em;
+    padding-right: 0.1em;
+}
+
+.component + .component {
+    border-top: 1px dotted var(--box-shadow-color);
+}
+
+.page h3 a {
+    background-color: var(--trip-orange);
+    color: white;
+    padding: 0 2px;
+    transition-duration: 0.2s;
+}
+
+.page h3 a:hover {
+    background-color: white;
+    color: var(--trip-orange);
+    border: 2px solid var(--trip-orange);
+}
+
+@media screen and (max-width: 700px) {
+    .content {
+        width: 100vw;
+    }
+
+    .component > div  {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content > h1 {
+        margin-left: 1rem;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    .content {
+        width: 80vw;
+    }
+    .component > div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .content {
+        width: 60vw;
+    }
+}
+
