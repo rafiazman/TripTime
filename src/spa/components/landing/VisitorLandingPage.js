@@ -3,7 +3,7 @@
 import React from 'react';
 import LandingSlide from './LandingSlide';
 import scrollStyle from '../../css/snap-scroll.module.css';
-import SiteInfo from './SiteInfo';
+import SiteInfo from '../SiteInfo';
 
 class VisitorLandingPage extends React.Component {
   render() {
