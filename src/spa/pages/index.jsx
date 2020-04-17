@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import VisitorLandingPage from '../components/landing/VisitorLandingPage';
+import UserHomePage from '../components/homepage/UserHomePage';
 
 export default class Index extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class Index extends React.Component {
 
   render() {
     if (!this.state.user) return <VisitorLandingPage />;
-    else return <p>Your homepage under construction</p>;
+    else return <UserHomePage name={this.state.user.name} />;
   }
 }
 
