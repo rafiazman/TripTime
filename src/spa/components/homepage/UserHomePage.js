@@ -18,19 +18,9 @@ import {
 
 export default class UserHomePage extends React.Component {
   render() {
-    const today = new Date();
-    const currentTrip = myTripInfos.find(tripInfo => {
-      return (
-        today >= new Date(tripInfo.trip.start) &&
-        today <= new Date(tripInfo.trip.end)
-      );
-    });
-    const planningTrips = myTripInfos.filter(tripInfo => {
-      return today < new Date(tripInfo.trip.start);
-    });
-    const pastTrips = myTripInfos.filter(tripInfo => {
-      return today > new Date(tripInfo.trip.end);
-    });
+    const currentTrips = this.getCurrentTrips();
+    const pastTrips = this.getPastTrips();
+    const planningTrips = this.getPlanningTrips();
     return (
       <div className={styles.page}>
         <div className={styles.content}>
@@ -40,18 +30,8 @@ export default class UserHomePage extends React.Component {
             <h2>
               <FontAwesomeIcon icon={faShoePrints} /> Your Current Trip:{' '}
             </h2>
-            {currentTrip ? (
-              <div>
-                <Link href='/dashboard'>
-                  <a>
-                    <TripCard
-                      tripName={currentTrip.trip.name}
-                      newChatNum={currentTrip.newChatNum}
-                      newNoteNum={currentTrip.newNoteNum}
-                    />
-                  </a>
-                </Link>
-              </div>
+            {currentTrips.length > 0 ? (
+              this.generateTripList(currentTrips)
             ) : (
               <h3>Your next adventure is yet to come...</h3>
             )}
@@ -62,19 +42,7 @@ export default class UserHomePage extends React.Component {
               <FontAwesomeIcon icon={faPen} /> You are planning for:{' '}
             </h2>
             {planningTrips.length > 0 ? (
-              <div>
-                {planningTrips.map((planningTrip, index) => (
-                  <Link href='/dashboard' key={index}>
-                    <a>
-                      <TripCard
-                        tripName={planningTrip.trip.name}
-                        newChatNum={planningTrip.newNoteNum}
-                        newNoteNum={planningTrip.newChatNum}
-                      />
-                    </a>
-                  </Link>
-                ))}
-              </div>
+              this.generateTripList(planningTrips)
             ) : (
               <h3>
                 No plans yet. <a>Plan for a trip</a> today!
@@ -87,19 +55,7 @@ export default class UserHomePage extends React.Component {
               <FontAwesomeIcon icon={faClock} /> Your Memories:{' '}
             </h2>
             {pastTrips.length > 0 ? (
-              <div>
-                {pastTrips.map((pastTrip, index) => (
-                  <Link href='/dashboard' key={index}>
-                    <a>
-                      <TripCard
-                        tripName={pastTrip.trip.name}
-                        newChatNum={pastTrip.newNoteNum}
-                        newNoteNum={pastTrip.newChatNum}
-                      />
-                    </a>
-                  </Link>
-                ))}
-              </div>
+              this.generateTripList(pastTrips)
             ) : (
               <h3>
                 No past trips yet. What memory will you create at TripTime?
@@ -108,6 +64,32 @@ export default class UserHomePage extends React.Component {
           </div>
         </div>
         <SiteInfo />
+      </div>
+    );
+  }
+  getPlanningTrips() {
+    return myTripInfos;
+  }
+  getPastTrips() {
+    return myTripInfos;
+  }
+  getCurrentTrips() {
+    return myTripInfos;
+  }
+  generateTripList(tripInfos) {
+    return (
+      <div>
+        {tripInfos.map((tripInfo, index) => (
+          <Link href='/dashboard' key={index}>
+            <a>
+              <TripCard
+                tripName={tripInfo.trip.name}
+                newChatNum={tripInfo.newNoteNum}
+                newNoteNum={tripInfo.newChatNum}
+              />
+            </a>
+          </Link>
+        ))}
       </div>
     );
   }
