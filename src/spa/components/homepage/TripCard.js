@@ -9,47 +9,34 @@ import Tooltip from '../Tooltip';
 
 export default class TripCard extends React.Component {
   render() {
-    const newChatNum =
-      this.props.newChatNum < 1
-        ? ''
-        : this.props.newChatNum > 99
-        ? '99+'
-        : this.props.newChatNum;
-    const newNoteNum =
-      this.props.newNoteNum < 1
-        ? ''
-        : this.props.newNoteNum > 99
-        ? '99+'
-        : this.props.newNoteNum;
-
     return (
       <div className={styles.card}>
         <h1>{this.props.tripName}</h1>
         <div className={styles.alerts}>
-          {newChatNum && (
-            <Tooltip
-              text={newChatNum + ' new chat messages'}
-              component={
-                <span>
-                  <FontAwesomeIcon icon={faCommentDots} />
-                  {newChatNum}
-                </span>
-              }
-            />
+          {this.generateAlert(
+            this.props.newChatNum,
+            'new chat messages',
+            faCommentDots,
           )}
-          {newNoteNum && (
-            <Tooltip
-              text={newNoteNum + ' new notes'}
-              component={
-                <span>
-                  <FontAwesomeIcon icon={faStickyNote} />
-                  {newNoteNum}
-                </span>
-              }
-            />
-          )}
+          {this.generateAlert(this.props.newNoteNum, 'new notes', faStickyNote)}
         </div>
       </div>
+    );
+  }
+
+  generateAlert(count, text, icon) {
+    if (count < 1) return '';
+    const countDisplay = count > 99 ? '99+' : count;
+    return (
+      <Tooltip
+        text={countDisplay + ' ' + text}
+        component={
+          <span>
+            <FontAwesomeIcon icon={icon} />
+            {countDisplay}
+          </span>
+        }
+      />
     );
   }
 }
