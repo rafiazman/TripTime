@@ -2,10 +2,7 @@
 
 import React from 'react';
 import { Map, TileLayer, withLeaflet } from 'react-leaflet';
-import {
-  SearchControl,
-  OpenStreetMapProvider,
-} from 'react-leaflet-geosearch';
+import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
 
 class TripMap extends React.Component {
   state = {
