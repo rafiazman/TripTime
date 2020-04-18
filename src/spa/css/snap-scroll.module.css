@@ -1,5 +1,6 @@
 .container {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     scroll-snap-type: y mandatory;
 
 }
