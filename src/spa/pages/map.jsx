@@ -1,6 +1,7 @@
 /** @format */
 import React from 'react';
 import activities from '../app/dummy-data/activities';
+import travels from '../app/dummy-data/travel-between';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
@@ -18,7 +19,7 @@ export default class Map extends React.Component {
         {({ currentUser }) => (
           <TripTeamLayout user={currentUser}>
             {currentUser ? (
-              <TripMapNoSSR activities={activities} />
+              <TripMapNoSSR activities={activities} travels={travels} />
             ) : (
               <div className={'fit-center'}>
                 <Link href={'login'}>

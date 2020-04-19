@@ -11,8 +11,8 @@ const activities = [
     updated: '2020-03-09T15:00:00+13:00',
     address: '3 Mount Street, Wellington',
     gps: {
-      latitude: '132.39132',
-      longitude: '23.39011',
+      latitude: '-41.288761',
+      longitude: '174.771164',
     },
     people: [
       {

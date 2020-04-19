@@ -19,14 +19,19 @@ module.exports = {
     // Reference a specific variable that was defined in process.env or the .env file.
     TEST: process.env.TEST,
   },
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  webpack: function (config) {
     config.module.rules.push({
-       test: /\.(jpg|png)/,
-       use: [
-         { loader: 'file-loader' },
-         { loader: 'url-loader', options: { limit: 1 } }
-       ]})
-    return config;
+      test: /\.(jpg|png)$/,
+      use: [
+       { loader: 'file-loader' },
+       { loader: 'url-loader',
+         options: {
+           limit: 100000,
+           name: '[name].[ext]'
+         }
+       }
+     ]})
+  return config;
   },
   webpackDevMiddleware: config => {
     config.watchOptions = {

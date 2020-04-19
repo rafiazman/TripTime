@@ -8,12 +8,12 @@ const travels = [
     mode: 'bus',
     description: 'Bus from Rotorua to Auckland',
     from: {
-      latitude: '131.34211',
-      longitude: '22.39490',
+      latitude: '-38.1368',
+      longitude: '176.2497',
     },
     to: {
-      latitude: '223.23413',
-      longitude: '24.23412',
+      latitude: '-36.8485',
+      longitude: '174.7633',
     },
     people: [
       {
