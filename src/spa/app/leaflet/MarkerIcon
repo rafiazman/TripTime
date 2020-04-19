@@ -1,12 +1,23 @@
 import * as L from 'leaflet';
-import IconImageRetina from '../../css/images/marker-icon-2x.png';
-import IconImage from '../../css/images/marker-icon.png';
-import IconShadow from '../../css/images/marker-shadow.png';
 
 let MarkerIcon = L.icon({
-  iconRetinaUrl: IconImageRetina,
-  iconUrl: IconImage,
-  shadowUrl: IconShadow
+  iconRetinaUrl: '../../img/map/icons/marker-icon-2x.png',
+  iconUrl: '../../img/map/icons/marker-icon.png',
+  shadowUrl: '../../img/map/icons/marker-shadow.png',
 });
 
-export { MarkerIcon };
+let ActivityIcon = L.icon({
+  iconRetinaUrl: '../../img/map/icons/marker-icon-2x.png',
+  iconUrl: '../../img/map/icons/activity-marker.png',
+  shadowUrl: '../../img/map/icons/activity-shadow.png',
+  iconSize: [32, 32],
+});
+
+let RestIcon = L.icon({
+  iconRetinaUrl: '../../img/map/icons/marker-icon-2x.png',
+  iconUrl: '../../img/map/icons/rest-marker.png',
+  shadowUrl: '../../img/map/icons/rest-shadow.png',
+  iconSize: [32, 32],
+});
+
+export { MarkerIcon, RestIcon, ActivityIcon };
