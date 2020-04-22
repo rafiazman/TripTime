@@ -8,12 +8,12 @@ const travels = [
     mode: 'bus',
     description: 'Bus from Rotorua to Auckland',
     from: {
-      latitude: '-38.1368',
-      longitude: '176.2497',
+      lat: '-38.1368',
+      lng: '176.2497',
     },
     to: {
-      latitude: '-36.8485',
-      longitude: '174.7633',
+      lat: '-36.8485',
+      lng: '174.7633',
     },
     people: [
       {
@@ -34,12 +34,12 @@ const travels = [
     mode: 'horse',
     description: 'Horse to Taupo',
     from: {
-      latitude: '131.34211',
-      longitude: '22.39490',
+      lat: '-36.8485',
+      lng: '174.7633',
     },
     to: {
-      latitude: '223.23413',
-      longitude: '24.23412',
+      lat: '-38.6857',
+      lng: '176.0702',
     },
     people: [
       {
@@ -60,12 +60,12 @@ const travels = [
     mode: 'plane',
     description: 'Fly to Wellington',
     from: {
-      latitude: '131.34211',
-      longitude: '22.39490',
+      lat: '-43.5321',
+      lng: '172.6362',
     },
     to: {
-      latitude: '223.23413',
-      longitude: '24.23412',
+      lat: '-41.2865',
+      lng: '174.7762',
     },
     people: [
       {
