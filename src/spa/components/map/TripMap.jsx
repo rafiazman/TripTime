@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { Map, TileLayer, Marker, withLeaflet } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
 import {
   MarkerIcon,
@@ -13,47 +13,56 @@ import PropTypes from 'prop-types';
 class TripMap extends React.Component {
   state = {
     inBrowser: false,
+    markers: [],
   };
 
   componentDidMount() {
-    this.setState({ inBrowser: true });
+    //let from_markers = this.props.travels.map(v => new LatLng(v.from.latitude, v.from.longitude));
+    //let to_markers = this.props.travels.map(v => new LatLng(v.to.latitude, v.to.longitude));
+
+    this.setState({
+      inBrowser: true,
+      //markers: from_markers.concat(to_markers),
+    });
   }
 
   render() {
     if (!this.state.inBrowser) {
       return null;
     }
-    //For each element in travels, store the from and to coordinates as objects.
-    //For each element in travels, plot the from and to onto the map with <Markers>
+
+    //Make three empty markers. Loop through the travels and populate the coordinates of each marker,
+    // Check if coordinates remain afterwards.
 
     //For each element in activities, get the coordinates and plot markers
 
     //First trip [0]
-    const from = this.props.travels[0].from; //from coordinates
-    const to = this.props.travels[0].to; //to coordinates
+    //this.props.travels.forEach(item => console.log(Object.values(item.from)));
 
     const activity_pos = this.props.activities[0].gps;
+
     let act_latlng = [];
     act_latlng[0] = activity_pos.latitude;
     act_latlng[1] = activity_pos.longitude;
 
-    let from_latlng = [];
-    from_latlng[0] = from.latitude;
-    from_latlng[1] = from.longitude;
+    const from_markers = this.props.travels.map((v, i) => (
+      <Marker key={i} position={v.from} icon={MarkerIcon}>
+        <Popup>Test</Popup>
+      </Marker>
+    ));
 
-    let to_latlng = [];
-    to_latlng[0] = to.latitude;
-    to_latlng[1] = to.longitude;
+    const to_markers = this.props.travels.map((v, i) => (
+      <Marker key={i} position={v.to} icon={RestIcon}>
+        <Popup>Test</Popup>
+      </Marker>
+    ));
 
-    // console.log(from_latlng);
-    // console.log(to_latlng);
-
-    //const position = [-36.8485, 174.7633];
+    const default_position = [-36.8485, 174.7633];
     const prov = OpenStreetMapProvider();
     const GeoSearchControlElement = withLeaflet(SearchControl);
 
     return (
-      <Map center={from_latlng} zoom={13}>
+      <Map center={default_position} zoom={13}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -68,8 +77,8 @@ class TripMap extends React.Component {
           searchLabel={'Search for a location...'}
           keepResult={false}
         />
-        <Marker position={from_latlng} icon={MarkerIcon} />
-        <Marker position={to_latlng} icon={RestIcon} />
+        {from_markers}
+        {to_markers}
         <Marker position={act_latlng} icon={ActivityIcon} />
       </Map>
     );
@@ -80,5 +89,8 @@ TripMap.propTypes = {
   activities: PropTypes.array.isRequired,
   travels: PropTypes.array.isRequired,
 };
+
+// <Marker position={from} icon={MarkerIcon} />
+// <Marker position={to} icon={RestIcon} />
 
 export default TripMap;
