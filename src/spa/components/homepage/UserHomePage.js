@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SiteInfo from '../SiteInfo';
 import Link from 'next/link';
-import myTripInfos from '../../app/dummy-data/my-trips';
+import myTripInfos from '../../app/dummy-data/my-trip-infos';
 import Greeting from './Greeting';
 import styles from '../../css/homepage.module.css';
 import TripList from './TripList';

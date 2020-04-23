@@ -4,7 +4,7 @@
     border-radius: 5px;
     padding: 8px;
     display: grid;
-    grid-template-columns: 1fr 6em;
+    grid-template-columns: 1fr 4em;
     grid-template-rows: 1em 1fr;
     background-color: #eee;
     margin: 1rem;
@@ -23,4 +23,5 @@
     grid-column-start: 2;
     display: flex;
     justify-content: space-evenly;
+    font-size: 0.8rem;
 }

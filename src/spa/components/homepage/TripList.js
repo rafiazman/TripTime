@@ -23,8 +23,7 @@ export default class TripList extends React.Component {
                 <a>
                   <TripCard
                     tripName={tripInfo.trip.name}
-                    newChatNum={tripInfo.newNoteNum}
-                    newNoteNum={tripInfo.newChatNum}
+                    updated={tripInfo.updated}
                   />
                 </a>
               </Link>
