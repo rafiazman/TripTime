@@ -27,8 +27,6 @@ export default class TripCard extends React.Component {
         component={
           <span>
             <FontAwesomeIcon icon={faCircle} />
-            <FontAwesomeIcon icon={faCircle} />
-            <FontAwesomeIcon icon={faCircle} />
           </span>
         }
       />

@@ -4,7 +4,7 @@
     border-radius: 5px;
     padding: 8px;
     display: grid;
-    grid-template-columns: 1fr 4em;
+    grid-template-columns: 1fr 1em;
     grid-template-rows: 1em 1fr;
     background-color: #eee;
     margin: 1rem;
