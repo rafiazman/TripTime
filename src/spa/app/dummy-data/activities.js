@@ -11,8 +11,8 @@ const activities = [
     updated: '2020-03-09T15:00:00+13:00',
     address: '3 Mount Street, Wellington',
     gps: {
-      latitude: '-41.288761',
-      longitude: '174.771164',
+      lat: '-41.288761',
+      lng: '174.771164',
     },
     people: [
       {
@@ -55,8 +55,8 @@ const activities = [
     updated: '2020-03-09T15:00:00+13:00',
     address: 'ASB Event Centre, Rotorua',
     gps: {
-      latitude: '132.10031',
-      longitude: '22.01342',
+      lat: '-38.132603',
+      lng: '176.251296',
     },
     people: [
       {
@@ -76,8 +76,8 @@ const activities = [
     updated: '2020-03-09T15:00:00+13:00',
     address: '10 Remuera Street, Auckland',
     gps: {
-      latitude: '131.34211',
-      longitude: '22.39490',
+      lat: '-36.880765',
+      lng: '174.801228',
     },
     people: [
       {
@@ -111,8 +111,8 @@ const activities = [
     updated: '2020-03-26T15:00:00+13:00',
     address: '184 Khyber Pass Road, Newmarket',
     gps: {
-      latitude: '223.23413',
-      longitude: '24.23412',
+      lat: '-36.863622',
+      lng: '174.761343',
     },
     people: [
       {
