@@ -19,7 +19,7 @@ export default class TripList extends React.Component {
         {tripInfoList.length > 0 ? (
           <div>
             {tripInfoList.map((tripInfo, index) => (
-              <Link href='/dashboard' key={index}>
+              <Link href='/timeline' key={index}>
                 <a>
                   <TripCard
                     tripName={tripInfo.trip.name}

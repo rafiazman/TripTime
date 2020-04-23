@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
+exports[`Test Dashboard Check if Dashboard matches Snapshot 1`] = `
 <div
   className="page"
 >
@@ -8,8 +8,8 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
     className="content"
   >
     <h1>
-      Good Evening, 
       Tester
+      , good night
     </h1>
     <div
       className="component"
@@ -39,7 +39,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
       </h2>
       <div>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -73,40 +73,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -118,7 +84,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -136,7 +102,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -170,40 +136,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -215,7 +147,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -262,7 +194,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
       </h2>
       <div>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -296,40 +228,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -341,7 +239,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -359,7 +257,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -393,40 +291,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -438,7 +302,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -485,7 +349,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
       </h2>
       <div>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -519,40 +383,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -564,7 +394,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -582,7 +412,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -616,40 +446,6 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
                       style={Object {}}
                     />
                   </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-circle fa-w-16 "
-                    data-icon="circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
-                      fill="currentColor"
-                      style={Object {}}
-                    />
-                  </svg>
                 </span>
                 <div
                   className="text"
@@ -661,7 +457,7 @@ exports[`Test UserHomePage Check if UserHomePage matches Snapshot 1`] = `
           </div>
         </a>
         <a
-          href="/dashboard"
+          href="/timeline"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

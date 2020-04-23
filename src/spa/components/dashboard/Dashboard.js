@@ -14,7 +14,7 @@ import {
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 
-export default class UserHomePage extends React.Component {
+export default class Dashboard extends React.Component {
   render() {
     const currentTrips = this.getCurrentTrips();
     const pastTrips = this.getPastTrips();
@@ -69,6 +69,6 @@ export default class UserHomePage extends React.Component {
   }
 }
 
-UserHomePage.propTypes = {
+Dashboard.propTypes = {
   name: PropTypes.string.isRequired,
 };

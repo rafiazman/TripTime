@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import VisitorLandingPage from '../components/landing/VisitorLandingPage';
-import UserHomePage from '../components/homepage/UserHomePage';
+import Dashboard from '../components/dashboard/Dashboard';
 
 export default class Index extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class Index extends React.Component {
 
   render() {
     if (!this.state.user) return <VisitorLandingPage />;
-    else return <UserHomePage name={this.state.user.name} />;
+    else return <Dashboard name={this.state.user.name} />;
   }
 }
 

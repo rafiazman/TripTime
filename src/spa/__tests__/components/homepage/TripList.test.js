@@ -2,8 +2,8 @@
 
 import TestRenderer from 'react-test-renderer';
 import React from 'react';
-import TripList from '../../../components/homepage/TripList';
-import TripCard from '../../../components/homepage/TripCard';
+import TripList from '../../../components/dashboard/TripList';
+import TripCard from '../../../components/dashboard/TripCard';
 import myTripInfos from '../../../app/dummy-data/my-trip-infos';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 
