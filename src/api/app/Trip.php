@@ -30,6 +30,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Trip extends Model
 {
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     public function users() {
         return $this->belongsToMany(User::class, 'user_trip');
     }
