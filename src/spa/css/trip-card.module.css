@@ -1,0 +1,27 @@
+.card {
+    width: 20rem;
+    height: 7rem;
+    border-radius: 5px;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1em;
+    grid-template-rows: 1em 1fr;
+    background-color: #eee;
+    margin: 1rem;
+    text-align: center;
+}
+
+.card > h1 {
+    font-size: 1.5em;
+    grid-row-start: 2;
+    grid-column-start: span 2;
+}
+
+.alerts {
+    color: var(--trip-orange);
+    grid-row-start: span 1;
+    grid-column-start: 2;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 0.8rem;
+}

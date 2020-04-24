@@ -1,11 +1,11 @@
 /** @format */
 import React from 'react';
-import TripSummary from '../components/dashboard/TripSummary';
+import TripSummary from '../components/timeline/TripSummary';
 import trip from '../app/dummy-data/trip';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
 import PropTypes from 'prop-types';
 
-export default class Dashboard extends React.Component {
+export default class Timeline extends React.Component {
   constructor(props) {
     super(props);
     this.state = { user: null };
@@ -24,6 +24,6 @@ export default class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+Timeline.propTypes = {
   setUser: PropTypes.func,
 };

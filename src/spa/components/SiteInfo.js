@@ -1,6 +1,6 @@
 /** @format */
 import React from 'react';
-import infoStyles from '../../css/site-info.module.css';
+import infoStyles from '../css/site-info.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGithub,
