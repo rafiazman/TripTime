@@ -15,7 +15,8 @@ class UserSeeder extends Seeder
             [
                 'email' => 'test@test.com',
                 'name' => 'Test User',
-                'password' => bcrypt('testtest')
+                'password' => bcrypt('testtest'),
+                'avatar_url' => 'http://via.placeholder.com/150x150'
             ]
         );
     }
