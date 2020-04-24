@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
              UserTripSeeder::class,
              LocationSeeder::class,
              ActivitySeeder::class,
+             TravelSeeder::class
          ]);
     }
 }
