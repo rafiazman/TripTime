@@ -72,6 +72,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Trip::class, 'user_trip');
     }
 
+    /**
+     * Gets all messages across all trips sent by this user
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
     public function lastChecked(Trip $trip)
     {
         return $this->belongsToMany(Trip::class, 'user_trip')

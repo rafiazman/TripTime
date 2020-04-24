@@ -43,6 +43,15 @@ class Trip extends Model
         return $this->belongsToMany(User::class, 'user_trip');
     }
 
+    /**
+     * Gets the messages across all users associated with this trip
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
     public function lastCheckedBy(User $user)
     {
         return $this->belongsToMany(User::class, 'user_trip')

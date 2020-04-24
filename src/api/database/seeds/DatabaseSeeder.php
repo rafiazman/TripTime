@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
              LocationSeeder::class,
              ActivitySeeder::class,
              TravelSeeder::class,
-             NoteSeeder::class
+             NoteSeeder::class,
+             MessageSeeder::class,
          ]);
     }
 }
