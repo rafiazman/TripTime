@@ -8,11 +8,11 @@ const trip1 = {
   people: [
     {
       name: 'Alice',
-      avatarPath: '/img/avatar/cat-avatar.png',
+      avatarPath: '/img/avatar/avatar12.jpg',
     },
     {
       name: 'David',
-      avatarPath: '/img/avatar/fox-avatar.jpg',
+      avatarPath: '/img/avatar/avatar4.jpg',
     },
   ],
   start: '2020-05-19',

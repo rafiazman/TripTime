@@ -17,11 +17,11 @@ const activities = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/img/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/avatar3.jpg',
       },
       {
         name: 'Alice',
-        avatarPath: '/img/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/avatar4.jpg',
       },
     ],
     notes: [
@@ -29,7 +29,7 @@ const activities = [
         id: '16b020e1-1214-4977-a40b-3400193841',
         author: {
           name: 'Bob',
-          avatarPath: '/img/avatar/cat-avatar.png',
+          avatarPath: '/img/avatar/avatar4.jpg',
         },
         content: 'Bring warm clothes and water bottle',
         updated: '2020-03-27T14:00:00+13:00',
@@ -38,7 +38,7 @@ const activities = [
         id: '16b020e1-1214-4977-a40b-1930938ab',
         author: {
           name: 'Alice',
-          avatarPath: '/img/avatar/dog-avatar.png',
+          avatarPath: '/img/avatar/avatar3.jpg',
         },
         content: 'Remember to tie your hair girls!',
         updated: '2020-03-27T22:33:00+13:00',
@@ -61,7 +61,7 @@ const activities = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/img/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/avatar4.jpg',
       },
     ],
     notes: [],
@@ -82,11 +82,11 @@ const activities = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/img/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/avatar4.jpg',
       },
       {
         name: 'Alice',
-        avatarPath: '/img/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/avatar3.jpg',
       },
     ],
     notes: [
@@ -94,7 +94,7 @@ const activities = [
         id: '142020e1-1214-4977-a40b-1090938ab',
         author: {
           name: 'Alice',
-          avatarPath: '/img/avatar/dog-avatar.png',
+          avatarPath: '/img/avatar/avatar3.jpg',
         },
         content: 'Let me know if anyone is vegetarian',
         updated: '2020-03-19T15:03:00+13:00',
@@ -117,11 +117,11 @@ const activities = [
     people: [
       {
         name: 'Bob',
-        avatarPath: '/img/avatar/cat-avatar.png',
+        avatarPath: '/img/avatar/avatar4.jpg',
       },
       {
         name: 'Alice',
-        avatarPath: '/img/avatar/dog-avatar.png',
+        avatarPath: '/img/avatar/avatar3.jpg',
       },
     ],
     notes: [],
