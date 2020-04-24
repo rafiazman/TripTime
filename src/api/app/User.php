@@ -33,6 +33,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Trip[] $trips
+ * @property-read int|null $trips_count
  */
 class User extends Authenticatable
 {
@@ -64,4 +66,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class, 'user_trip');
+    }
+
+    public function lastChecked(Trip $trip)
+    {
+        return $this->belongsToMany(Trip::class, 'user_trip')
+            ->where('trip_id', $trip->id)
+            ->value('last_checked_trip');
+    }
 }
