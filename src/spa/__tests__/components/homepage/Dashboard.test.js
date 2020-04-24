@@ -6,6 +6,13 @@ import Dashboard from '../../../components/dashboard/Dashboard';
 import TripList from '../../../components/dashboard/TripList';
 
 describe('Test Dashboard', () => {
+  const DATE_TO_USE = new Date(2020, 11, 17, 23, 24, 0);
+  const _Date = Date;
+  global.Date = jest.fn(() => DATE_TO_USE);
+  global.Date.UTC = _Date.UTC;
+  global.Date.parse = _Date.parse;
+  global.Date.now = _Date.now;
+
   const userHomePageRenderer = TestRenderer.create(
     <Dashboard name={'Tester'} />,
   );
