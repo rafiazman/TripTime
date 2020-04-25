@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 
-const linkNames = ['Dashboard', 'Map', 'Calendar', 'Tools'];
+const linkNames = ['Timeline', 'Map', 'Calendar', 'Tools'];
 
 class SideBar extends React.Component {
   render() {
