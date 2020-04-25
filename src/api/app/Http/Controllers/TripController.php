@@ -8,13 +8,102 @@ use Illuminate\Http\Request;
 class TripController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all trips of the currently
+     * logged in user.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $trips = $request->user()->trips();
+
+        $vm = $trips->map(function($trip) {
+            return [
+                'id' => $trip->id,
+                'name' => $trip->name,
+                'updated' => true,
+            ];
+        });
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Display a listing of all current trips of the
+     * currently logged in user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function currentTrips(Request $request)
+    {
+        $trips = $request->user()->trips()
+            ->where([
+                ['start_date', '<=', now()],
+                ['end_date', '>=', now()],
+            ])
+            ->values();
+
+        $vm = $trips->map(function($trip) {
+            return [
+                'id' => $trip->id,
+                'name' => $trip->name,
+                'updated' => true,
+            ];
+        });
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Display a listing of all past trips of the
+     * currently logged in user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pastTrips(Request $request)
+    {
+        $trips = $request->user()->trips()
+            ->where('end_date', '<', now())
+            ->values();
+
+        $vm = $trips->map(function($trip) {
+            return [
+                'id' => $trip->id,
+                'name' => $trip->name,
+                'updated' => true,
+            ];
+        });
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Display a listing of all future trips of the
+     * currently logged in user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function futureTrips(Request $request)
+    {
+        $trips = $request->user()->trips()
+            ->where([
+                ['start_date', '>', now()],
+            ])
+            ->values();
+
+        $vm = $trips->map(function($trip) {
+            return [
+                'id' => $trip->id,
+                'name' => $trip->name,
+                'updated' => true,
+            ];
+        });
+
+        return response()->json($vm);
     }
 
     /**
