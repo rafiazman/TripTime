@@ -1,9 +1,12 @@
 /** @format */
 import React from 'react';
-import PropTypes from 'prop-types';
 import VisitorLandingPage from '../components/landing/VisitorLandingPage';
 import Dashboard from '../components/dashboard/Dashboard';
 import { AuthContext } from '../contexts/AuthContext';
+import {
+  LOGGED_IN,
+} from '../constants/AuthStatus';
+
 
 import axios from 'axios';
 
@@ -15,15 +18,23 @@ export default class Index extends React.Component {
     this.state = { user: null };
   }
 
+  loadCurrentUser(authContext){
+    if (authContext.getAuthStatus() === LOGGED_IN) {
+      this.setState(()=> ({
+        user: {
+          name: authContext.userName,
+          id: authContext.userID
+        }
+      }))
+    }
+  }
+
   componentDidMount() {
-    this.props.setUser(this);
+    this.loadCurrentUser(this.context)
   }
 
   render() {
     const authContext = this.context;
-    // authContext.getAuthStatus() will perform a HTTP GET to check logged in status
-    // authContext.authStatus will get the logged in status from pure JavaScript, however I faced issues
-    // with getting this to remember the state throughout the Next.js app, so I do not recommend using this
 
     if (!this.state.user)
       return (
@@ -52,7 +63,3 @@ export default class Index extends React.Component {
     else return <Dashboard name={this.state.user.name} />;
   }
 }
-
-Index.propTypes = {
-  setUser: PropTypes.func,
-};
