@@ -2,6 +2,7 @@
 
 const travels = [
   {
+    id: '1',
     start: '2020-03-30T09:00:00+13:00',
     end: '2020-03-30T16:00:00+13:00',
     type: 'travel',
@@ -28,6 +29,7 @@ const travels = [
     notes: [],
   },
   {
+    id: '2',
     start: '2020-03-31T09:00:00+13:00',
     end: '2020-03-31T16:00:00+13:00',
     type: 'travel',
@@ -54,6 +56,7 @@ const travels = [
     notes: [],
   },
   {
+    id: '3',
     start: '2020-04-01T15:00:00+13:00',
     end: '2020-04-01T16:00:00+13:00',
     type: 'travel',
