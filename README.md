@@ -33,7 +33,7 @@ $ docker-compose up
 ### Development (API only)
 To run the API only, execute the following command
 ```shell script
-$ docker-compose -f docker-compose.api-only.yml up -d
+$ docker-compose -f docker-compose.api-only.yml up
 ```
 
 ### Production
