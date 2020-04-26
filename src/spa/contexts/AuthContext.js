@@ -39,7 +39,7 @@ const AuthProvider = props => {
           setCurrentUser({
             id: response.data.id,
             name: response.data.name,
-            avatarPath: '/img/avatar/avatar2.jpg',
+            avatarPath: response.data.avatarPath,
           });
           setErrorMessage('');
           setAuthStatus(LOGGED_IN);
@@ -151,7 +151,7 @@ const AuthProvider = props => {
                   setCurrentUser({
                     id: response.data.id,
                     name: response.data.name,
-                    avatarPath: '/img/avatar/avatar2.jpg',
+                    avatarPath: response.data.avatarPath,
                   });
                   // avatarPath to be dealt with
                   setErrorMessage('');
