@@ -72,13 +72,13 @@ textarea:focus, input:focus {
     display: inline-block;
 }
 
-a {
+a, .pretend-link {
     color: var(--secondary-text-color);
     cursor: pointer;
     text-decoration: none;
 }
 
-a:hover {
+a:hover, .pretend-link:hover {
     color: var(--trip-orange);
 }
 
@@ -111,3 +111,4 @@ a:hover {
     justify-content: center;
     align-items: center;
 }
+

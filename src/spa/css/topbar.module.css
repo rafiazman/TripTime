@@ -26,12 +26,12 @@
         display: none;
     }
 
-    .full a {
+    .full > span {
         border-right: 2px var(--box-shadow-color) solid;
         padding: 0 1rem;
     }
 
-    .full a:last-child {
+    .full > span:last-child {
         border-right: 0;
     }
 
