@@ -5,35 +5,31 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
 import dynamic from 'next/dynamic';
+import { AuthContext } from '../contexts/AuthContext';
 
 const TripMapNoSSR = dynamic(() => import('../components/map/TripMap'), {
   ssr: false,
 });
 
 export default class Map extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { user: null };
-  }
-
-  componentDidMount() {
-    this.props.setUser(this);
-  }
-
   render() {
     return (
-      <TripTeamLayout user={this.state.user}>
-        {this.state.user ? (
-          <TripMapNoSSR activities={activities} />
-        ) : (
-          <div className={'fit-center'}>
-            <Link href={'api/login'}>
-              <a> Log in </a>
-            </Link>{' '}
-            to see the map
-          </div>
+      <AuthContext.Consumer>
+        {({ currentUser }) => (
+          <TripTeamLayout user={currentUser}>
+            {currentUser ? (
+              <TripMapNoSSR activities={activities} />
+            ) : (
+              <div className={'fit-center'}>
+                <Link href={'login'}>
+                  <a> Log in </a>
+                </Link>{' '}
+                to see the map
+              </div>
+            )}
+          </TripTeamLayout>
         )}
-      </TripTeamLayout>
+      </AuthContext.Consumer>
     );
   }
 }

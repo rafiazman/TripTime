@@ -1,25 +1,32 @@
 /** @format */
 
-import '../css/global.css';
 import React from 'react';
 import App from 'next/app';
-import MainLayout from '../components/layout/MainLayout';
 import Head from 'next/head';
-import fetch from 'isomorphic-unfetch';
+
+import '../css/global.css';
 import '../css/react-leaflet-geosearch.css';
 import '../css/leaflet.css';
 
+import MainLayout from '../components/layout/MainLayout';
+import { AuthProvider } from '../contexts/AuthContext';
+
 export default class MyApp extends App {
+  constructor() {
+    super();
+  }
+
   setUser() {
-    return async component => {
-      fetch('/api/me')
-        .then(response => (response.ok ? response.json() : null))
-        .then(user =>
-          component.setState(() => {
-            return { user: user };
-          }),
-        );
-    };
+    return () => {};
+    // return async component => {
+    //   fetch('/api/me')
+    //     .then(response => (response.ok ? response.json() : null))
+    //     .then(user =>
+    //       component.setState(() => {
+    //         return { user: user };
+    //       }),
+    //     );
+    // };
   }
 
   render() {
@@ -37,9 +44,12 @@ export default class MyApp extends App {
             rel='stylesheet'
           />
         </Head>
-        <MainLayout setUser={this.setUser()}>
-          <Component {...pageProps} setUser={this.setUser()} />
-        </MainLayout>
+
+        <AuthProvider>
+          <MainLayout setUser={this.setUser()}>
+            <Component {...pageProps} setUser={this.setUser()} />
+          </MainLayout>
+        </AuthProvider>
       </>
     );
   }

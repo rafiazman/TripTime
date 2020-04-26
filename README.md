@@ -30,6 +30,12 @@ To run the web application with hot module reload, execute the following command
 $ docker-compose up
 ```
 
+### Development (API only)
+To run the API only, execute the following command
+```shell script
+$ docker-compose -f docker-compose.api-only.yml up
+```
+
 ### Production
 To run the web application in production:
 ```shell script
