@@ -4,15 +4,25 @@ import React, { createRef } from 'react';
 import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
 import {
-  ActivityIcon,
-  RestIcon,
   generateIcon,
+  generateActivityIcon,
 } from '../../app/leaflet/MarkerIcon';
 import PropTypes from 'prop-types';
+import MarkerSplitter from './MarkerSplitter';
 
 function generateRandomColour() {
   return '#' + (Math.random().toString(16) + '000000').substring(2, 8);
 }
+
+//Options to set how date time is presented on the map popups.
+const datetime_options = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
+};
 
 class TripMap extends React.Component {
   constructor(props) {
@@ -30,11 +40,13 @@ class TripMap extends React.Component {
       inBrowser: true,
     });
 
+    // Set a colour for each trip
     this.props.travels.forEach(item => {
       item.trip_colour = generateRandomColour();
     });
   }
 
+  //Function that on click, will pan to the origin or destination of the clicked marker's trip.
   handleClick = (latlng, e) => {
     e.type == 'click' ? this.map.current.leafletElement.panTo(latlng) : null;
   };
@@ -43,16 +55,7 @@ class TripMap extends React.Component {
     if (!this.state.inBrowser) {
       return null;
     }
-
-    const datetime_options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    };
-
+    // All the markers in the starting points of a trip. Has popup with trip data
     const from_markers = this.props.travels.map((v, i) => (
       <Marker key={i} position={v.from} icon={generateIcon(v.trip_colour)}>
         <Popup>
@@ -73,6 +76,7 @@ class TripMap extends React.Component {
       </Marker>
     ));
 
+    //Markers in end points of a trip. Has popup with trip data
     const to_markers = this.props.travels.map((v, i) => (
       <Marker key={i} position={v.to} icon={generateIcon(v.trip_colour)}>
         <Popup>
@@ -93,12 +97,9 @@ class TripMap extends React.Component {
       </Marker>
     ));
 
+    //Markers for activities.
     const activity_markers = this.props.activities.map((v, i) => (
-      <Marker
-        key={i}
-        position={v.gps}
-        icon={v.type == 'gathering' ? RestIcon : ActivityIcon}
-      >
+      <Marker key={i} position={v.gps} icon={generateActivityIcon(v.type)}>
         <Popup>
           Event name: {v.name}
           <br />
@@ -118,12 +119,13 @@ class TripMap extends React.Component {
       </Marker>
     ));
 
-    const default_position = [-36.8485, 174.7633];
+    //Over NZ
+    const center = [-40.3523, 175.6082];
     const prov = OpenStreetMapProvider();
     const GeoSearchControlElement = withLeaflet(SearchControl);
 
     return (
-      <Map ref={this.map} center={default_position} zoom={13}>
+      <Map ref={this.map} center={center} zoom={6}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -138,9 +140,11 @@ class TripMap extends React.Component {
           searchLabel={'Search for a location...'}
           keepResult={false}
         />
-        {from_markers}
-        {to_markers}
-        {activity_markers}
+        <MarkerSplitter>
+          {from_markers}
+          {to_markers}
+          {activity_markers}
+        </MarkerSplitter>
       </Map>
     );
   }
