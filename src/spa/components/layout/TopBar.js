@@ -5,7 +5,6 @@ import styles from '../../css/topbar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../../contexts/AuthContext';
-import Router from 'next/router';
 import PageLoading from '../PageLoading';
 
 export default class TopBar extends React.Component {
@@ -30,7 +29,6 @@ export default class TopBar extends React.Component {
             this.setState(() => ({ loggingOut: true }));
             await logoutHandler();
             this.setState(() => ({ loggingOut: false }));
-            Router.push('/');
           }}
         >
           Log out

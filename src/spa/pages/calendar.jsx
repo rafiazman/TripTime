@@ -6,39 +6,30 @@ import CalendarSummary from '../components/calendar/CalendarSummary';
 import activities from '../app/dummy-data/activities';
 import Link from 'next/link';
 import TripTeamLayout from '../components/layout/TripTeamLayout';
-import PropTypes from 'prop-types';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { user: null };
-  }
-
-  componentDidMount() {
-    this.props.setUser(this);
-  }
-
   render() {
     return (
-      <TripTeamLayout user={this.state.user}>
-        {this.state.user ? (
-          <div className={styles.calendarContainer}>
-            <ReactCalendar />
-            <CalendarSummary events={activities} />
-          </div>
-        ) : (
-          <div className={'fit-center'}>
-            <Link href={'api/login'}>
-              <a> Log in </a>
-            </Link>
-            to see the calendar
-          </div>
+      <AuthContext.Consumer>
+        {({ currentUser }) => (
+          <TripTeamLayout user={currentUser}>
+            {currentUser ? (
+              <div className={styles.calendarContainer}>
+                <ReactCalendar />
+                <CalendarSummary events={activities} />
+              </div>
+            ) : (
+              <div className={'fit-center'}>
+                <Link href={'api/login'}>
+                  <a> Log in </a>
+                </Link>
+                to see the calendar
+              </div>
+            )}
+          </TripTeamLayout>
         )}
-      </TripTeamLayout>
+      </AuthContext.Consumer>
     );
   }
 }
-
-Calendar.propTypes = {
-  setUser: PropTypes.func,
-};

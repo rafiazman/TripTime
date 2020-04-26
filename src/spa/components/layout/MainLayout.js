@@ -9,7 +9,7 @@ export default class MainLayout extends React.Component {
   render() {
     return (
       <div className={styles.mainContainer}>
-        <TopBar setUser={this.props.setUser} />
+        <TopBar />
         {this.props.children}
       </div>
     );
@@ -18,5 +18,4 @@ export default class MainLayout extends React.Component {
 
 MainLayout.propTypes = {
   children: PropTypes.node.isRequired,
-  setUser: PropTypes.func,
 };
