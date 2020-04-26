@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
             return (
               <div style={{ width: '50%', margin: '0 auto' }}>
                 <h1>Profile Page</h1>
-                <Link href={'/dashboard'}>
+                <Link href={'/timeline'}>
                   <a>Go to your trip</a>
                 </Link>
                 <p>
