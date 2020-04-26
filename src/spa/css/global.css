@@ -104,6 +104,8 @@ a:hover, .pretend-link:hover {
     height: 100vh;
     z-index: 999!important;
     position: fixed;
+    left: 0;
+    top: 0;
     background-color: rgba(255,255,255,0.9);
     color: var(--trip-orange);
     display: flex;
