@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import {
@@ -9,19 +9,50 @@ import {
   SIGN_UP_FORM,
   LOGGED_IN,
 } from '../constants/AuthStatus';
+import PageLoading from '../components/PageLoading';
 
-const AuthContext = React.createContext();
-
+const AuthContext = React.createContext(undefined, undefined);
 const AuthProvider = props => {
   const hostName = process.env.API_HOSTNAME;
 
   const [authStatus, setAuthStatus] = useState(NOT_LOGGED_IN);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userId, setUserId] = useState(0);
-  const [userName, setUserName] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
   const [userNameInput, setUserNameInput] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!currentUser) {
+      axios.defaults.withCredentials = true;
+      loadCurrentAuthStatus();
+    }
+  }, []);
+
+  function loadCurrentAuthStatus() {
+    setLoading(true);
+    axios
+      .get(hostName + '/api/user')
+      .then(
+        response => {
+          setCurrentUser({
+            id: response.data.id,
+            name: response.data.name,
+            avatarPath: '/img/avatar/avatar2.jpg',
+          });
+          setErrorMessage('');
+          setAuthStatus(LOGGED_IN);
+        },
+        () => {
+          setCurrentUser(null);
+          setAuthStatus(NOT_LOGGED_IN);
+        },
+      )
+      .then(() => {
+        setLoading(false);
+      });
+  }
 
   function changeAuthStatusLogin() {
     setAuthStatus(LOG_IN_FORM);
@@ -54,7 +85,7 @@ const AuthProvider = props => {
       () => {
         // SIGNUP / REGISTER
         axios
-          .post(hostName + 'api/register', {
+          .post(hostName + '/api/register', {
             name: userNameInput,
             email: userEmail,
             password: userPassword,
@@ -62,11 +93,15 @@ const AuthProvider = props => {
           .then(
             () => {
               // GET USER
-              axios.get(hostName + 'api/user').then(
+              axios.get(hostName + '/api/user').then(
                 response => {
-                  //console.log(response);
-                  setUserId(response.data.id);
-                  setUserName(response.data.name);
+                  setCurrentUser({
+                    id: response.data.id,
+                    name: response.data.name,
+                    avatarPath: '/img/avatar/avatar2.jpg',
+                  });
+                  // avatarPath to be dealt with
+
                   setErrorMessage('');
                   setAuthStatus(LOGGED_IN);
                 },
@@ -99,10 +134,9 @@ const AuthProvider = props => {
     );
   };
 
-  const login = () => {
+  async function login() {
     axios.defaults.withCredentials = true;
-
-    axios.get(hostName + '/sanctum/csrf-cookie').then(
+    await axios.get(hostName + '/sanctum/csrf-cookie').then(
       () => {
         // LOGIN
         axios
@@ -114,8 +148,12 @@ const AuthProvider = props => {
             () => {
               axios.get(hostName + '/api/user').then(
                 response => {
-                  setUserId(response.data.id);
-                  setUserName(response.data.name);
+                  setCurrentUser({
+                    id: response.data.id,
+                    name: response.data.name,
+                    avatarPath: '/img/avatar/avatar2.jpg',
+                  });
+                  // avatarPath to be dealt with
                   setErrorMessage('');
                   setAuthStatus(LOGGED_IN);
                 },
@@ -141,21 +179,20 @@ const AuthProvider = props => {
         setErrorMessage('Could not complete the login');
       },
     );
-  };
+  }
 
-  function logout() {
+  async function logout() {
     axios.defaults.withCredentials = true;
-    axios.get(hostName + '/api/logout');
-    setUserId(0);
-    setUserName('');
+    await axios.get(hostName + '/api/logout');
     setUserNameInput('');
     setUserEmail('');
     setUserPassword('');
+    setCurrentUser(null);
     setAuthStatus(NOT_LOGGED_IN);
   }
 
   const getAuthStatus = () => {
-    axios.get(hostName + 'api/user').then(
+    axios.get(hostName + '/api/user').then(
       () => LOGGED_IN,
       () => NOT_LOGGED_IN,
     );
@@ -168,11 +205,10 @@ const AuthProvider = props => {
         authStatus,
         changeAuthStatusLogin,
         changeAuthStatusSignup,
-        userId,
-        userName,
+
         userNameInput,
         userEmail,
-        userPassword,
+        currentUser,
         handleUserNameInput,
         handleUserEmail,
         handleUserPassword,
@@ -184,8 +220,11 @@ const AuthProvider = props => {
     >
       {/* eslint-disable-next-line react/prop-types */}
       {props.children}
+      {loading && (
+        <PageLoading message='Wait a sec, TripTime is trying to recognise you :)' />
+      )}
     </AuthContext.Provider>
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthProvider, AuthContext };
