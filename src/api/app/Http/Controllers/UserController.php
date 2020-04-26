@@ -7,6 +7,31 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
+    /**
+     * Get the details of the currently logged in user
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function show(Request $request)
+    {
+        $user = $request->user();
+
+        $vm = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatarPath' => $user->avatar_url
+        ];
+
+        return response()->json($vm);
+    }
+
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
@@ -17,6 +42,7 @@ class UserController extends Controller
             'message' => 'registration successful'
         ], 200);
     }
+
     /**
      * Get a validator for an incoming registration request.
      *
