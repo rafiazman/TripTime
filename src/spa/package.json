@@ -26,6 +26,7 @@
   "homepage": "https://github.com/rafiazman/TripTime",
   "dependencies": {
     "@auth0/nextjs-auth0": "^0.11.0",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-regular-svg-icons": "^5.12.1",
@@ -43,6 +44,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.10",
     "next": "^9.3.5",
+    "overlapping-marker-spiderfier-leaflet": "^0.2.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-calendar": "^3.0.1",
