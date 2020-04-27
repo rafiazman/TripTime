@@ -205,7 +205,6 @@ const AuthProvider = props => {
         authStatus,
         changeAuthStatusLogin,
         changeAuthStatusSignup,
-
         userNameInput,
         userEmail,
         currentUser,
