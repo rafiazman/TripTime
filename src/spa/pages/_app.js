@@ -17,19 +17,6 @@ export default class MyApp extends App {
     super();
   }
 
-  setUser() {
-    return () => {};
-    // return async component => {
-    //   fetch('/api/me')
-    //     .then(response => (response.ok ? response.json() : null))
-    //     .then(user =>
-    //       component.setState(() => {
-    //         return { user: user };
-    //       }),
-    //     );
-    // };
-  }
-
   render() {
     const { Component, pageProps } = this.props;
     return (
@@ -47,8 +34,8 @@ export default class MyApp extends App {
         </Head>
 
         <AuthProvider>
-          <MainLayout setUser={this.setUser()}>
-            <Component {...pageProps} setUser={this.setUser()} />
+          <MainLayout>
+            <Component {...pageProps} />
           </MainLayout>
         </AuthProvider>
       </>
