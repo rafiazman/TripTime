@@ -67,9 +67,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Gets all trips this user is party to
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function trips()
     {
-        return $this->belongsToMany(Trip::class, 'user_trip');
+        return $this->belongsToMany(Trip::class, 'user_trip')
+            ->withPivot([
+                'last_checked_trip',
+                'last_checked_chat',
+            ]);
     }
 
     /**

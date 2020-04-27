@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
+    public function __construct()
+    {
+        // TODO: Protect routes using auth:sanctum
+
+        // TODO: Incorporate Laravel Resources to transform Model to JSON
+    }
+
     /**
      * Display a listing of all trips of the currently
      * logged in user.
@@ -16,7 +23,7 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-        $trips = $request->user()->trips();
+        $trips = $request->user()->trips()->get();
 
         $vm = $trips->map(function($trip) {
             return [
@@ -43,6 +50,7 @@ class TripController extends Controller
                 ['start_date', '<=', now()],
                 ['end_date', '>=', now()],
             ])
+            ->get()
             ->values();
 
         $vm = $trips->map(function($trip) {
@@ -67,6 +75,7 @@ class TripController extends Controller
     {
         $trips = $request->user()->trips()
             ->where('end_date', '<', now())
+            ->get()
             ->values();
 
         $vm = $trips->map(function($trip) {
@@ -93,6 +102,7 @@ class TripController extends Controller
             ->where([
                 ['start_date', '>', now()],
             ])
+            ->get()
             ->values();
 
         $vm = $trips->map(function($trip) {
@@ -135,7 +145,25 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        //
+        $participants = $trip->users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url,
+            ];
+        });
+        $participants = $participants->sortBy('id');
+
+        $vm = [
+            'name' => $trip->name,
+            'description' => $trip->description,
+            'participants' => $participants,
+            'start' => $trip->start_date,
+            'end' => $trip->end_date
+        ];
+
+        return response()->json($vm);
     }
 
     /**
