@@ -4,6 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Message
+ *
+ * @property-read \App\Trip $trip
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message query()
+ * @mixin \Eloquent
+ */
 class Message extends Model
 {
     /**

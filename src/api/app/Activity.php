@@ -4,6 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Activity
+ *
+ * @property-read \App\Location $location
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Note[] $notes
+ * @property-read int|null $notes_count
+ * @property-read \App\Trip $trip
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity query()
+ * @mixin \Eloquent
+ */
 class Activity extends Model
 {
     /**

@@ -19,5 +19,7 @@ class UserSeeder extends Seeder
                 'avatar_url' => 'http://via.placeholder.com/150x150'
             ]
         );
+
+        factory(\App\User::class, 4)->create();
     }
 }

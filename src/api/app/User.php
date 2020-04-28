@@ -35,6 +35,8 @@ use Illuminate\Notifications\Notifiable;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Trip[] $trips
  * @property-read int|null $trips_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read int|null $messages_count
  */
 class User extends Authenticatable
 {
@@ -67,9 +69,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Gets all trips this user is party to
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function trips()
     {
-        return $this->belongsToMany(Trip::class, 'user_trip');
+        return $this->belongsToMany(Trip::class, 'user_trip')
+            ->withPivot([
+                'last_checked_trip',
+                'last_checked_chat',
+            ]);
     }
 
     /**
