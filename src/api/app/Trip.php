@@ -27,6 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Trip whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Trip whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Travel[] $travels
+ * @property-read int|null $travels_count
  */
 class Trip extends Model
 {
