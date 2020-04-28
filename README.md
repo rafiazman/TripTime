@@ -21,6 +21,13 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 * Collaborate with friends in planning your journey through live chat.
 * Get an overview of your planned trip from Day 1 to Finish!
 
+### Build Status
+
+| Branch  | Build Status |
+|---------|--------------|
+| master  | <img src="https://travis-ci.org/tantigers/TripTime.svg?branch=master" alt="master build status"> |
+| develop | <img src="https://travis-ci.org/tantigers/TripTime.svg?branch=develop" alt="develop build status"> |
+
 ## Usage
 Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
 
