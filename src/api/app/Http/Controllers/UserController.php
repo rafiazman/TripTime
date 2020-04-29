@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\User;
 use Illuminate\Http\Request;
-
 use Auth;
+use Hash;
 
 class UserController extends Controller
 {
@@ -39,13 +39,11 @@ class UserController extends Controller
      */
     public function register(CreateUserRequest $request)
     {
-        User::create([
+        $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
         ]);
-
-        $user = $this->create($request);
 
         Auth::guard()->login($user);
 
