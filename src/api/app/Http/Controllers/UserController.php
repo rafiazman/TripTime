@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\User;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -15,8 +16,20 @@ class UserController extends Controller
             ['except' => [
                 'register',
                 'login',
-                'logout'
+                'logout',
+                'checkExists'
             ]]);
+    }
+
+    /**
+     * Checks if a user already exists within the database
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function checkExists(User $user)
+    {
+        // If User is not in database, Laravel Route Model Binding will automatically return 404
+        return response(null, 200);
     }
 
     /**

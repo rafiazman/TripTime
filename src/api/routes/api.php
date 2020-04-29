@@ -20,3 +20,4 @@ Route::post('/register', 'UserController@register');
 Route::get('/logout', 'UserController@logout');
 
 Route::get('/user', 'UserController@show');
+Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
