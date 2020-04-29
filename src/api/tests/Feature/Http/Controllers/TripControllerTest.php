@@ -131,20 +131,19 @@ class TripControllerTest extends TestCase
 
         $response = $this->actingAs($users->random())->json('get', "/api/trip/$trip->id");
 
-        $response->assertStatus(200)
-            ->assertJsonFragment([
-                'name' => $trip->name,
-                'description' => $trip->description,
-                'participants' => $users->map(function ($user) {
-                    return [
-                        'avatarPath' => $user->avatar_url,
-                        'email' => $user->email,
-                        'id' => $user->id,
-                        'name' => $user->name,
-                    ];
-                }),
-                'start' => $tomorrow->toDateTimeString(),
-                'end' => $weekAfter->toDateTimeString(),
+        $response->assertStatus(200);
+
+        $this->assertEquals($trip->name, $response['name']);
+        $this->assertEquals($trip->description, $response['description']);
+        $this->assertEquals($tomorrow->toDateTimeString(), $response['start']);
+        $this->assertEquals($weekAfter->toDateTimeString(), $response['end']);
+        $users->each(function ($user) use ($response) {
+            $response->assertJsonFragment([
+                'avatarPath' => $user->avatar_url,
+                'email' => $user->email,
+                'id' => $user->id,
+                'name' => $user->name,
             ]);
+        });
     }
 }

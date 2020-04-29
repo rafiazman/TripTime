@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Auth;
+use Hash;
 
 class UserController extends Controller
 {
@@ -13,15 +16,76 @@ class UserController extends Controller
             ['except' => [
                 'register',
                 'login',
-                'logout'
+                'logout',
+                'checkExists'
             ]]);
+    }
+
+    /**
+     * Checks if a user already exists within the database
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function checkExists(User $user)
+    {
+        // If User is not in database, Laravel Route Model Binding will automatically return 404
+        return response(null, 200);
+    }
+
+    /**
+     * Registers a new user into the database
+     * @param CreateUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(CreateUserRequest $request)
+    {
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+        Auth::guard()->login($user);
+
+        return response()->json([
+            'user' => $user,
+            'message' => 'Registration successful, user logged in.'
+        ], 200);
+    }
+
+    /**
+     * Logs in a user with the given e-mail and password
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            $authuser = auth()->user();
+            return response()->json(['message' => 'Login successful.'], 200);
+        } else {
+            return response()->json(['message' => 'Invalid email or password.'], 401);
+        }
+    }
+
+    /**
+     * Logs out a currently logged in user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json(['message' => 'Logged out.'], 200);
     }
 
     /**
      * Get the details of the currently logged in user
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request)
     {
@@ -35,72 +99,5 @@ class UserController extends Controller
         ];
 
         return response()->json($vm);
-    }
-
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        $user = $this->create($request->all());
-        $this->guard()->login($user);
-        return response()->json([
-            'user' => $user,
-            'message' => 'registration successful'
-        ], 200);
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            //'password' => ['required', 'string', 'min:4', 'confirmed'],
-            // NO PASSWORD CONFIRMATION
-            'password' => ['required', 'string', 'min:4'],
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
-
-    protected function guard()
-    {
-        return Auth::guard();
-    }
-
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            $authuser = auth()->user();
-            return response()->json(['message' => 'Login successful'], 200);
-        } else {
-            return response()->json(['message' => 'Invalid email or password'], 401);
-        }
-    }
-
-    public function logout()
-    {
-        Auth::logout();
-        return response()->json(['message' => 'Logged Out'], 200);
     }
 }
