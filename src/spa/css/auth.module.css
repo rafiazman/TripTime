@@ -1,0 +1,112 @@
+.formContainer, .regFormContainer, .loginForm, .regForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.formContainer {
+    width: 90vw;
+    margin: 5rem auto;
+}
+.regFormContainer{
+    width: 90vw;
+    margin: 1rem auto;
+}
+
+.loginForm, .regForm {
+    margin: 1rem;
+    align-items: stretch;
+}
+.regForm {
+    margin-top: 0.5rem;
+}
+
+.regForm {
+    width: 22rem;
+}
+
+.regForm > label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0.4rem;
+    font-size: 1.25rem;
+}
+
+.loginForm > label {
+    font-size: 1.25rem;
+    width: 25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0.4rem;
+}
+
+.loginForm > label > input {
+    width: 18rem;
+    font-size: 1rem;
+    border: 1px solid var(--trip-orange);
+    padding: 0.3rem;
+
+}
+.regForm > label > input {
+    font-size: 1rem;
+    border: 1px solid var(--trip-orange);
+    padding: 0.3rem;
+}
+
+.loginForm > label > input {
+    margin-left: 0.5rem;
+}
+
+.loginSubmit, .regSubmit {
+    background-color: var(--trip-orange);
+    color: white;
+    font-size: 1.25rem;
+    padding: 0.3rem 0;
+    cursor: pointer;
+    border: none;
+}
+.loginSubmit {
+    margin: 0.5rem;
+    background-color: var(--trip-orange);
+    color: white;
+    font-size: 1.25rem;
+    padding: 0.3rem 0;
+    cursor: pointer;
+    border: none;
+    max-width: 100%;
+}
+.regSubmit {
+    margin: 0.8rem 0.3rem;
+
+}
+
+.registerLink {
+    margin: 0.1rem 0.5rem;
+    cursor: pointer;
+    background-color: white;
+    color: var(--trip-orange);
+    border: var(--trip-orange) 2px solid;
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.invalidAlert {
+    font-size: 0.7rem;
+    color: rgb(255, 50, 0);
+}
+
+.logo {
+    max-height: 1.2em;
+    max-width: 1.2em;
+    padding-right: 0.5rem;
+    position: relative;
+    top: 0.2em;
+}
+
+.regSubmit:disabled, .loginSubmit:disabled {
+    background-color: var(--disabled-trip-orange);
+    
+}
