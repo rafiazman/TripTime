@@ -22,6 +22,9 @@ const AuthProvider = props => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailOccupied, setEmailOccupied] = useState(false);
+  const [passwordConfirmed, setPasswordConfirmed] = useState(true);
+  const [userConfirmedPassword, setUserConfirmedPassword] = useState('');
 
   useEffect(() => {
     if (!currentUser) {
@@ -67,7 +70,24 @@ const AuthProvider = props => {
     setUserNameInput(updatedUserName);
   }
 
-  function handleUserEmail(changeEvent) {
+  function checkEmailOccupied(emailInput) {
+    axios
+      .head(`${hostName}/api/user/email/${emailInput}`)
+      .then(() => {
+        setEmailOccupied(true);
+      })
+      .catch(() => {
+        setEmailOccupied(false);
+      });
+  }
+
+  function handleNewEmail(changeEvent) {
+    let updatedUserEmail = changeEvent.target.value;
+    setUserEmail(updatedUserEmail);
+    checkEmailOccupied(updatedUserEmail);
+  }
+
+  function handleLoginEmail(changeEvent) {
     let updatedUserEmail = changeEvent.target.value;
     setUserEmail(updatedUserEmail);
   }
@@ -75,6 +95,15 @@ const AuthProvider = props => {
   function handleUserPassword(changeEvent) {
     let updatedUserPassword = changeEvent.target.value;
     setUserPassword(updatedUserPassword);
+  }
+
+  function handleUserPasswordConfirm(changeEvent) {
+    let confirmedPasswordInput = changeEvent.target.value;
+    if (userPassword !== confirmedPasswordInput) setPasswordConfirmed(false);
+    else {
+      setUserConfirmedPassword(confirmedPasswordInput);
+      setPasswordConfirmed(true);
+    }
   }
 
   const signup = () => {
@@ -89,6 +118,7 @@ const AuthProvider = props => {
             name: userNameInput,
             email: userEmail,
             password: userPassword,
+            password_confirmation: userConfirmedPassword,
           })
           .then(
             () => {
@@ -98,7 +128,7 @@ const AuthProvider = props => {
                   setCurrentUser({
                     id: response.data.id,
                     name: response.data.name,
-                    avatarPath: '/img/avatar/avatar2.jpg',
+                    avatarPath: 'response.data.avatarPath',
                   });
                   // avatarPath to be dealt with
 
@@ -209,12 +239,16 @@ const AuthProvider = props => {
         userEmail,
         currentUser,
         handleUserNameInput,
-        handleUserEmail,
+        handleLoginEmail,
+        handleNewEmail,
         handleUserPassword,
         signup,
         login,
         logout,
         errorMessage,
+        emailOccupied,
+        passwordConfirmed,
+        handleUserPasswordConfirm,
       }}
     >
       {/* eslint-disable-next-line react/prop-types */}
