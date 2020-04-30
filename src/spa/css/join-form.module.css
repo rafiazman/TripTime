@@ -13,12 +13,26 @@
     margin-bottom: 4px;
 }
 
-.form button {
+.enabledLink, .disabledLink {
     background-color: var(--trip-orange);
     font-size: 1.25rem;
-}
-
-.form button {
     color: white;
     padding: 3px;
+}
+.enabledLink {
+    cursor: pointer;
+}
+
+.disabledLink {
+    cursor: none;
+    pointer-events: none;
+}
+
+.enabledLink:hover, .disabledLink:hover{
+    color: white;
+}
+
+.occupyAlert{
+    font-size: 0.7rem;
+    color: rgb(255,50, 0);
 }
