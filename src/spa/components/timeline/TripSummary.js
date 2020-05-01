@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TripTitle from './TripTitle';
-import TripTimeline from './TripTimeline';
+// import TripTimeline from './TripTimeline';
 import styles from '../../css/trip-summary.module.css';
 import Link from 'next/link';
 
@@ -15,12 +15,12 @@ export default class TripSummary extends React.Component {
       <div className={styles.tripSummary}>
         <TripTitle
           name={trip.name}
-          people={trip.people}
+          people={trip.participants}
           description={trip.description}
         />
-        {user && (
-          <TripTimeline activities={trip.activities.concat(trip.travels)} />
-        )}
+        {/*{user && (*/}
+        {/*  <TripTimeline tripID={trip.id} />*/}
+        {/*)}*/}
         {!user && (
           <div className={'fit-center'}>
             <br />
