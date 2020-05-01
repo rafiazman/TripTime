@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Greeting from '../Greeting';
 import styles from '../../css/homepage.module.css';
 import TripList from './TripList';
+
 import {
   faShoePrints,
   faPen,
@@ -21,6 +22,9 @@ export default class Dashboard extends React.Component {
       pastTrips: [],
       currentTrips: [],
       planningTrips: [],
+      planningLoading: true,
+      currentLoading: true,
+      pastLoading: true,
     };
   }
 
@@ -32,21 +36,27 @@ export default class Dashboard extends React.Component {
         response => response.data,
         () => [],
       )
-      .then(trips => this.setState(() => ({ currentTrips: trips })));
+      .then(trips =>
+        this.setState(() => ({ currentTrips: trips, currentLoading: false })),
+      );
     axios
       .get(`${hostName}/api/trips/past`)
       .then(
         response => response.data,
         () => [],
       )
-      .then(trips => this.setState(() => ({ pastTrips: trips })));
+      .then(trips =>
+        this.setState(() => ({ pastTrips: trips, pastLoading: false })),
+      );
     axios
       .get(`${hostName}/api/trips/future`)
       .then(
         response => response.data,
         () => [],
       )
-      .then(trips => this.setState(() => ({ planningTrips: trips })));
+      .then(trips =>
+        this.setState(() => ({ planningTrips: trips, planningLoading: false })),
+      );
   }
 
   render() {
@@ -62,7 +72,9 @@ export default class Dashboard extends React.Component {
             title='Your Current Trip: '
             tripInfoList={currentTrips}
             displayIfNoTrip={<h3>Your next adventure is yet to come...</h3>}
+            loading={this.state.currentLoading}
           />
+
           <TripList
             icon={faPen}
             title='You are Planning for: '
@@ -76,6 +88,7 @@ export default class Dashboard extends React.Component {
                 today!
               </h3>
             }
+            loading={this.state.planningLoading}
           />
           <TripList
             icon={faClock}
@@ -86,6 +99,7 @@ export default class Dashboard extends React.Component {
                 No past trips yet. What memory will you create at TripTime?
               </h3>
             }
+            loading={this.state.pastLoading}
           />
         </div>
         <SiteInfo />
