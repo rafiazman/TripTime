@@ -108,5 +108,16 @@
 
 .regSubmit:disabled, .loginSubmit:disabled {
     background-color: var(--disabled-trip-orange);
-    
+
+}
+
+.failed {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.failed > p:nth-child(2) {
+    margin-left: 1rem;
+    color: var(--trip-orange);
+    font-size: 1rem;
 }

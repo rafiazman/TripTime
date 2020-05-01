@@ -24,18 +24,34 @@ export default class Login extends React.Component {
           <PageLoading message='Welcome! TripTime is logging you in :)' />
         )}
         <AuthContext.Consumer>
-          {({ login, handleLoginEmail, handleUserPassword, currentUser }) => {
+          {({
+            login,
+            handleLoginEmail,
+            handleUserPassword,
+            currentUser,
+            errorMessage,
+          }) => {
             if (currentUser) Router.push('/');
             else
               return (
                 <div className={styles.formContainer}>
-                  <Greeting name='' />
+                  {errorMessage ? (
+                    <div className={styles.failed}>
+                      <p>Sorry, we failed to log in for you because:</p>
+                      <p>{errorMessage}</p>
+                      <p>Please try again:</p>
+                    </div>
+                  ) : (
+                    <Greeting name='' />
+                  )}
+
                   <form
                     className={styles.loginForm}
                     onSubmit={async e => {
                       e.preventDefault();
                       setLoading(true);
-                      login();
+                      await login();
+                      setLoading(false);
                     }}
                   >
                     <label>
