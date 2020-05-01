@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SiteInfo from '../SiteInfo';
 import Link from 'next/link';
-import myTripInfos from '../../app/dummy-data/my-trip-infos';
 import Greeting from '../Greeting';
 import styles from '../../css/homepage.module.css';
 import TripList from './TripList';
@@ -13,12 +12,47 @@ import {
   faPen,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pastTrips: [],
+      currentTrips: [],
+      planningTrips: [],
+    };
+  }
+
+  componentDidMount() {
+    const hostName = process.env.API_HOSTNAME;
+    axios
+      .get(`${hostName}/api/trips/current`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips => this.setState(() => ({ currentTrips: trips })));
+    axios
+      .get(`${hostName}/api/trips/past`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips => this.setState(() => ({ pastTrips: trips })));
+    axios
+      .get(`${hostName}/api/trips/future`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips => this.setState(() => ({ planningTrips: trips })));
+  }
+
   render() {
-    const currentTrips = this.getCurrentTrips();
-    const pastTrips = this.getPastTrips();
-    const planningTrips = this.getPlanningTrips();
+    const currentTrips = this.state.currentTrips;
+    const pastTrips = this.state.pastTrips;
+    const planningTrips = this.state.planningTrips;
     return (
       <div className={styles.page}>
         <div className={styles.content}>
@@ -57,15 +91,6 @@ export default class Dashboard extends React.Component {
         <SiteInfo />
       </div>
     );
-  }
-  getPlanningTrips() {
-    return myTripInfos;
-  }
-  getPastTrips() {
-    return myTripInfos;
-  }
-  getCurrentTrips() {
-    return myTripInfos;
   }
 }
 

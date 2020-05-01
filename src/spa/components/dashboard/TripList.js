@@ -22,7 +22,7 @@ export default class TripList extends React.Component {
               <Link href='/timeline' key={index}>
                 <a>
                   <TripCard
-                    tripName={tripInfo.trip.name}
+                    tripName={tripInfo.name}
                     updated={tripInfo.updated}
                   />
                 </a>
