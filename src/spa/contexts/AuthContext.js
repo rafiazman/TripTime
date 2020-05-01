@@ -106,14 +106,14 @@ const AuthProvider = props => {
     }
   }
 
-  const signup = () => {
+  async function signup() {
     axios.defaults.withCredentials = true;
 
     // CSRF COOKIE
-    axios.get(hostName + '/sanctum/csrf-cookie').then(
-      () => {
+    await axios.get(hostName + '/sanctum/csrf-cookie').then(
+      async () => {
         // SIGNUP / REGISTER
-        axios
+        await axios
           .post(hostName + '/api/register', {
             name: userNameInput,
             email: userEmail,
@@ -121,23 +121,22 @@ const AuthProvider = props => {
             password_confirmation: userConfirmedPassword,
           })
           .then(
-            () => {
+            async () => {
               // GET USER
-              axios.get(hostName + '/api/user').then(
+              await axios.get(hostName + '/api/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
                     name: response.data.name,
-                    avatarPath: 'response.data.avatarPath',
+                    avatarPath: response.data.avatarPath,
                   });
-                  // avatarPath to be dealt with
 
                   setErrorMessage('');
                   setAuthStatus(LOGGED_IN);
                 },
                 // GET USER ERROR
                 () => {
-                  setErrorMessage('Could not complete the sign up');
+                  setErrorMessage('An internal error occurred');
                 },
               );
             },
@@ -159,24 +158,24 @@ const AuthProvider = props => {
       },
       // COOKIE ERROR
       () => {
-        setErrorMessage('Could not complete the sign up');
+        setErrorMessage('There is a cookie error');
       },
     );
-  };
+  }
 
   async function login() {
     axios.defaults.withCredentials = true;
     await axios.get(hostName + '/sanctum/csrf-cookie').then(
-      () => {
+      async () => {
         // LOGIN
-        axios
+        await axios
           .post(hostName + '/api/login', {
             email: userEmail,
             password: userPassword,
           })
           .then(
-            () => {
-              axios.get(hostName + '/api/user').then(
+            async () => {
+              await axios.get(hostName + '/api/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
