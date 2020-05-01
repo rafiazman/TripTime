@@ -10,7 +10,7 @@ export default class TripTeamLayout extends React.Component {
   render() {
     return (
       <div className={styles.tripTeamContainer}>
-        <SideBar />
+        <SideBar tripID={this.props.tripID} />
         <main>
           {this.props.children}
           {this.props.user && <ChatBox />}
@@ -23,4 +23,5 @@ export default class TripTeamLayout extends React.Component {
 TripTeamLayout.propTypes = {
   children: PropTypes.node.isRequired,
   user: PropTypes.any,
+  tripID: PropTypes.number.isRequired,
 };
