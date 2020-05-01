@@ -7,13 +7,13 @@ import Link from 'next/link';
 import Greeting from '../Greeting';
 import styles from '../../css/homepage.module.css';
 import TripList from './TripList';
+import axios from 'axios';
 
 import {
   faShoePrints,
   faPen,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
