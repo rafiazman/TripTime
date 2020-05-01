@@ -32,20 +32,32 @@ export default class SignUp extends React.Component {
             handleUserPassword,
             handleUserPasswordConfirm,
             passwordConfirmed,
+            errorMessage,
           }) => {
             if (currentUser) Router.push('/');
             return (
               <div className={styles.regFormContainer}>
-                <h1>
-                  <img src='/img/logo.svg' className={styles.logo} alt='' />
-                  Hey, nice to have you joining us :)
-                </h1>
+                {errorMessage ? (
+                  <div className={styles.failed}>
+                    <p>
+                      Sorry, we failed to create an account for you because:
+                    </p>
+                    <p>{errorMessage}</p>
+                    <p>Please try again:</p>
+                  </div>
+                ) : (
+                  <h1>
+                    <img src='/img/logo.svg' className={styles.logo} alt='' />
+                    Hey, nice to have you joining us :)
+                  </h1>
+                )}
                 <form
                   className={styles.regForm}
-                  onSubmit={e => {
+                  onSubmit={async e => {
                     e.preventDefault();
                     setLoading(true);
-                    signup();
+                    await signup();
+                    setLoading(false);
                   }}
                 >
                   <label>
