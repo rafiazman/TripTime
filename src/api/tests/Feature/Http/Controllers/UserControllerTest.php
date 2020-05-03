@@ -31,6 +31,24 @@ class UserControllerTest extends TestCase
     }
 
     /** @test */
+    public function checks_for_a_taken_username()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->json('head', "/api/user/name/$user->name");
+
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function checks_for_a_free_username()
+    {
+        $response = $this->json('head', "/api/user/name/John Key");
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function is_able_to_register_a_user()
     {
         $response = $this->json('post', "/api/register", [

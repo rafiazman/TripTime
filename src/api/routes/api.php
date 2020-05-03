@@ -21,3 +21,4 @@ Route::get('/logout', 'UserController@logout');
 
 Route::get('/user', 'UserController@show');
 Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
+Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
