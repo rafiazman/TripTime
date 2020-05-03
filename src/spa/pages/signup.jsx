@@ -5,6 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import Router from 'next/router';
 import styles from '../css/auth.module.css';
 import PageLoading from '../components/PageLoading';
+import { DebounceInput } from 'react-debounce-input';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -26,15 +27,20 @@ export default class SignUp extends React.Component {
             signup,
             currentUser,
             userEmail,
-            handleNewEmail,
+            handleEmailInput,
+            checkEmailOccupied,
             emailOccupied,
             handleUserNameInput,
             handleUserPassword,
             handleUserPasswordConfirm,
             passwordConfirmed,
             errorMessage,
+            userPassword,
+            userNameInput,
+            userConfirmedPassword,
           }) => {
             if (currentUser) Router.push('/');
+
             return (
               <div className={styles.regFormContainer}>
                 {errorMessage ? (
@@ -62,12 +68,16 @@ export default class SignUp extends React.Component {
                 >
                   <label>
                     Enter your Email Address:
-                    <input
+                    <DebounceInput
                       type='email'
-                      defaultValue={userEmail}
-                      required={true}
-                      onChange={handleNewEmail}
                       name='email'
+                      required={true}
+                      debounceTimeout={300}
+                      onChange={event => {
+                        handleEmailInput(event);
+                        checkEmailOccupied(event);
+                      }}
+                      value={userEmail}
                     />
                   </label>
                   {emailOccupied && (
@@ -85,6 +95,7 @@ export default class SignUp extends React.Component {
                       maxLength={14}
                       name='nickname'
                       onChange={handleUserNameInput}
+                      value={userNameInput}
                     />
                   </label>
                   <label>
@@ -96,6 +107,7 @@ export default class SignUp extends React.Component {
                       maxLength={20}
                       name='password'
                       onChange={handleUserPassword}
+                      value={userPassword}
                     />
                   </label>
                   <label>
@@ -107,6 +119,7 @@ export default class SignUp extends React.Component {
                       maxLength={20}
                       name='confirm-password'
                       onChange={handleUserPasswordConfirm}
+                      value={userConfirmedPassword}
                     />
                   </label>
                   {!passwordConfirmed && (
