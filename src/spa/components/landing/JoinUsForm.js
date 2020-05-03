@@ -9,7 +9,7 @@ class JoinUsForm extends React.Component {
   render() {
     return (
       <AuthContext.Consumer>
-        {({ handleUserEmail, emailOccupied }) => (
+        {({ handleEmailInput, userEmail }) => (
           <form
             className={styles.form}
             onSubmit={e => {
@@ -20,24 +20,13 @@ class JoinUsForm extends React.Component {
             <input
               type='email'
               placeholder='Enter your email'
-              onChange={handleUserEmail}
+              onChange={handleEmailInput}
+              value={userEmail}
               required={true}
             />
-            <button
-              disabled={emailOccupied}
-              type='submit'
-              className={
-                emailOccupied ? styles.disabledLink : styles.enabledLink
-              }
-            >
+            <button type='submit' className={styles.enabledLink}>
               Join Today - It&apos;s Free!
             </button>
-
-            {emailOccupied && (
-              <div className={styles.occupyAlert}>
-                Sorry, this email address has been occupied. Try another one?
-              </div>
-            )}
           </form>
         )}
       </AuthContext.Consumer>
