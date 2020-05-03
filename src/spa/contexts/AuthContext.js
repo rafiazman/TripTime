@@ -70,9 +70,9 @@ const AuthProvider = props => {
     setUserNameInput(updatedUserName);
   }
 
-  function checkEmailOccupied(emailInput) {
+  function checkEmailOccupied(event) {
     axios
-      .head(`${hostName}/api/user/email/${emailInput}`)
+      .head(`${hostName}/api/user/email/${event.target.value}`)
       .then(() => {
         setEmailOccupied(true);
       })
@@ -81,15 +81,8 @@ const AuthProvider = props => {
       });
   }
 
-  function handleNewEmail(changeEvent) {
-    let updatedUserEmail = changeEvent.target.value;
-    setUserEmail(updatedUserEmail);
-    checkEmailOccupied(updatedUserEmail);
-  }
-
-  function handleLoginEmail(changeEvent) {
-    let updatedUserEmail = changeEvent.target.value;
-    setUserEmail(updatedUserEmail);
+  function handleEmailInput(changeEvent) {
+    setUserEmail(changeEvent.target.value);
   }
 
   function handleUserPassword(changeEvent) {
@@ -238,8 +231,8 @@ const AuthProvider = props => {
         userEmail,
         currentUser,
         handleUserNameInput,
-        handleLoginEmail,
-        handleNewEmail,
+        handleEmailInput,
+        checkEmailOccupied,
         handleUserPassword,
         signup,
         login,

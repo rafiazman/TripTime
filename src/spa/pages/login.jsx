@@ -26,7 +26,7 @@ export default class Login extends React.Component {
         <AuthContext.Consumer>
           {({
             login,
-            handleLoginEmail,
+            handleEmailInput,
             handleUserPassword,
             currentUser,
             errorMessage,
@@ -55,7 +55,7 @@ export default class Login extends React.Component {
                     }}
                   >
                     <label>
-                      Email <input type='email' onChange={handleLoginEmail} />
+                      Email <input type='email' onChange={handleEmailInput} />
                     </label>
                     <label>
                       Password
