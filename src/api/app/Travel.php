@@ -74,4 +74,13 @@ class Travel extends Model
     {
         return $this->morphMany(Note::class, 'pointer');
     }
+
+    /**
+     * Gets the users who are joining this travel
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function users()
+    {
+        return $this->morphToMany(User::class, 'pointer', 'user_pointer');
+    }
 }

@@ -166,6 +166,11 @@ class TripController extends Controller
         return response()->json($vm);
     }
 
+    /**
+     * Display all activities associated with the given Trip
+     * @param Trip $trip
+     * @return \App\Activity[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
     public function showActivities(Trip $trip)
     {
         $activities = $trip->activities;
@@ -199,6 +204,65 @@ class TripController extends Controller
                     ];
                 }),
                 'notes' => $activity->notes->map(function ($note) {
+                    return [
+                        'id' => $note->id,
+                        'author' => [
+                            'id' => $note->user->id,
+                            'name' => $note->user->name,
+                            'avatarPath' => $note->user->avatar_url,
+                        ],
+                        'content' => $note->body,
+                        'updated' => $note->updated_at
+                    ];
+                }),
+            ];
+        });
+
+        return $vmActivities;
+    }
+
+    /**
+     * Display all travels associated with the given Trip
+     * @param Trip $trip
+     * @return \App\Travel[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     */
+    public function showTravels(Trip $trip)
+    {
+        $travels = $trip->travels;
+
+        $vmActivities = $travels->map(function ($travel) {
+            $fromLocation = $travel->from;
+            $fromCoords = explode(', ', $fromLocation->coordinates);
+            $fromLat = $fromCoords[0];
+            $fromLng = $fromCoords[1];
+
+            $toLocation = $travel->to;
+            $toCoords = explode(', ', $toLocation->coordinates);
+            $toLat = $toCoords[0];
+            $toLng = $toCoords[1];
+
+            return [
+                'id' => $travel->id,
+                'start' => $travel->start,
+                'end' => $travel->end,
+                'mode' => $travel->mode,
+                'description' => $travel->description,
+                'from' => [
+                    'lat' => $fromLat,
+                    'lng' => $fromLng,
+                ],
+                'to' => [
+                    'lat' => $toLat,
+                    'lng' => $toLng,
+                ],
+                'people' => $travel->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'avatarPath' => $user->avatar_url,
+                    ];
+                }),
+                'notes' => $travel->notes->map(function ($note) {
                     return [
                         'id' => $note->id,
                         'author' => [
