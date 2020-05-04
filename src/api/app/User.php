@@ -113,4 +113,13 @@ class User extends Authenticatable
     {
         return $this->morphedByMany(Activity::class, 'pointer', 'user_pointer');
     }
+
+    /**
+     * Gets all travels this user is party to
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function travels()
+    {
+        return $this->morphedByMany(Travel::class, 'pointer', 'user_pointer');
+    }
 }
