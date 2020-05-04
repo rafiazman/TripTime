@@ -74,7 +74,7 @@ export default class SignUp extends React.Component {
                       type='email'
                       name='email'
                       required={true}
-                      debounceTimeout={300}
+                      debounceTimeout={400}
                       onChange={event => {
                         handleEmailInput(event);
                         checkEmailOccupied(event.target.value);
@@ -85,7 +85,7 @@ export default class SignUp extends React.Component {
                   {emailOccupied && (
                     <div className={styles.invalidAlert}>
                       Sorry, this email address has been occupied. Try another
-                      one?
+                      one?`
                     </div>
                   )}
                   <label>
@@ -96,7 +96,7 @@ export default class SignUp extends React.Component {
                       minLength={3}
                       maxLength={14}
                       name='nickname'
-                      debounceTimeout={300}
+                      debounceTimeout={400}
                       onChange={event => {
                         handleUserNameInput(event);
                         checkNameOccupied(event.target.value);
