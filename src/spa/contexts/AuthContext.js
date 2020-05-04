@@ -23,6 +23,7 @@ const AuthProvider = props => {
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailOccupied, setEmailOccupied] = useState(false);
+  const [nameOccupied, setNameOccupied] = useState(false);
   const [passwordConfirmed, setPasswordConfirmed] = useState(true);
   const [userConfirmedPassword, setUserConfirmedPassword] = useState('');
 
@@ -68,6 +69,17 @@ const AuthProvider = props => {
   function handleUserNameInput(changeEvent) {
     let updatedUserName = changeEvent.target.value;
     setUserNameInput(updatedUserName);
+  }
+
+  function checkNameOccupied(name) {
+    axios
+      .head(`${hostName}/api/user/name/${name}`)
+      .then(() => {
+        setNameOccupied(true);
+      })
+      .catch(() => {
+        setNameOccupied(false);
+      });
   }
 
   function checkEmailOccupied(email) {
@@ -233,12 +245,14 @@ const AuthProvider = props => {
         handleUserNameInput,
         handleEmailInput,
         checkEmailOccupied,
+        checkNameOccupied,
         handleUserPassword,
         signup,
         login,
         logout,
         errorMessage,
         emailOccupied,
+        nameOccupied,
         passwordConfirmed,
         handleUserPasswordConfirm,
       }}

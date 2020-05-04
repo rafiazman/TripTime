@@ -31,6 +31,8 @@ export default class SignUp extends React.Component {
             checkEmailOccupied,
             emailOccupied,
             handleUserNameInput,
+            checkNameOccupied,
+            nameOccupied,
             handleUserPassword,
             handleUserPasswordConfirm,
             passwordConfirmed,
@@ -88,16 +90,25 @@ export default class SignUp extends React.Component {
                   )}
                   <label>
                     Enter your Nickname:
-                    <input
+                    <DebounceInput
                       type='name'
                       required={true}
                       minLength={3}
                       maxLength={14}
                       name='nickname'
-                      onChange={handleUserNameInput}
+                      debounceTimeout={300}
+                      onChange={event => {
+                        handleUserNameInput(event);
+                        checkNameOccupied(event.target.value);
+                      }}
                       value={userNameInput}
                     />
                   </label>
+                  {nameOccupied && (
+                    <div className={styles.invalidAlert}>
+                      Sorry, this nickname has been occupied. Try another one?
+                    </div>
+                  )}
                   <label>
                     Create your Password:
                     <input
@@ -130,7 +141,9 @@ export default class SignUp extends React.Component {
                   <input
                     value='Register'
                     type='submit'
-                    disabled={!passwordConfirmed || emailOccupied}
+                    disabled={
+                      !passwordConfirmed || emailOccupied || nameOccupied
+                    }
                     className={styles.regSubmit}
                   />
                 </form>
