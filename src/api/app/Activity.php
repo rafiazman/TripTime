@@ -15,6 +15,28 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity query()
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $type
+ * @property string $name
+ * @property string $description
+ * @property string $start_time
+ * @property string $end_time
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $trip_id
+ * @property string $location_coordinates
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereLocationCoordinates($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereStartTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereTripId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Activity whereUpdatedAt($value)
  */
 class Activity extends Model
 {
@@ -43,5 +65,14 @@ class Activity extends Model
     public function notes()
     {
         return $this->morphMany(Note::class, 'pointer');
+    }
+
+    /**
+     * Gets the users who are joining this activity
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function users()
+    {
+        return $this->morphToMany(User::class, 'pointer', 'user_pointer');
     }
 }

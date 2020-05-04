@@ -11,6 +11,8 @@ Route::get('/trips/current', 'TripController@currentTrips');
 Route::get('/trips/future', 'TripController@futureTrips');
 
 Route::get('/trip/{trip}', 'TripController@show');
+Route::get('/trip/{trip}/activities', 'TripController@showActivities');
+Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 
 /*
  * UserController
