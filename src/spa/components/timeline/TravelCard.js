@@ -42,11 +42,11 @@ export default class TravelCard extends React.Component {
         <PeopleList people={travel.people} />
         <div className={styles.time}>
           <span>
-            <FontAwesomeIcon icon={faClock} /> Depart At:
+            <FontAwesomeIcon icon={faClock} /> Departs:
             <TimeDisplay time={travel.start} />
           </span>
           <span>
-            <FontAwesomeIcon icon={faClock} /> Arrive At:
+            <FontAwesomeIcon icon={faClock} /> Arrives:
             <TimeDisplay time={travel.end} />
           </span>
         </div>
