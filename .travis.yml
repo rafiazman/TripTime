@@ -1,15 +1,26 @@
-language: node_js
-node_js:
-- node
-services:
-- mongodb
-cache:
-  directories:
-  - node_modules
-before_install: cd src/spa
-env:
-  global:
-  - secure: EVMb2qb8cFJNCP00+Htj4Ik+2lf2irsm7GSifZIgmoqlk15tKMUNE8qPgmN6DfWS/UzRH00Ecw3HzQ9ghcbtFZt938LW2rQ1WrXpbjRcmpd1gq3ZtF33J5pPWiJlQyOewZLoZP6alMRPplZObGFRgpj4lX3tjLkmh+hrdrf94CVG4LUMgWXrw4kMCO1DIKcSBwe+kTGMR4DVuYp1MmOWrve8ZoMalrr80+D9xaAJTjazH255qHK61DPXuYa54i2VP1zoYAThYPHV2nMvG5A+HM+jrUfnOBSNP25TkRBBsYsPZZjKSU0UtMwbn+GfXracz/FW++UVgyn0hJAc/7iJ/KS+4+yPAJJ2BUg+/Qnd7aE8zt/MhbEjnwuhk3XUI/dnEtUOYXBPtMbnNf50oxvHGZJbgFrSvrUe8eEtTK6wJ32p9a/lAvUhAZV7l+NGA/5u22CvyZZda4uwoH9EQqDULyk8+w6+qP/fcXOw3ugB8hBaEiVbm8j2msI1C0nbBaGrVA0J/DzIRZM7c7OFUjHoGOekYzkvtnQX0QnVUcHp+/IxdaYbqOSPTfXB7jj0PShfXtY9/51CHJR0en1GfCHGNMx+LYxJj1vLQZje5kUz7wjlwZfW5ss2iQfd97cX74ROJQOIa8tgdQw6Da8UpaSivOjcvI8pOAA/1oGihYLgyrQ=
+jobs:
+  include:
+    -
+      language: node_js
+      node_js: node
+      cache:
+        directories:
+        - node_modules
+      before_install: cd src/spa
+      env:
+        global:
+        - secure: EVMb2qb8cFJNCP00+Htj4Ik+2lf2irsm7GSifZIgmoqlk15tKMUNE8qPgmN6DfWS/UzRH00Ecw3HzQ9ghcbtFZt938LW2rQ1WrXpbjRcmpd1gq3ZtF33J5pPWiJlQyOewZLoZP6alMRPplZObGFRgpj4lX3tjLkmh+hrdrf94CVG4LUMgWXrw4kMCO1DIKcSBwe+kTGMR4DVuYp1MmOWrve8ZoMalrr80+D9xaAJTjazH255qHK61DPXuYa54i2VP1zoYAThYPHV2nMvG5A+HM+jrUfnOBSNP25TkRBBsYsPZZjKSU0UtMwbn+GfXracz/FW++UVgyn0hJAc/7iJ/KS+4+yPAJJ2BUg+/Qnd7aE8zt/MhbEjnwuhk3XUI/dnEtUOYXBPtMbnNf50oxvHGZJbgFrSvrUe8eEtTK6wJ32p9a/lAvUhAZV7l+NGA/5u22CvyZZda4uwoH9EQqDULyk8+w6+qP/fcXOw3ugB8hBaEiVbm8j2msI1C0nbBaGrVA0J/DzIRZM7c7OFUjHoGOekYzkvtnQX0QnVUcHp+/IxdaYbqOSPTfXB7jj0PShfXtY9/51CHJR0en1GfCHGNMx+LYxJj1vLQZje5kUz7wjlwZfW5ss2iQfd97cX74ROJQOIa8tgdQw6Da8UpaSivOjcvI8pOAA/1oGihYLgyrQ=
+    -
+      language: php
+      sudo: false
+      cache:
+        directories:
+          - $HOME/.composer/cache
+      php: 7.4.0
+      before_install: cd src/api
+      before_script:
+        - composer install --prefer-source --no-interaction
+      script: php artisan test
 deploy:
   provider: heroku
   api_key:
