@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Activity;
+use App\Location;
+use App\Note;
 use App\Trip;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -145,5 +148,59 @@ class TripControllerTest extends TestCase
                 'name' => $user->name,
             ]);
         });
+    }
+
+    /** @test */
+    public function gets_activities_tied_to_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $user->activities()->attach($activity);
+        // Force create Note tied to an Activity instead of a Travel
+        $note = factory(Note::class)->create([
+            'pointer_id' => $activity->id,
+            'pointer_type' => Activity::class
+        ]);
+
+        $response = $this->actingAs($user)->json('get', "/api/trip/$trip->id/activities");
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'id' => $activity->id,
+                'type' => $activity->type,
+                'start' => $activity->start_time->format('Y-m-d H:i:s'),
+                'end' => $activity->end_time->format('Y-m-d H:i:s'),
+                'name' => $activity->name,
+                'description' => $activity->description,
+                'updated' => $activity->updated_at,
+                'address' => $location->address,
+                'gps' => [
+                    'lat' => '100.22',
+                    'lng' => '20.36',
+                ],
+                'people' => [
+                    [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'avatarPath' => $user->avatar_url
+                    ]
+                ],
+                'notes' => [
+                    [
+                        'id' => $note->id,
+                        'author' => [
+                            'id' => $user->id,
+                            'name' => $user->name,
+                            'avatarPath' => $user->avatar_url
+                        ],
+                        'content' => $note->body,
+                        'updated' => $note->updated_at
+                    ]
+                ]
+            ]);
     }
 }
