@@ -10,7 +10,7 @@ export default function Timeline(props) {
   return (
     <AuthContext.Consumer>
       {({ currentUser }) => (
-        <TripTeamLayout user={currentUser} tripID={props.tripID}>
+        <TripTeamLayout user={currentUser} tripID={props.trip.id}>
           <TripSummary trip={props.trip} user={currentUser} />
         </TripTeamLayout>
       )}
@@ -22,10 +22,9 @@ Timeline.getInitialProps = async ctx => {
   const hostName = process.env.API_HOSTNAME;
   const tripID = ctx.query.id;
   const res = await axios.get(`${hostName}/api/trip/${tripID}`);
-  return { trip: res.data, tripID: tripID };
+  return { trip: { ...res.data, id: Number(tripID) } };
 };
 
 Timeline.propTypes = {
   trip: PropTypes.object.isRequired,
-  tripID: PropTypes.number.isRequired,
 };
