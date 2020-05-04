@@ -16,6 +16,26 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel query()
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $mode
+ * @property string $description
+ * @property string $start
+ * @property string $end
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $trip_id
+ * @property string $from_coordinates
+ * @property string $to_coordinates
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereFromCoordinates($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereMode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereToCoordinates($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereTripId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereUpdatedAt($value)
  */
 class Travel extends Model
 {

@@ -37,6 +37,8 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $trips_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
  * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
+ * @property-read int|null $activities_count
  */
 class User extends Authenticatable
 {
@@ -91,10 +93,24 @@ class User extends Authenticatable
         return $this->hasMany(Message::class);
     }
 
+    /**
+     * Gets the last checked DateTime stamp for a particular trip
+     * @param Trip $trip
+     * @return mixed
+     */
     public function lastChecked(Trip $trip)
     {
         return $this->belongsToMany(Trip::class, 'user_trip')
             ->where('trip_id', $trip->id)
             ->value('last_checked_trip');
+    }
+
+    /**
+     * Gets all activities this user is party to
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function activities()
+    {
+        return $this->morphedByMany(Activity::class, 'pointer', 'user_pointer');
     }
 }
