@@ -29,7 +29,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
   </h2>
   <div>
     <a
-      href="/timeline"
+      href="/trip/1/timeline"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -37,7 +37,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
         className="card"
       >
         <h1>
-          Around New Zealand
+          test1
         </h1>
         <div
           className="alerts"
@@ -74,7 +74,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
       </div>
     </a>
     <a
-      href="/timeline"
+      href="/trip/2/timeline"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -82,7 +82,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
         className="card"
       >
         <h1>
-          Thailand Adventure
+          test2
         </h1>
         <div
           className="alerts"
@@ -92,7 +92,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
       </div>
     </a>
     <a
-      href="/timeline"
+      href="/trip/3/timeline"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -100,7 +100,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
         className="card"
       >
         <h1>
-          Taipei Yummy Trip
+          test3
         </h1>
         <div
           className="alerts"
@@ -137,7 +137,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
       </div>
     </a>
     <a
-      href="/timeline"
+      href="/trip/4/timeline"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
@@ -145,7 +145,7 @@ exports[`Test TripList renders correctly when given four trips Match with Snapsh
         className="card"
       >
         <h1>
-          Africa Safari
+          test4
         </h1>
         <div
           className="alerts"

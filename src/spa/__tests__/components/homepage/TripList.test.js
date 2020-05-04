@@ -20,6 +20,7 @@ describe('Test TripList renders correctly when given no trip', () => {
       icon={faCode}
       tripInfoList={[]}
       title={'Test Trip List'}
+      loading={false}
     />,
   );
   const noTripInstance = noTripRenderer.root;
@@ -44,6 +45,7 @@ describe('Test TripList renders correctly when given four trips', () => {
       icon={faCode}
       tripInfoList={myTripInfos}
       title={'Test Trip List'}
+      loading={false}
     />,
   );
   const fourTripsInstance = fourTripsRenderer.root;
