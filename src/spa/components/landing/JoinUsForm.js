@@ -9,11 +9,12 @@ class JoinUsForm extends React.Component {
   render() {
     return (
       <AuthContext.Consumer>
-        {({ handleEmailInput, userEmail }) => (
+        {({ handleEmailInput, userEmail, checkEmailOccupied }) => (
           <form
             className={styles.form}
             onSubmit={e => {
               e.preventDefault();
+              checkEmailOccupied(userEmail);
               Router.push('/signup');
             }}
           >

@@ -75,7 +75,7 @@ export default class SignUp extends React.Component {
                       debounceTimeout={300}
                       onChange={event => {
                         handleEmailInput(event);
-                        checkEmailOccupied(event);
+                        checkEmailOccupied(event.target.value);
                       }}
                       value={userEmail}
                     />

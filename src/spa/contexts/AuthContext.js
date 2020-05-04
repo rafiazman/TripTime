@@ -70,9 +70,9 @@ const AuthProvider = props => {
     setUserNameInput(updatedUserName);
   }
 
-  function checkEmailOccupied(event) {
+  function checkEmailOccupied(email) {
     axios
-      .head(`${hostName}/api/user/email/${event.target.value}`)
+      .head(`${hostName}/api/user/email/${email}`)
       .then(() => {
         setEmailOccupied(true);
       })
