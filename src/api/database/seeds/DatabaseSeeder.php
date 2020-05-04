@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
              TravelSeeder::class,
              NoteSeeder::class,
              MessageSeeder::class,
+             UserPointerSeeder::class,
          ]);
     }
 }
