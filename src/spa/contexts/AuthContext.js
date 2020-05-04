@@ -22,6 +22,10 @@ const AuthProvider = props => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailOccupied, setEmailOccupied] = useState(false);
+  const [nameOccupied, setNameOccupied] = useState(false);
+  const [passwordConfirmed, setPasswordConfirmed] = useState(true);
+  const [userConfirmedPassword, setUserConfirmedPassword] = useState('');
 
   useEffect(() => {
     if (!currentUser) {
@@ -67,9 +71,30 @@ const AuthProvider = props => {
     setUserNameInput(updatedUserName);
   }
 
-  function handleUserEmail(changeEvent) {
-    let updatedUserEmail = changeEvent.target.value;
-    setUserEmail(updatedUserEmail);
+  function checkNameOccupied(name) {
+    axios
+      .head(`${hostName}/api/user/name/${name}`)
+      .then(() => {
+        setNameOccupied(true);
+      })
+      .catch(() => {
+        setNameOccupied(false);
+      });
+  }
+
+  function checkEmailOccupied(email) {
+    axios
+      .head(`${hostName}/api/user/email/${email}`)
+      .then(() => {
+        setEmailOccupied(true);
+      })
+      .catch(() => {
+        setEmailOccupied(false);
+      });
+  }
+
+  function handleEmailInput(changeEvent) {
+    setUserEmail(changeEvent.target.value);
   }
 
   function handleUserPassword(changeEvent) {
@@ -77,37 +102,46 @@ const AuthProvider = props => {
     setUserPassword(updatedUserPassword);
   }
 
-  const signup = () => {
+  function handleUserPasswordConfirm(changeEvent) {
+    let confirmedPasswordInput = changeEvent.target.value;
+    if (userPassword !== confirmedPasswordInput) setPasswordConfirmed(false);
+    else {
+      setUserConfirmedPassword(confirmedPasswordInput);
+      setPasswordConfirmed(true);
+    }
+  }
+
+  async function signup() {
     axios.defaults.withCredentials = true;
 
     // CSRF COOKIE
-    axios.get(hostName + '/sanctum/csrf-cookie').then(
-      () => {
+    await axios.get(hostName + '/sanctum/csrf-cookie').then(
+      async () => {
         // SIGNUP / REGISTER
-        axios
+        await axios
           .post(hostName + '/api/register', {
             name: userNameInput,
             email: userEmail,
             password: userPassword,
+            password_confirmation: userConfirmedPassword,
           })
           .then(
-            () => {
+            async () => {
               // GET USER
-              axios.get(hostName + '/api/user').then(
+              await axios.get(hostName + '/api/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
                     name: response.data.name,
-                    avatarPath: '/img/avatar/avatar2.jpg',
+                    avatarPath: response.data.avatarPath,
                   });
-                  // avatarPath to be dealt with
 
                   setErrorMessage('');
                   setAuthStatus(LOGGED_IN);
                 },
                 // GET USER ERROR
                 () => {
-                  setErrorMessage('Could not complete the sign up');
+                  setErrorMessage('An internal error occurred');
                 },
               );
             },
@@ -129,24 +163,24 @@ const AuthProvider = props => {
       },
       // COOKIE ERROR
       () => {
-        setErrorMessage('Could not complete the sign up');
+        setErrorMessage('There is a cookie error');
       },
     );
-  };
+  }
 
   async function login() {
     axios.defaults.withCredentials = true;
     await axios.get(hostName + '/sanctum/csrf-cookie').then(
-      () => {
+      async () => {
         // LOGIN
-        axios
+        await axios
           .post(hostName + '/api/login', {
             email: userEmail,
             password: userPassword,
           })
           .then(
-            () => {
-              axios.get(hostName + '/api/user').then(
+            async () => {
+              await axios.get(hostName + '/api/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
@@ -209,12 +243,18 @@ const AuthProvider = props => {
         userEmail,
         currentUser,
         handleUserNameInput,
-        handleUserEmail,
+        handleEmailInput,
+        checkEmailOccupied,
+        checkNameOccupied,
         handleUserPassword,
         signup,
         login,
         logout,
         errorMessage,
+        emailOccupied,
+        nameOccupied,
+        passwordConfirmed,
+        handleUserPasswordConfirm,
       }}
     >
       {/* eslint-disable-next-line react/prop-types */}
