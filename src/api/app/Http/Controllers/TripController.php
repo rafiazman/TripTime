@@ -166,6 +166,56 @@ class TripController extends Controller
         return response()->json($vm);
     }
 
+    public function showActivities(Trip $trip)
+    {
+        $activities = $trip->activities;
+
+        $vmActivities = $activities->map(function ($activity) {
+            $location = $activity->location;
+
+            $fullCoordinates = $location->coordinates;
+            $coordinates = explode(', ', $fullCoordinates);
+            $lat = $coordinates[0];
+            $lng = $coordinates[1];
+
+            return [
+                'id' => $activity->id,
+                'type' => $activity->type,
+                'start' => $activity->start_time,
+                'end' => $activity->end_time,
+                'name' => $activity->name,
+                'description' => $activity->description,
+                'updated' => $activity->updated_at,
+                'address' => $location->address,
+                'gps' => [
+                    'lat' => $lat,
+                    'lng' => $lng,
+                ],
+                'people' => $activity->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'avatarPath' => $user->avatar_url,
+                    ];
+                }),
+                'notes' => $activity->notes->map(function ($note) {
+                    return [
+                        'id' => $note->id,
+                        'author' => [
+                            'id' => $note->user->id,
+                            'name' => $note->user->name,
+                            'avatarPath' => $note->user->avatar_url,
+                        ],
+                        'content' => $note->body,
+                        'updated' => $note->updated_at
+                    ];
+                }),
+            ];
+        });
+
+        return $vmActivities;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
