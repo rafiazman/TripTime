@@ -4,7 +4,7 @@ import React from 'react';
 import styles from '../../css/calendar.module.css';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import EventCard from '../EventCard';
+import ActivityCard from '../ActivityCard';
 
 export default class CalendarSummary extends React.Component {
   render() {
@@ -32,14 +32,14 @@ export default class CalendarSummary extends React.Component {
         <h1>Your Scheduled Adventures</h1>
 
         <h3>Current:</h3>
-        <EventCard
+        <ActivityCard
           activity={currentEvent}
           messageIfNoEvent='Nothing on right now'
           onMap={false}
         />
 
         <h3>Next:</h3>
-        <EventCard activity={nextEvent} onMap={false} />
+        <ActivityCard activity={nextEvent} onMap={false} />
 
         {numEventsThisMonth > 0 && (
           <div>

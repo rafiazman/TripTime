@@ -17,7 +17,7 @@ import {
   faPalette,
   faPaw,
 } from '@fortawesome/free-solid-svg-icons';
-import EventCard from '../EventCard';
+import ActivityCard from '../ActivityCard';
 
 const activityTypes = {
   outdoors: faHiking,
@@ -57,7 +57,7 @@ export default class MapMarker extends React.Component {
           <FontAwesomeIcon icon={activityTypes[this.props.activity.type]} />
         </span>
         {this.state.cardPopped && (
-          <EventCard
+          <ActivityCard
             onMap={true}
             onClose={this.toggleCard(this)}
             activity={this.props.activity}
