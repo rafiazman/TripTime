@@ -113,10 +113,11 @@
 }
 
 @media screen and (max-width: 900px) {
-    .travelCardContainer{
+    .travelCardContainer {
         width: 70%;
         left: 5%;
     }
+
     .tripTimeline::after {
         left: 15%;
         margin-left: -3px;
@@ -156,4 +157,15 @@
 
 }
 
+
+.timelineLoading {
+    width: 100%;
+    position: relative;
+    top: 4rem;
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #ff4200;
+
+}
 
