@@ -90,5 +90,5 @@ export default class TripTimeline extends React.Component {
 }
 
 TripTimeline.propTypes = {
-  tripID: PropTypes.number.isRequired,
+  tripID: PropTypes.string,
 };
