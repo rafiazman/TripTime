@@ -18,7 +18,10 @@ class SideBar extends React.Component {
           {linkNames.map((linkName, index) => (
             <TripLink
               linkName={linkName}
-              isActive={currentElement.toLowerCase() === linkName.toLowerCase()}
+              isActive={
+                currentElement.toLowerCase() === linkName.toLowerCase() ||
+                (currentElement === '[id]' && linkName === 'Timeline')
+              }
               key={index}
               tripID={this.props.tripID}
             />
