@@ -2,6 +2,19 @@
     position: relative;
 }
 
+.line::after {
+    content:" ";
+    width: 1.6rem;
+    height: 1.6rem;
+    background-color: gray;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -2rem;
+    left: calc(-0.8rem + 3px);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
 .tripTimeline, .timelineLeft, .timelineRight {
     box-sizing: border-box;
 }
@@ -12,13 +25,13 @@
     margin: 0 auto;
 }
 
-.tripTimeline::after {
+.line {
     content: '';
     position: absolute;
     width: 6px;
     background-color: #888;
     top: 0;
-    bottom: 0;
+    bottom: -50px;
     left: 50%;
     margin-left: -3px;
 }
@@ -87,11 +100,14 @@
     border-width: 10px 0 10px 14px;
     border-color: transparent transparent transparent var(--trip-orange);
 }
-
 .travelCardContainer {
-    position: relative;
+    padding: 20px 0;
+    margin: 0 auto;
     width: 80%;
-    margin: 20px auto;
+}
+.travelCard {
+    position: relative;
+    width: 100%;
     z-index: 2;
     background: white;
     min-height: 2rem;
@@ -113,11 +129,15 @@
 }
 
 @media screen and (max-width: 900px) {
-    .travelCardContainer{
+    .travelCardContainer {
         width: 70%;
         left: 5%;
     }
-    .tripTimeline::after {
+    .travelCard{
+        left: 20px;
+    }
+
+    .line {
         left: 15%;
         margin-left: -3px;
     }
@@ -127,7 +147,6 @@
         width: 70%;
         padding-right: 0;
         padding-left: 42px;
-
     }
 
     .timelineLeft::before {
@@ -140,7 +159,7 @@
         left: -17px;
     }
 
-    .travelCardContainer::before {
+    .travelCard::before {
         content: "";
         z-index: 3;
         width: 0;
@@ -155,5 +174,20 @@
     }
 
 }
+
+
+.timelineLoading {
+    width: 100%;
+    position: relative;
+    top: 4rem;
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #ff4200;
+}
+.timelineLoading p {
+    margin-left: 1rem;
+}
+
 
 

@@ -9,3 +9,11 @@
 .travelTitle{
     font-weight: bold;
 }
+
+.time{
+    display: flex;
+    flex-direction: column
+}
+.time>span>span {
+    margin-left: 0.5rem;
+}

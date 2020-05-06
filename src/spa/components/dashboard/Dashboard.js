@@ -4,10 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SiteInfo from '../SiteInfo';
 import Link from 'next/link';
-import myTripInfos from '../../app/dummy-data/my-trip-infos';
 import Greeting from '../Greeting';
 import styles from '../../css/homepage.module.css';
 import TripList from './TripList';
+import axios from 'axios';
+
 import {
   faShoePrints,
   faPen,
@@ -15,10 +16,53 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pastTrips: [],
+      currentTrips: [],
+      planningTrips: [],
+      planningLoading: true,
+      currentLoading: true,
+      pastLoading: true,
+    };
+  }
+
+  componentDidMount() {
+    const hostName = process.env.API_HOSTNAME;
+    axios
+      .get(`${hostName}/api/trips/current`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips =>
+        this.setState(() => ({ currentTrips: trips, currentLoading: false })),
+      );
+    axios
+      .get(`${hostName}/api/trips/past`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips =>
+        this.setState(() => ({ pastTrips: trips, pastLoading: false })),
+      );
+    axios
+      .get(`${hostName}/api/trips/future`)
+      .then(
+        response => response.data,
+        () => [],
+      )
+      .then(trips =>
+        this.setState(() => ({ planningTrips: trips, planningLoading: false })),
+      );
+  }
+
   render() {
-    const currentTrips = this.getCurrentTrips();
-    const pastTrips = this.getPastTrips();
-    const planningTrips = this.getPlanningTrips();
+    const currentTrips = this.state.currentTrips;
+    const pastTrips = this.state.pastTrips;
+    const planningTrips = this.state.planningTrips;
     return (
       <div className={styles.page}>
         <div className={styles.content}>
@@ -28,20 +72,23 @@ export default class Dashboard extends React.Component {
             title='Your Current Trip: '
             tripInfoList={currentTrips}
             displayIfNoTrip={<h3>Your next adventure is yet to come...</h3>}
+            loading={this.state.currentLoading}
           />
+
           <TripList
             icon={faPen}
             title='You are Planning for: '
             tripInfoList={planningTrips}
             displayIfNoTrip={
               <h3>
-                No plans yet.{' '}
+                No plans yet.
                 <Link href='/'>
                   <a>Plan for a trip</a>
                 </Link>{' '}
                 today!
               </h3>
             }
+            loading={this.state.planningLoading}
           />
           <TripList
             icon={faClock}
@@ -52,20 +99,12 @@ export default class Dashboard extends React.Component {
                 No past trips yet. What memory will you create at TripTime?
               </h3>
             }
+            loading={this.state.pastLoading}
           />
         </div>
         <SiteInfo />
       </div>
     );
-  }
-  getPlanningTrips() {
-    return myTripInfos;
-  }
-  getPastTrips() {
-    return myTripInfos;
-  }
-  getCurrentTrips() {
-    return myTripInfos;
   }
 }
 

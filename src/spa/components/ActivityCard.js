@@ -1,6 +1,5 @@
 /** @format */
 
-import moment from 'moment';
 import NotesCard from './NotesCard';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -14,19 +13,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import PeopleList from './PeopleList';
+import TimeDisplay from './TimeDisplay';
 
 import Tooltip from './Tooltip';
 
-const calendarFormat = {
-  sameDay: '[Today at] LT',
-  nextDay: '[Tomorrow at] LT',
-  nextWeek: 'dddd [at] LT',
-  lastDay: '[Yesterday at] LT',
-  lastWeek: '[Last] dddd [at] LT',
-  sameElse: 'DD/MM/YYYY [at] LT',
-};
-
-export default class EventCard extends React.Component {
+export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -47,9 +38,6 @@ export default class EventCard extends React.Component {
     const messageIfNoEvent = this.props.messageIfNoEvent;
     const onMap = this.props.onMap;
     if (activity) {
-      let startTime = moment(activity.start).calendar(null, calendarFormat);
-      let endTime = moment(activity.end).calendar(null, calendarFormat);
-
       return (
         <div className={styles.eventCard}>
           {this.props.onClose && (
@@ -64,10 +52,12 @@ export default class EventCard extends React.Component {
             <strong>{activity.name}</strong>{' '}
             <PeopleList people={activity.people} />
             <span className={styles.startTime}>
-              <FontAwesomeIcon icon={faClock} /> From: {startTime}
+              <FontAwesomeIcon icon={faClock} /> From:{' '}
+              <TimeDisplay time={activity.start} />
             </span>
             <span className={styles.endTime}>
-              <FontAwesomeIcon icon={faClock} /> To: {endTime}
+              <FontAwesomeIcon icon={faClock} /> To:
+              <TimeDisplay time={activity.end} />
             </span>
             <span>{activity.description}</span>
             <div className={styles.options}>
@@ -105,7 +95,7 @@ export default class EventCard extends React.Component {
   }
 }
 
-EventCard.propTypes = {
+ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,

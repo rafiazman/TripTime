@@ -1,14 +1,9 @@
 /** @format */
 
-import trip from './trip';
-import trip1 from './trip1';
-import trip2 from './trip2';
-import trip3 from './trip3';
-
 const myTripInfos = [
-  { trip: trip, updated: true },
-  { trip: trip1, updated: false },
-  { trip: trip2, updated: true },
-  { trip: trip3, updated: false },
+  { updated: true, id: 1, name: 'test1' },
+  { updated: false, id: 2, name: 'test2' },
+  { updated: true, id: 3, name: 'test3' },
+  { updated: false, id: 4, name: 'test4' },
 ];
 export default myTripInfos;

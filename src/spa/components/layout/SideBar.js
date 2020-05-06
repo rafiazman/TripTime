@@ -18,8 +18,12 @@ class SideBar extends React.Component {
           {linkNames.map((linkName, index) => (
             <TripLink
               linkName={linkName}
-              isActive={currentElement.toLowerCase() === linkName.toLowerCase()}
+              isActive={
+                currentElement.toLowerCase() === linkName.toLowerCase() ||
+                (currentElement === '[id]' && linkName === 'Timeline')
+              }
               key={index}
+              tripID={this.props.tripID}
             />
           ))}
         </div>
@@ -49,7 +53,7 @@ class TripLink extends React.Component {
     url('/img/menu-bg/${linkName.toLowerCase()}.jpg')`,
     };
     return (
-      <Link href={'/' + linkName.toLowerCase()}>
+      <Link href={`/trip/${this.props.tripID}/${linkName.toLowerCase()}`}>
         <a style={tripAnchorStyle}>
           <div
             className={isActive ? style.active : style.tag}
@@ -66,8 +70,10 @@ class TripLink extends React.Component {
 TripLink.propTypes = {
   linkName: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
+  tripID: PropTypes.number.isRequired,
 };
 
 SideBar.propTypes = {
   router: PropTypes.object.isRequired,
+  tripID: PropTypes.number.isRequired,
 };

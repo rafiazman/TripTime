@@ -16,6 +16,8 @@ import {
   faHorse,
 } from '@fortawesome/free-solid-svg-icons';
 import PeopleList from '../PeopleList';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import TimeDisplay from '../TimeDisplay';
 
 const travelModeIcons = {
   bus: faBus,
@@ -38,6 +40,16 @@ export default class TravelCard extends React.Component {
           {travel.description}
         </span>
         <PeopleList people={travel.people} />
+        <div className={styles.time}>
+          <span>
+            <FontAwesomeIcon icon={faClock} /> Departs:
+            <TimeDisplay time={travel.start} />
+          </span>
+          <span>
+            <FontAwesomeIcon icon={faClock} /> Arrives:
+            <TimeDisplay time={travel.end} />
+          </span>
+        </div>
       </div>
     );
   }

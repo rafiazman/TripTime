@@ -6,6 +6,7 @@ import Link from 'next/link';
 import TripCard from './TripCard';
 import styles from '../../css/homepage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactLoading from 'react-loading';
 
 export default class TripList extends React.Component {
   render() {
@@ -16,13 +17,17 @@ export default class TripList extends React.Component {
           {' '}
           <FontAwesomeIcon icon={this.props.icon} /> {this.props.title}{' '}
         </h2>
-        {tripInfoList.length > 0 ? (
+        {this.props.loading ? (
+          <div className={styles.loadingContainer}>
+            <ReactLoading type='bubbles' color='#ff4200' />
+          </div>
+        ) : tripInfoList.length > 0 ? (
           <div>
             {tripInfoList.map((tripInfo, index) => (
-              <Link href='/timeline' key={index}>
+              <Link href={`/trip/${tripInfo.id}`} key={index}>
                 <a>
                   <TripCard
-                    tripName={tripInfo.trip.name}
+                    tripName={tripInfo.name}
                     updated={tripInfo.updated}
                   />
                 </a>
@@ -42,4 +47,5 @@ TripList.propTypes = {
   icon: PropTypes.object.isRequired,
   tripInfoList: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
