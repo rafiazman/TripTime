@@ -9,6 +9,8 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 
 export default class TripTimeline extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,6 +50,8 @@ export default class TripTimeline extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const hostName = process.env.API_HOSTNAME;
     const tripID = this.props.tripID;
     axios
@@ -56,7 +60,9 @@ export default class TripTimeline extends React.Component {
         res => this.setState(() => ({ activities: res.data })),
         () => this.setState(() => ({ activities: [] })),
       )
-      .then(() => this.setState(() => ({ activityLoading: false })));
+      .then(() => {
+        if (this._isMounted) this.setState(() => ({ activityLoading: false }));
+      });
 
     axios
       .get(`${hostName}/api/trip/${tripID}/travels`)
@@ -64,7 +70,12 @@ export default class TripTimeline extends React.Component {
         res => this.setState(() => ({ travels: res.data })),
         () => this.setState(() => ({ travels: [] })),
       )
-      .then(() => this.setState(() => ({ travelLoading: false })));
+      .then(() => {
+        if (this._isMounted) this.setState(() => ({ travelLoading: false }));
+      });
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
