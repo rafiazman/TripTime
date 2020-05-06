@@ -28,7 +28,9 @@ export default class TripTimeline extends React.Component {
       if (event.type === 'travel')
         return (
           <div key={index} className={styles.travelCardContainer}>
-            <TravelCard travel={event} />
+            <div className={styles.travelCard}>
+              <TravelCard travel={event} />
+            </div>
           </div>
         );
       else {
@@ -83,6 +85,7 @@ export default class TripTimeline extends React.Component {
               }),
             )
           )}
+          <div className={styles.line} />
         </div>
       </div>
     );
