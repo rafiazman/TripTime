@@ -16,6 +16,7 @@ import PeopleList from './PeopleList';
 import TimeDisplay from './TimeDisplay';
 
 import Tooltip from './Tooltip';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
@@ -39,53 +40,65 @@ export default class ActivityCard extends React.Component {
     const onMap = this.props.onMap;
     if (activity) {
       return (
-        <div className={styles.eventCard}>
-          {this.props.onClose && (
-            <span
-              className={styles.closeButton}
-              onClick={() => this.props.onClose()}
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </span>
-          )}
-          <div>
-            <strong>{activity.name}</strong>{' '}
-            <PeopleList people={activity.people} />
-            <span className={styles.startTime}>
-              <FontAwesomeIcon icon={faClock} /> From:{' '}
-              <TimeDisplay time={activity.start} />
-            </span>
-            <span className={styles.endTime}>
-              <FontAwesomeIcon icon={faClock} /> To:
-              <TimeDisplay time={activity.end} />
-            </span>
-            <span>{activity.description}</span>
-            <div className={styles.options}>
-              {!onMap && (
-                <span>
-                  <Tooltip
-                    text={'Show on Map'}
-                    component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
-                  />
-                </span>
-              )}
-              <span onClick={() => this.toggleNotes()}>
-                {this.state.notePopped ? (
-                  <Tooltip
-                    text={'Hide Notes'}
-                    component={<FontAwesomeIcon icon={faChevronCircleUp} />}
-                  />
-                ) : (
-                  <Tooltip
-                    text={'Show Notes'}
-                    component={<FontAwesomeIcon icon={faChevronCircleDown} />}
-                  />
+        <AuthContext.Consumer>
+          {({ currentUser }) => {
+            return (
+              <div className={styles.eventCard}>
+                {this.props.onClose && (
+                  <span
+                    className={styles.closeButton}
+                    onClick={() => this.props.onClose()}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </span>
                 )}
-              </span>
-            </div>
-          </div>
-          {this.state.notePopped && <NotesCard notes={activity.notes} />}
-        </div>
+                <div>
+                  <strong>{activity.name}</strong>{' '}
+                  <PeopleList people={activity.people} />
+                  <span className={styles.startTime}>
+                    <FontAwesomeIcon icon={faClock} /> From:{' '}
+                    <TimeDisplay time={activity.start} />
+                  </span>
+                  <span className={styles.endTime}>
+                    <FontAwesomeIcon icon={faClock} /> To:
+                    <TimeDisplay time={activity.end} />
+                  </span>
+                  <span>{activity.description}</span>
+                  <div className={styles.options}>
+                    {!onMap && (
+                      <span>
+                        <Tooltip
+                          text={'Show on Map'}
+                          component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
+                        />
+                      </span>
+                    )}
+                    <span onClick={() => this.toggleNotes()}>
+                      {this.state.notePopped ? (
+                        <Tooltip
+                          text={'Hide Notes'}
+                          component={
+                            <FontAwesomeIcon icon={faChevronCircleUp} />
+                          }
+                        />
+                      ) : (
+                        <Tooltip
+                          text={'Show Notes'}
+                          component={
+                            <FontAwesomeIcon icon={faChevronCircleDown} />
+                          }
+                        />
+                      )}
+                    </span>
+                  </div>
+                </div>
+                {this.state.notePopped && (
+                  <NotesCard notes={activity.notes} me={currentUser} />
+                )}
+              </div>
+            );
+          }}
+        </AuthContext.Consumer>
       );
     } else {
       return (
