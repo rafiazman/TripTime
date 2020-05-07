@@ -6,7 +6,6 @@
     position: relative;
     background-color: rgba(256,256,256,0.9);
 }
-
 .options {
     display: flex;
     flex-direction: row;

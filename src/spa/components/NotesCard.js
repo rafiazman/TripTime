@@ -1,9 +1,13 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../css/note.module.css';
 import TimeAgo from 'react-timeago/lib';
+// import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import Tooltip from './Tooltip';
 
 class NotesCard extends React.Component {
   render() {
@@ -12,12 +16,20 @@ class NotesCard extends React.Component {
       <div className={styles.notesCard}>
         {notes.length < 1 ? (
           <div className={styles.noNote}>
-            Nobody added notes to this activity yet...
+            Your friends have not added notes to this activity yet...
           </div>
         ) : (
-          notes.map((note, index) => <OneNote key={index} note={note} />)
+          <div className={styles.friendNotes}>
+            {notes.map((note, index) => {
+              if (note.author.id !== this.props.me.id)
+                return <OneNote key={index} note={note} />;
+            })}
+          </div>
         )}
-        <AddNote />
+        <MyNote
+          note={notes.find(note => note.author.id === this.props.me.id)}
+          me={this.props.me}
+        />
       </div>
     );
   }
@@ -25,6 +37,7 @@ class NotesCard extends React.Component {
 
 NotesCard.propTypes = {
   notes: PropTypes.array.isRequired,
+  me: PropTypes.object.isRequired,
 };
 
 class OneNote extends React.Component {
@@ -54,22 +67,97 @@ OneNote.propTypes = {
   note: PropTypes.object.isRequired,
 };
 
-class AddNote extends React.Component {
-  render() {
-    return (
-      <div>
-        <form className={styles.addNoteField}>
-          <textarea
-            rows={3}
-            className={styles.noteInput}
-            placeholder='Enter your note to friends here'
-          />
-          <button type='submit' className={styles.addNoteButton}>
-            Add Note
-          </button>
-        </form>
+function EditNote(props) {
+  const [noteInput, setNoteInput] = useState(props.noteContent);
+  return (
+    <div className={styles.myNoteContainer}>
+      <div className={styles.addNoteField}>
+        <textarea
+          rows={3}
+          className={styles.noteInput}
+          placeholder='Enter your note to friends here'
+          value={noteInput}
+          onChange={e => {
+            setNoteInput(e.target.value);
+          }}
+        />
+        <button
+          className={styles.addNoteButton}
+          onClick={() => props.noteHandler(noteInput)}
+        >
+          Update my note
+        </button>
       </div>
-    );
+    </div>
+  );
+}
+
+EditNote.propTypes = {
+  noteContent: PropTypes.string.isRequired,
+  noteHandler: PropTypes.func.isRequired,
+};
+
+class MyNote extends React.Component {
+  static propTypes = {
+    note: PropTypes.object,
+    me: PropTypes.object.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = { myNote: this.props.note, editing: false };
+  }
+
+  render() {
+    if (!this.state.myNote || this.state.editing)
+      return (
+        <EditNote
+          noteContent={this.state.myNote ? this.state.myNote.content : ''}
+          noteHandler={this.updateMyNote()}
+        />
+      );
+    else
+      return (
+        <div className={styles.myNoteContainer}>
+          <span> Your Note, </span>
+          <TimeAgo
+            date={this.state.myNote.updated}
+            minPeriod={10}
+            className={styles.timeUpdated}
+          />
+          <Tooltip
+            text='Edit Note'
+            component={
+              <FontAwesomeIcon
+                icon={faPencilAlt}
+                onClick={e => {
+                  this.startEditing(e);
+                }}
+                className={styles.editIcon}
+              />
+            }
+          />
+          <div>{this.state.myNote.content}</div>
+        </div>
+      );
+  }
+
+  startEditing() {
+    this.setState(() => ({ editing: true }));
+  }
+
+  updateMyNote() {
+    const that = this;
+    return function(newContent) {
+      that.setState(() => ({
+        myNote: {
+          content: newContent,
+          updated: new Date(),
+          author: that.props.me,
+        },
+        editing: false,
+      }));
+    };
   }
 }
 
