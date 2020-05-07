@@ -170,23 +170,25 @@
         position: absolute;
         left: -18px;
         top: 15px;
-
     }
-
 }
 
-
 .timelineLoading {
-    width: 100%;
+    width: 20rem;
+    padding: 2rem;
+    margin: 0 auto;
     position: relative;
-    top: 4rem;
+    top: 10rem;
     display: flex;
     justify-content: center;
     font-size: 1.2rem;
     color: #ff4200;
+    z-index: 3;
+
 }
 .timelineLoading p {
     margin-left: 1rem;
+
 }
 
 
