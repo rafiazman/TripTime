@@ -1,33 +1,74 @@
 /** @format */
 
 import React from 'react';
-import style from '../../css/trip-tag.module.css';
+import tagStyles from '../../css/trip-tag.module.css';
+import layoutStyles from '../../css/layout.module.css';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCircle,
+  faChevronCircleLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 const linkNames = ['Timeline', 'Map', 'Calendar', 'Tools'];
 
 class SideBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sideBarPopped: false,
+    };
+  }
+
+  toggleSideBar() {
+    this.setState(state => ({ sideBarPopped: !state.sideBarPopped }));
+  }
+
   render() {
     const pathTokens = this.props.router.pathname.split('/');
     const currentElement = pathTokens[pathTokens.length - 1];
     return (
-      <aside>
-        <div>
-          {linkNames.map((linkName, index) => (
-            <TripLink
-              linkName={linkName}
-              isActive={
-                currentElement.toLowerCase() === linkName.toLowerCase() ||
-                (currentElement === '[id]' && linkName === 'Timeline')
-              }
-              key={index}
-              tripID={this.props.tripID}
-            />
-          ))}
+      <div
+        className={
+          this.state.sideBarPopped ? layoutStyles.aside : layoutStyles.foldAside
+        }
+      >
+        <div
+          className={
+            this.state.sideBarPopped
+              ? layoutStyles.toggleBarPopped
+              : layoutStyles.toggleSideBar
+          }
+          onClick={() => this.toggleSideBar()}
+        >
+          {this.state.sideBarPopped ? (
+            <FontAwesomeIcon icon={faChevronCircleLeft} />
+          ) : (
+            <>
+              <FontAwesomeIcon icon={faCircle} />
+              <FontAwesomeIcon icon={faCircle} />
+              <FontAwesomeIcon icon={faCircle} />
+            </>
+          )}
         </div>
-      </aside>
+        <div className={layoutStyles.sideBar}>
+          <div className={layoutStyles.linksContainer}>
+            {linkNames.map((linkName, index) => (
+              <TripLink
+                tripID={this.props.tripID}
+                linkName={linkName}
+                isActive={
+                  currentElement.toLowerCase() === linkName.toLowerCase() ||
+                  (currentElement === '[id]' && linkName === 'Timeline')
+                }
+                key={index}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -56,10 +97,10 @@ class TripLink extends React.Component {
       <Link href={`/trip/${this.props.tripID}/${linkName.toLowerCase()}`}>
         <a style={tripAnchorStyle}>
           <div
-            className={isActive ? style.active : style.tag}
+            className={isActive ? tagStyles.active : tagStyles.tag}
             style={isActive ? activeBackgroundStyle : backgroundImageStyle}
           >
-            <span className={style.name}>{linkName}</span>
+            <span className={tagStyles.name}>{linkName}</span>
           </div>
         </a>
       </Link>
