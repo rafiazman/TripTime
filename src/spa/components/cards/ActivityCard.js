@@ -3,20 +3,19 @@
 import NotesCard from './NotesCard';
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../css/event-card.module.css';
+import styles from '../../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapMarkerAlt,
   faChevronCircleUp,
   faChevronCircleDown,
-  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
-import PeopleList from './PeopleList';
-import TimeDisplay from './TimeDisplay';
+import PeopleList from '../PeopleList';
+import TimeDisplay from '../TimeDisplay';
 
-import Tooltip from './Tooltip';
-import { AuthContext } from '../contexts/AuthContext';
+import Tooltip from '../Tooltip';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
@@ -43,16 +42,11 @@ export default class ActivityCard extends React.Component {
         <AuthContext.Consumer>
           {({ currentUser }) => {
             return (
-              <div className={styles.eventCard}>
-                {this.props.onClose && (
-                  <span
-                    className={styles.closeButton}
-                    onClick={() => this.props.onClose()}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </span>
-                )}
-                <div>
+              <div
+                className={styles.eventCard}
+                style={onMap ? { border: '0' } : {}}
+              >
+                <div className={onMap ? styles.cardOnMap : undefined}>
                   <strong>{activity.name}</strong>{' '}
                   <PeopleList people={activity.people} />
                   <span className={styles.startTime}>
@@ -64,7 +58,7 @@ export default class ActivityCard extends React.Component {
                     <TimeDisplay time={activity.end} />
                   </span>
                   <span>{activity.description}</span>
-                  <div className={styles.options}>
+                  <div className={onMap ? styles.optionsOnMap : styles.options}>
                     {!onMap && (
                       <span>
                         <Tooltip
@@ -93,7 +87,11 @@ export default class ActivityCard extends React.Component {
                   </div>
                 </div>
                 {this.state.notePopped && (
-                  <NotesCard notes={activity.notes} me={currentUser} />
+                  <NotesCard
+                    notes={activity.notes}
+                    me={currentUser}
+                    onMap={onMap}
+                  />
                 )}
               </div>
             );
@@ -112,5 +110,4 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
 };

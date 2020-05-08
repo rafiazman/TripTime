@@ -2,9 +2,9 @@
 
 import React from 'react';
 import styles from '../../css/timeline.module.css';
-import ActivityCard from '../ActivityCard';
+import ActivityCard from '../cards/ActivityCard';
 import PropTypes from 'prop-types';
-import TravelCard from './TravelCard';
+import TravelCard from '../cards/TravelCard';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
 
@@ -85,7 +85,7 @@ export default class TripTimeline extends React.Component {
           {this.state.activityLoading || this.state.travelLoading ? (
             <div className={styles.timelineLoading}>
               <ReactLoading type='spinningBubbles' color='#ff4200' />
-              <p>Loading the timeline...</p>
+              <p> Loading the timeline...</p>
             </div>
           ) : (
             this.populateTimeline(
