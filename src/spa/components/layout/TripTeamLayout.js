@@ -23,5 +23,5 @@ export default class TripTeamLayout extends React.Component {
 TripTeamLayout.propTypes = {
   children: PropTypes.node.isRequired,
   user: PropTypes.any,
-  tripID: PropTypes.number.isRequired,
+  tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

@@ -22,5 +22,5 @@ Timeline.getInitialProps = ({ query }) => {
 };
 
 Timeline.propTypes = {
-  tripID: PropTypes.number.isRequired,
+  tripID: PropTypes.string.isRequired,
 };

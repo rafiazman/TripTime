@@ -111,10 +111,10 @@ class TripLink extends React.Component {
 TripLink.propTypes = {
   linkName: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
-  tripID: PropTypes.number.isRequired,
+  tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 SideBar.propTypes = {
   router: PropTypes.object.isRequired,
-  tripID: PropTypes.number.isRequired,
+  tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
