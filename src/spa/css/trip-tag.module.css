@@ -1,6 +1,5 @@
 .tag {
     width: 140px;
-
     position: relative;
     height: 11vh;
     cursor: pointer;
@@ -8,7 +7,6 @@
     box-shadow: -1px 2px 5px #888;
     border-top-left-radius: 9999px;
     border-bottom-left-radius: 9999px;
-
 }
 
 .active {
