@@ -36,10 +36,10 @@ export default class TopBar extends React.Component {
       ];
     else
       return [
-        <Link href='signup' key={0}>
+        <Link href='/signup' key={0}>
           <a>Sign Up</a>
         </Link>,
-        <Link href='login' key={1}>
+        <Link href='/login' key={1}>
           <a>Log In</a>
         </Link>,
       ];
@@ -64,7 +64,7 @@ export default class TopBar extends React.Component {
               </span>
               <span className={styles.options}>
                 {currentUser && (
-                  <Link href='profile'>
+                  <Link href='/'>
                     <a>
                       <img
                         src={currentUser.avatarPath}
