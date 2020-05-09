@@ -319,6 +319,7 @@ class TripController extends Controller
     /**
      * Gets the Trip JSON ViewModel from a given Trip
      * @param Trip $trip
+     * @return array
      */
     private function getTripVm(Trip $trip) {
         $participants = $trip->users->map(function ($user) {
@@ -331,7 +332,7 @@ class TripController extends Controller
         });
         $participants = $participants->sortBy('id');
 
-        $vm = [
+        return [
             'name' => $trip->name,
             'description' => $trip->description,
             'participants' => $participants,
