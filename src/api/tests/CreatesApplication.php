@@ -17,11 +17,12 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        // Workaround for running PHPUnit via artisan: https://github.com/laravel/framework/issues/13374
-        $this->clearCache();
-        // these are to refresh configs and environment variables, since $app has loaded cache before it was cleared
-        $app->make(\Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class)->bootstrap($app);
-        $app->make(\Illuminate\Foundation\Bootstrap\LoadConfiguration::class)->bootstrap($app);
+        // TODO: Investigate necessity of workaround in future
+        // // Workaround for running PHPUnit via artisan: https://github.com/laravel/framework/issues/13374
+        // $this->clearCache();
+        // // these are to refresh configs and environment variables, since $app has loaded cache before it was cleared
+        // $app->make(\Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class)->bootstrap($app);
+        // $app->make(\Illuminate\Foundation\Bootstrap\LoadConfiguration::class)->bootstrap($app);
 
         return $app;
     }

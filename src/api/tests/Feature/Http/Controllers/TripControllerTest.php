@@ -9,8 +9,6 @@ use App\Travel;
 use App\Trip;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TripControllerTest extends TestCase
