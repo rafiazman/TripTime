@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTripRequest;
 use App\Trip;
 use Illuminate\Http\Request;
 
@@ -128,12 +129,36 @@ class TripController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateTripRequest $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(CreateTripRequest $request)
     {
-        //
+        $startDateTime = \date('Y-m-d H:i:s', strtotime($request->start));
+        $endDateTime = \date('Y-m-d H:i:s', strtotime($request->end));
+
+        $user = $request->user();
+        $trip = new Trip([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $startDateTime,
+            'end_date' => $endDateTime
+        ]);
+        $trip->save();
+        $trip->users()->save($user, [
+            'last_checked_trip' => now(),
+            'last_checked_chat' => now(),
+        ]);
+
+        $tripVm = $this->getTripVm($trip);
+        $tripVm['id'] = $trip->id;
+
+        $vm = [
+            'message' => 'Trip successfully created.',
+            'trip' => $tripVm
+        ];
+
+        return response()->json($vm);
     }
 
     /**

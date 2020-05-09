@@ -256,6 +256,7 @@ class TripControllerTest extends TestCase
             ]);
     }
 
+
     public function joins_currently_logged_in_user_to_a_trip()
     {
         $user = factory(User::class)->create();
@@ -275,6 +276,71 @@ class TripControllerTest extends TestCase
             'email' => $user->email,
             'id' => $user->id,
             'name' => $user->name,
+        ]);
+    }
+
+    /** @test */
+    public function creates_a_new_trip_unsuccessfully_when_start_date_is_before_today()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->json('post', '/api/trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes',
+            'start' => now()->addDays(-1)->toDateString(),
+            'end' => now()->toDateString()
+        ]);
+
+        $response->assertStatus(422);
+        $this->assertDatabaseMissing('trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes'
+        ]);
+    }
+
+    /** @test */
+    public function creates_a_new_trip_unsuccessfully_when_end_date_is_before_start_date()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->json('post', '/api/trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes',
+            'start' => now()->toDateString(),
+            'end' => now()->addDays(-5)->toDateString()
+        ]);
+
+        $response->assertStatus(422);
+        $this->assertDatabaseMissing('trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes'
+        ]);
+    }
+
+    /** @test */
+    public function creates_a_new_trip_with_valid_data()
+    {
+        $user = factory(User::class)->create();
+        $startDate = now()->toDateString();
+        $endDate = now()->addDays(1)->toDateString();
+
+        $response = $this->actingAs($user)->json('post', '/api/trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes',
+            'start' => $startDate,
+            'end' => $endDate
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertEquals('Trip successfully created.', $response['message']);
+        $this->assertEquals('New Trip', $response['trip']['name']);
+        $this->assertEquals('A new trip created for test purposes', $response['trip']['description']);
+        $this->assertEquals("$startDate 00:00:00", $response['trip']['start']);
+        $this->assertEquals("$endDate 00:00:00", $response['trip']['end']);
+        $this->assertEquals($user->id, $response['trip']['participants'][0]['id']);
+        $this->assertDatabaseHas('trips', [
+            'name' => 'New Trip',
+            'description' => 'A new trip created for test purposes'
         ]);
     }
 }

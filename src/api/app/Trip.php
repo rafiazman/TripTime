@@ -36,6 +36,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Trip extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'start_date',
+        'end_date'
+    ];
+
     public function activities()
     {
         return $this->hasMany(Activity::class);
