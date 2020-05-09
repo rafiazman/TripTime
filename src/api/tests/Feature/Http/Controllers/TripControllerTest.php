@@ -272,11 +272,11 @@ class TripControllerTest extends TestCase
         $this->assertEquals($trip->end_date, $response['end']);
 
         $response->assertJsonFragment([
-                'avatarPath' => $user->avatar_url,
-                'email' => $user->email,
-                'id' => $user->id,
-                'name' => $user->name,
-        );
+            'avatarPath' => $user->avatar_url,
+            'email' => $user->email,
+            'id' => $user->id,
+            'name' => $user->name,
+        ]);
     }
 
     /** @test */
