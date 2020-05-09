@@ -17,9 +17,14 @@ class TripSummary extends React.Component {
   componentDidMount() {
     const tripID = this.props.tripID;
     const hostName = process.env.API_HOSTNAME;
+    axios.defaults.withCredentials = true;
     axios.get(`${hostName}/api/trip/${tripID}`).then(
       res => this.setState(() => ({ trip: res.data })),
-      () => this.props.router.push('/'),
+      err => {
+        if (err.response.status === 401)
+          this.setState(() => ({ trip: undefined }));
+        else this.props.router.push('/');
+      },
     );
   }
 
