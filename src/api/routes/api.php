@@ -25,8 +25,12 @@ Route::get('/trips/current', 'TripController@currentTrips');
 Route::get('/trips/future', 'TripController@futureTrips');
 
 Route::get('/trip/{trip}', 'TripController@show');
+
 Route::post('/trip/{trip}/users', 'TripController@addUser');
+
 Route::get('/trip/{trip}/activities', 'TripController@showActivities');
+Route::post('/trip/{trip}/activities', 'TripController@addActivity');
+
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 
 
