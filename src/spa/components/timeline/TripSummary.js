@@ -44,7 +44,7 @@ class TripSummary extends React.Component {
         {!user && (
           <div className={'fit-center'}>
             <br />
-            <Link href={'login'}>
+            <Link href={'/login'}>
               <a> Log in </a>
             </Link>
             to view trip details
