@@ -144,23 +144,7 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        $participants = $trip->users->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatarPath' => $user->avatar_url,
-            ];
-        });
-        $participants = $participants->sortBy('id');
-
-        $vm = [
-            'name' => $trip->name,
-            'description' => $trip->description,
-            'participants' => $participants,
-            'start' => $trip->start_date,
-            'end' => $trip->end_date
-        ];
+        $vm = $this->getTripVm($trip);
 
         return response()->json($vm);
     }
@@ -280,6 +264,25 @@ class TripController extends Controller
     }
 
     /**
+     * Adds the currently logged in user as a participant to the given Trip
+     * @param Request $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addUser(Request $request, Trip $trip)
+    {
+        $user = $request->user();
+        $trip->users()->save($user);
+
+        $tripVm = $this->getTripVm($trip);
+
+        return response()->json([
+            'message' => "Successfully added $user->email to $trip->name",
+            'trip' => $tripVm
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Trip  $trip
@@ -311,5 +314,29 @@ class TripController extends Controller
     public function destroy(Trip $trip)
     {
         //
+    }
+
+    /**
+     * Gets the Trip JSON ViewModel from a given Trip
+     * @param Trip $trip
+     */
+    private function getTripVm(Trip $trip) {
+        $participants = $trip->users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url,
+            ];
+        });
+        $participants = $participants->sortBy('id');
+
+        $vm = [
+            'name' => $trip->name,
+            'description' => $trip->description,
+            'participants' => $participants,
+            'start' => $trip->start_date,
+            'end' => $trip->end_date
+        ];
     }
 }
