@@ -58,7 +58,7 @@ class UserControllerTest extends TestCase
             'password_confirmation' => 'newUserPassword',
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $this->assertDatabaseHas('users', [
             'email' => 'newuser@user.com',
             'name' => 'New User',
