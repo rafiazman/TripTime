@@ -14,9 +14,6 @@ class UserController extends Controller
     {
         $this->middleware('auth:sanctum',
             ['except' => [
-                'register',
-                'login',
-                'logout',
                 'checkExists'
             ]]);
     }
@@ -30,55 +27,6 @@ class UserController extends Controller
     {
         // If User is not in database, Laravel Route Model Binding will automatically return 404
         return response(null, 200);
-    }
-
-    /**
-     * Registers a new user into the database
-     * @param CreateUserRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(CreateUserRequest $request)
-    {
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-        ]);
-
-        Auth::guard()->login($user);
-
-        return response()->json([
-            'user' => $user,
-            'message' => 'Registration successful, user logged in.'
-        ], 200);
-    }
-
-    /**
-     * Logs in a user with the given e-mail and password
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            $authuser = auth()->user();
-            return response()->json(['message' => 'Login successful.'], 200);
-        } else {
-            return response()->json(['message' => 'Invalid email or password.'], 401);
-        }
-    }
-
-    /**
-     * Logs out a currently logged in user
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        Auth::logout();
-        return response()->json(['message' => 'Logged out.'], 200);
     }
 
     /**

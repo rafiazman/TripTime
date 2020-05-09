@@ -1,6 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+/*
+ * Authentication Controllers
+ */
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/register', 'Auth\RegisterController@register');
+Route::get('/logout', 'Auth\LoginController@logout');
+
+/*
+ * UserController
+ */
+Route::get('/user', 'UserController@show');
+Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
+Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
 
 /*
  * TripController
@@ -14,13 +26,4 @@ Route::get('/trip/{trip}', 'TripController@show');
 Route::get('/trip/{trip}/activities', 'TripController@showActivities');
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 
-/*
- * UserController
- */
-Route::post('/login', 'UserController@login');
-Route::post('/register', 'UserController@register');
-Route::get('/logout', 'UserController@logout');
 
-Route::get('/user', 'UserController@show');
-Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
-Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
