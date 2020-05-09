@@ -18,6 +18,8 @@ Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
  * TripController
  */
 Route::get('/trips', 'TripController@index');
+Route::post('/trips', 'TripController@store');
+
 Route::get('/trips/past', 'TripController@pastTrips');
 Route::get('/trips/current', 'TripController@currentTrips');
 Route::get('/trips/future', 'TripController@futureTrips');
