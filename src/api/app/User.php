@@ -39,6 +39,8 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $messages_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
  * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Travel[] $travels
+ * @property-read int|null $travels_count
  */
 class User extends Authenticatable
 {

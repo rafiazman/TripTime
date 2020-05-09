@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereToCoordinates($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereTripId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Travel whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read int|null $users_count
  */
 class Travel extends Model
 {
