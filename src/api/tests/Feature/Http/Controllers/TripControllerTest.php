@@ -255,4 +255,26 @@ class TripControllerTest extends TestCase
                 ]
             ]);
     }
+
+    public function joins_currently_logged_in_user_to_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/users");
+
+        $response->assertStatus(200);
+
+        $this->assertEquals($trip->name, $response['name']);
+        $this->assertEquals($trip->description, $response['description']);
+        $this->assertEquals($trip->start_date, $response['start']);
+        $this->assertEquals($trip->end_date, $response['end']);
+
+        $response->assertJsonFragment([
+            'avatarPath' => $user->avatar_url,
+            'email' => $user->email,
+            'id' => $user->id,
+            'name' => $user->name,
+        ]);
+    }
 }
