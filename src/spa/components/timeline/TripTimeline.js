@@ -54,6 +54,7 @@ export default class TripTimeline extends React.Component {
 
     const hostName = process.env.API_HOSTNAME;
     const tripID = this.props.tripID;
+    axios.defaults.withCredentials = true;
     axios
       .get(`${hostName}/api/trip/${tripID}/activities`)
       .then(
