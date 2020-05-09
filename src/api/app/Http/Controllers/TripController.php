@@ -9,8 +9,7 @@ class TripController extends Controller
 {
     public function __construct()
     {
-        // TODO: Protect routes using auth:sanctum
-
+        $this->middleware('auth:sanctum');
         // TODO: Incorporate Laravel Resources to transform Model to JSON
     }
 
