@@ -2,18 +2,19 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from '../css/note.module.css';
+import styles from '../../css/note.module.css';
 import TimeAgo from 'react-timeago/lib';
 // import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import Tooltip from './Tooltip';
+import Tooltip from '../Tooltip';
 
-class NotesCard extends React.Component {
+export default class NotesCard extends React.Component {
   render() {
     const notes = this.props.notes;
+    const onMap = this.props.onMap;
     return (
-      <div className={styles.notesCard}>
+      <div className={onMap ? styles.notesOnMap : styles.notesCard}>
         {notes.length < 1 ? (
           <div className={styles.noNote}>
             Your friends have not added notes to this activity yet...
@@ -38,6 +39,7 @@ class NotesCard extends React.Component {
 NotesCard.propTypes = {
   notes: PropTypes.array.isRequired,
   me: PropTypes.object.isRequired,
+  onMap: PropTypes.bool,
 };
 
 class OneNote extends React.Component {
@@ -55,9 +57,7 @@ class OneNote extends React.Component {
           />
           :
         </div>
-        <div>
-          <p>{note.content}</p>
-        </div>
+        <div>{note.content}</div>
       </div>
     );
   }
@@ -160,5 +160,3 @@ class MyNote extends React.Component {
     };
   }
 }
-
-export default NotesCard;

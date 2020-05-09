@@ -6,11 +6,23 @@
     position: relative;
     background-color: rgba(256,256,256,0.9);
 }
-.options {
+.options, .optionsOnMap {
     display: flex;
     flex-direction: row;
+}
+.options{
     justify-content: flex-end;
 }
+.options > span {
+    padding: 0 0.5rem;
+}
+.optionsOnMap{
+    justify-content: center;
+}
+.optionsOnMap > span{
+    font-size: 1rem;
+}
+
 .startTime, .endTime {
     color: var(--trip-orange);
     font-weight: 500;
@@ -18,12 +30,12 @@
 }
 
 
-.options > span {
-    padding: 0 0.5rem;
-}
-
 .closeButton {
     position: relative;
     left: calc(100% - 5px);
     bottom: 5px;
+}
+
+.cardOnMap img{
+    max-width: 1rem!important;
 }

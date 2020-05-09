@@ -19,6 +19,7 @@
 }
 
 .tripTeamContainer {
+    position: relative;
     display: grid;
     grid-template-rows: calc(100vh - 3em);
     grid-area: content;

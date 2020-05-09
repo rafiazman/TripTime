@@ -4,7 +4,7 @@ import React from 'react';
 import styles from '../../css/calendar.module.css';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import ActivityCard from '../ActivityCard';
+import ActivityCard from '../cards/ActivityCard';
 
 export default class CalendarSummary extends React.Component {
   render() {

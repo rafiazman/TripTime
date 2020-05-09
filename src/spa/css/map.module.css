@@ -1,27 +1,76 @@
-.mapBubble {
+.activityBubble {
     border: 2px solid var(--trip-orange);
     color: var(--trip-orange);
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.5rem;
-    line-height: 2.5rem;
+    background-color: rgba(256, 256, 256, 0.8);
+}
+
+.activityBubble, .travelBubble {
+    border-radius: 1.6rem 1.6rem 0;
+    transform: rotate(45deg);
+    width: 1.6rem;
+    height: 1.6rem;
+    position: relative;
+    font-size: 1rem;
     text-align: center;
-    background-color: rgba(256,256,256,0.7);
     cursor: pointer;
     z-index: 100;
     display: inline-block;
-
 }
 
-.mapBubble::after{
-    content:"";
-    width: 0;
+.activityBubble svg, .travelBubble svg {
+    transform: rotate(-45deg);
+    position: relative;
+    /*left: -0.1rem;*/
+    top: 0.2rem;
+}
+
+.travelExplain {
+    font-size: 1.2em;
+}
+
+.travelExplain a {
+    color: var(--trip-orange);
+    margin-left: 0.5em;
+}
+
+.travelExplain a:hover {
+    text-decoration: underline;
+}
+
+.loading {
+    color: var(--trip-orange);
     position: absolute;
-    top: 2.5rem;
-    left: 1.2rem;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 1.5rem solid var(--trip-orange);
-    z-index: 100;
+    top: 25vh;
+    width: 15rem;
+    height: 15rem;
+    background-color: rgba(256, 256, 256, 0.7);
+    border-radius: 15rem 15rem 0;
+    transform: rotate(45deg);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (min-width: 700px) {
+    .loading {
+        left: 45vw;
+    }
+}
+@media screen and (max-width: 700px) {
+    .loading {
+        left: 30vw;
+    }
+}
+
+.loading div {
+
+    transform: rotate(-45deg);
+}
+
+.loading svg {
+    position: relative;
+    left: 3rem;
+    top: 2rem;
 }

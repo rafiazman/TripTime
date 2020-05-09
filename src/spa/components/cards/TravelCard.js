@@ -21,7 +21,7 @@ import PeopleList from '../PeopleList';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import TimeDisplay from '../TimeDisplay';
 import Tooltip from '../Tooltip';
-import NotesCard from '../NotesCard';
+import NotesCard from './NotesCard';
 import { AuthContext } from '../../contexts/AuthContext';
 
 const travelModeIcons = {

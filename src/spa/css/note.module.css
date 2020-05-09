@@ -3,19 +3,34 @@
     font-size: 0.9rem;
 }
 
+
 .notesCard {
     width: 100%;
     border-top: 1px var(--trip-orange) dashed;
     max-height: 20rem;
-    overflow: auto;
+    overflow-y: scroll;
+}
+.notesOnMap {
+    width: 100%;
+    border-top: 1px var(--trip-orange) dashed;
+    max-height: 5rem;
+    font-size: 0.7rem!important;
+    overflow-y: scroll;
 }
 
-.notesCard button {
+.notesOnMap div, .notesOnMap p{
+    font-size: 0.7rem!important;
+}
+
+.notesCard button, .notesOnMap button {
     font-size: 0.8em;
     width: fit-content;
     height: 1.5rem;
     background-color: var(--trip-orange);
     color: white;
+}
+.notesOnMap img {
+    max-width: 0.7rem!important;
 }
 
 .oneNote {
@@ -40,7 +55,7 @@
 .noteInput {
     box-sizing: border-box;
     width: 100%;
-    font-size: 1rem;
+    font-size: 1em;
 }
 
 .addNoteButton {
