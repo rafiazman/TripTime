@@ -16,8 +16,8 @@ class CreateUserTripTable extends Migration
         Schema::create('user_trip', function (Blueprint $table) {
             $table->id();
 
-            $table->dateTime('last_checked_trip');
-            $table->dateTime('last_checked_chat');
+            $table->dateTime('last_checked_trip')->nullable();
+            $table->dateTime('last_checked_chat')->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('trip_id');
