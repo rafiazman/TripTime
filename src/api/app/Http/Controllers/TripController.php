@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTripRequest;
 use App\Trip;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,6 @@ class TripController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
         // TODO: Incorporate Laravel Resources to transform Model to JSON
     }
 
@@ -128,12 +128,12 @@ class TripController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateTripRequest $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(CreateTripRequest $request)
     {
-        //
+        return response()->json('hello world');
     }
 
     /**
