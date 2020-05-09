@@ -10,6 +10,7 @@ class TripController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth:sanctum');
         // TODO: Incorporate Laravel Resources to transform Model to JSON
     }
 
@@ -133,7 +134,31 @@ class TripController extends Controller
      */
     public function store(CreateTripRequest $request)
     {
-        return response()->json('hello world');
+        $startDateTime = \date('Y-m-d H:i:s', strtotime($request->start));
+        $endDateTime = \date('Y-m-d H:i:s', strtotime($request->end));
+
+        $user = $request->user();
+        $trip = new Trip([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $startDateTime,
+            'end_date' => $endDateTime
+        ]);
+        $trip->save();
+        $trip->users()->save($user, [
+            'last_checked_trip' => now(),
+            'last_checked_chat' => now(),
+        ]);
+
+        $tripVm = $this->getTripVm($trip);
+        $tripVm['id'] = $trip->id;
+
+        $vm = [
+            'message' => 'Trip successfully created.',
+            'trip' => $tripVm
+        ];
+
+        return response()->json($vm);
     }
 
     /**

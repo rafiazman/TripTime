@@ -4,6 +4,16 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateTripRequest
+ * @package App\Http\Requests
+ *
+ * @property string name
+ * @property string description
+ * @property string start
+ * @property string end
+ */
+
 class CreateTripRequest extends FormRequest
 {
     /**
