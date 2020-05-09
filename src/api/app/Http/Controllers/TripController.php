@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
+use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Location;
 use App\Trip;
 use Illuminate\Http\Request;
 
@@ -303,6 +306,33 @@ class TripController extends Controller
 
         return response()->json([
             'message' => "Successfully added $user->email to $trip->name",
+            'trip' => $tripVm
+        ]);
+    }
+
+    public function addActivity(CreateActivityRequest $request, Trip $trip)
+    {
+        $lat = $request->input('location.lat');
+        $lng = $request->input('location.lng');
+        $location = new Location([
+            'name' => $request->input('location.address'),
+            'address' => $request->input('location.address'),
+            'coordinates' => "$lat, $lng"
+        ]);
+        $location->save();
+        $location->activities()->create([
+            'type' => $request->type,
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_time' => date('Y-m-d H:i:s', strtotime($request->start)),
+            'end_time' => date('Y-m-d H:i:s', strtotime($request->end)),
+            'trip_id' => $trip->id,
+        ]);
+
+        $tripVm = $this->getTripVm($trip);
+
+        return response()->json([
+            'message' => "Successfully added $trip->name to database.",
             'trip' => $tripVm
         ]);
     }

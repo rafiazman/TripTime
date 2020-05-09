@@ -40,6 +40,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Activity extends Model
 {
+    protected $fillable = [
+        'type',
+        'name',
+        'description',
+        'start_time',
+        'end_time',
+        'trip_id'
+    ];
+
     /**
      * Gets the trip of this activity
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
