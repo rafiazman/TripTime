@@ -343,4 +343,36 @@ class TripControllerTest extends TestCase
             'description' => 'A new trip created for test purposes'
         ]);
     }
+
+    /** @test */
+    public function creates_a_new_activity_for_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/activities", [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('activities', [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start_time' => '2020-05-20 07:20:50',
+            'end_time' => '2020-05-20 07:22:50',
+            'description' => 'Activity description here',
+            'location_coordinates' => '-36.880765, 174.801228',
+            'trip_id' => $trip->id
+        ]);
+    }
 }
