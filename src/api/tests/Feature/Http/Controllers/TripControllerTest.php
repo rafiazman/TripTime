@@ -343,4 +343,410 @@ class TripControllerTest extends TestCase
             'description' => 'A new trip created for test purposes'
         ]);
     }
+
+    /** @test */
+    public function creates_a_new_activity_for_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/activities", [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('activities', [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start_time' => '2020-05-20 07:20:50',
+            'end_time' => '2020-05-20 07:22:50',
+            'description' => 'Activity description here',
+            'location_coordinates' => '-36.880765, 174.801228',
+            'trip_id' => $trip->id
+        ]);
+    }
+
+    /** @test */
+    public function created_activity_does_not_contain_participants()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/activities", [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('user_pointer', [
+            'user_id' => $user->id,
+            'pointer_type' => Activity::class
+        ]);
+    }
+
+    /** @test */
+    public function rejects_activity_creation_when_required_fields_are_missing()
+    {
+        $requestBodies = [
+            [
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T07:22:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ],
+            [
+                'name' => 'Activity name here',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T07:22:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ],
+            [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'end' => '2020-05-20T07:22:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ],
+            [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ],
+            [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T07:22:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ],
+            [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T07:22:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ]
+            ]
+        ];
+
+        foreach ($requestBodies as $requestBody) {
+            $user = factory(User::class)->create();
+            $trip = factory(Trip::class)->create();
+            $trip->users()->save($user);
+
+            $response = $this->actingAs($user)
+                ->json('post', "/api/trip/$trip->id/activities", $requestBody);
+
+            $response->assertStatus(422);
+        }
+    }
+
+    /** @test */
+    public function rejects_activity_creation_when_end_time_is_on_start_time()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/activities", [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T07:20:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ],
+            ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function rejects_activity_creation_when_end_time_is_before_start_time()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/activities", [
+                'name' => 'Activity name here',
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50.52Z',
+                'end' => '2020-05-20T06:20:50.52Z',
+                'description' => 'Activity description here',
+                'location' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland'
+                ],
+            ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function creates_a_new_travel_for_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/travels", [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('travels', [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'start' => '2020-05-20 07:20:50',
+            'end' => '2020-05-20 09:20:50',
+            'trip_id' => $trip->id,
+            'from_coordinates' => "-36.880765, 174.801228",
+            'to_coordinates' => "-36.880765, 175.801228",
+        ]);
+    }
+
+    /** @test */
+    public function rejects_travel_creation_when_to_time_is_before_from_time()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/travels", [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T06:20:50.52Z',
+                ]
+            ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function rejects_travel_creation_when_to_time_is_equal_to_from_time()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/travels", [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function rejects_travel_creation_when_required_fields_are_missing()
+    {
+        $requestBodies = [
+            [
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ]
+            ],
+            [
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                    'time' => '2020-05-20T07:20:50.52Z',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                    'address' => '10 Some Street, Auckland, 1010 Auckland',
+                ]
+            ],
+        ];
+
+        foreach ($requestBodies as $requestBody) {
+            $user = factory(User::class)->create();
+            $trip = factory(Trip::class)->create();
+            $trip->users()->save($user);
+
+            $response = $this->actingAs($user)
+                ->json('post', "/api/trip/$trip->id/travels", $requestBody);
+
+            $response->assertStatus(422);
+        }
+    }
 }

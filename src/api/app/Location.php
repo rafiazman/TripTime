@@ -28,4 +28,14 @@ class Location extends Model
 {
     protected $primaryKey = 'coordinates';
     public $incrementing = false;
+    protected $fillable = [
+        'name',
+        'address',
+        'coordinates'
+    ];
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class, 'location_coordinates');
+    }
 }

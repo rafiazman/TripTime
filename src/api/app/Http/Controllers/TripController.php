@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
+use App\Http\Requests\CreateActivityRequest;
+use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Location;
+use App\Travel;
 use App\Trip;
 use Illuminate\Http\Request;
 
@@ -288,6 +293,40 @@ class TripController extends Controller
         return $vmActivities;
     }
 
+    public function addTravel(CreateTravelRequest $request, Trip $trip)
+    {
+        $fromLocation = new Location([
+            'name' => $request->input('from.address'),
+            'address' => $request->input('from.address'),
+            'coordinates' => $request->input('from.lat') . ', ' . $request->input('from.lng')
+        ]);
+        $toLocation = new Location([
+            'name' => $request->input('to.address'),
+            'address' => $request->input('to.address'),
+            'coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
+        ]);
+        $fromLocation->save();
+        $toLocation->save();
+
+        $travel = new Travel([
+            'mode' => $request->input('mode'),
+            'description' => $request->input('description'),
+            'start' => date('Y-m-d H:i:s', strtotime($request->input('from.time'))),
+            'end' => date('Y-m-d H:i:s', strtotime($request->input('to.time'))),
+            'trip_id' => $trip->id,
+            'from_coordinates' => $request->input('from.lat') . ', ' . $request->input('from.lng'),
+            'to_coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
+        ]);
+        $travel->save();
+
+        $tripVm = $this->getTripVm($trip);
+
+        return response()->json([
+            'message' => "Successfully added a new Travel to $trip->name",
+            'trip' => $tripVm
+        ]);
+    }
+
     /**
      * Adds the currently logged in user as a participant to the given Trip
      * @param Request $request
@@ -303,6 +342,34 @@ class TripController extends Controller
 
         return response()->json([
             'message' => "Successfully added $user->email to $trip->name",
+            'trip' => $tripVm
+        ]);
+    }
+
+    public function addActivity(CreateActivityRequest $request, Trip $trip)
+    {
+        $lat = $request->input('location.lat');
+        $lng = $request->input('location.lng');
+
+        $location = new Location([
+            'name' => $request->input('location.address', 'Unknown Address'),
+            'address' => $request->input('location.address', 'Unknown Address'),
+            'coordinates' => "$lat, $lng"
+        ]);
+        $location->save();
+        $location->activities()->create([
+            'type' => $request->type,
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_time' => date('Y-m-d H:i:s', strtotime($request->start)),
+            'end_time' => date('Y-m-d H:i:s', strtotime($request->end)),
+            'trip_id' => $trip->id,
+        ]);
+
+        $tripVm = $this->getTripVm($trip);
+
+        return response()->json([
+            'message' => "Successfully added $trip->name to database.",
             'trip' => $tripVm
         ]);
     }
