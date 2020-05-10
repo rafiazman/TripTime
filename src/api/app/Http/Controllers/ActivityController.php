@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Http\Resources\NoteCollection;
+use App\Http\Resources\NoteResource;
+use App\Http\Resources\UserResource;
+use App\Note;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
@@ -65,6 +68,33 @@ class ActivityController extends Controller
         $notes = $activity->notes()->get();
 
         return new NoteCollection($notes);
+    }
+
+    /**
+     * Adds a note to the given activity
+     * @param Request $request
+     * @param Activity $activity
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addNote(Request $request, Activity $activity)
+    {
+        $request->validate([
+            'content' => 'string|required'
+        ]);
+
+        $note = new Note([
+            'body' => $request->input('content'),
+            'user_id' => $request->user()->id
+        ]);
+
+        $activity->notes()->save($note);
+
+        $vm = [
+            'message' => "Successfully added note to \"$activity->name\"",
+            'note' => new NoteResource($note)
+        ];
+
+        return response()->json($vm);
     }
 
     /**

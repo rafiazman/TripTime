@@ -11,6 +11,7 @@ Route::get('/logout', 'Auth\LoginController@logout');
  * ActivityController
  */
 Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
+Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
 
 /*
  * TravelController
