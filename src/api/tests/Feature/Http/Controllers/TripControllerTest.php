@@ -375,4 +375,40 @@ class TripControllerTest extends TestCase
             'trip_id' => $trip->id
         ]);
     }
+
+    /** @test */
+    public function creates_a_new_travel_for_a_trip()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/travels", [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('travels', [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'start' => '2020-05-20 07:20:50',
+            'end' => '2020-05-20 09:20:50',
+            'trip_id' => $trip->id,
+            'from_coordinates' => "-36.880765, 174.801228",
+            'to_coordinates' => "-36.880765, 175.801228",
+        ]);
+    }
 }
