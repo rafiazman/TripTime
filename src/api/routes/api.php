@@ -32,5 +32,6 @@ Route::get('/trip/{trip}/activities', 'TripController@showActivities');
 Route::post('/trip/{trip}/activities', 'TripController@addActivity');
 
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
+Route::post('/trip/{trip}/travels', 'TripController@addTravel');
 
 

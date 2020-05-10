@@ -41,6 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Travel extends Model
 {
+    protected $guarded = [];
+
     /**
      * Gets the trip of this travel path
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
