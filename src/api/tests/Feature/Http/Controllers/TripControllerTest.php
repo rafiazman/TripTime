@@ -365,6 +365,25 @@ class TripControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => 'Successfully added "Activity name here" to database.',
+            'activity' => [
+                'id' => 1,
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50+00:00',
+                'end' => '2020-05-20T07:22:50+00:00',
+                'name' => 'Activity name here',
+                'description' => 'Activity description here',
+                'updated' => date(DATE_RFC3339, strtotime(now())),
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'gps' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228'
+                ],
+                'people' => [],
+                'notes' => []
+            ]
+        ]);
         $this->assertDatabaseHas('activities', [
             'name' => 'Activity name here',
             'type' => 'outdoors',

@@ -6,6 +6,7 @@ use App\Activity;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Http\Resources\ActivityResource;
 use App\Location;
 use App\Travel;
 use App\Trip;
@@ -357,7 +358,8 @@ class TripController extends Controller
             'coordinates' => "$lat, $lng"
         ]);
         $location->save();
-        $location->activities()->create([
+
+        $activity = $location->activities()->create([
             'type' => $request->type,
             'name' => $request->name,
             'description' => $request->description,
@@ -366,11 +368,9 @@ class TripController extends Controller
             'trip_id' => $trip->id,
         ]);
 
-        $tripVm = $this->getTripVm($trip);
-
         return response()->json([
-            'message' => "Successfully added $trip->name to database.",
-            'trip' => $tripVm
+            'message' => "Successfully added \"$activity->name\" to database.",
+            'activity' => new ActivityResource($activity)
         ]);
     }
 
