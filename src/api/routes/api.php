@@ -8,6 +8,11 @@ Route::post('/register', 'Auth\RegisterController@register');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 /*
+ * ActivityController
+ */
+Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
+
+/*
  * UserController
  */
 Route::get('/user', 'UserController@show');

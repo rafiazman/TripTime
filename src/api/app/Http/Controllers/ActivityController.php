@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Http\Resources\NoteCollection;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -47,6 +53,18 @@ class ActivityController extends Controller
     public function show(Activity $activity)
     {
         //
+    }
+
+    /**
+     * Displays all notes tied to this activity
+     * @param Activity $activity
+     * @return NoteCollection
+     */
+    public function showNotes(Activity $activity)
+    {
+        $notes = $activity->notes()->get();
+
+        return new NoteCollection($notes);
     }
 
     /**
