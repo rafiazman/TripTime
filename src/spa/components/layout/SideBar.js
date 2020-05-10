@@ -27,8 +27,6 @@ class SideBar extends React.Component {
   }
 
   render() {
-    const pathTokens = this.props.router.pathname.split('/');
-    const currentElement = pathTokens[pathTokens.length - 1];
     return (
       <div
         className={
@@ -59,10 +57,7 @@ class SideBar extends React.Component {
               <TripLink
                 tripID={this.props.tripID}
                 linkName={linkName}
-                isActive={
-                  currentElement.toLowerCase() === linkName.toLowerCase() ||
-                  (currentElement === '[id]' && linkName === 'Timeline')
-                }
+                isActive={this.props.activeLink === linkName}
                 key={index}
               />
             ))}
@@ -117,4 +112,5 @@ TripLink.propTypes = {
 SideBar.propTypes = {
   router: PropTypes.object.isRequired,
   tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  activeLink: PropTypes.string.isRequired,
 };

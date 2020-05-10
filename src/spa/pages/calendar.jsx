@@ -13,7 +13,7 @@ export default class Calendar extends React.Component {
     return (
       <AuthContext.Consumer>
         {({ currentUser }) => (
-          <TripTeamLayout user={currentUser}>
+          <TripTeamLayout user={currentUser} activeLink={'Calendar'}>
             {currentUser ? (
               <div className={styles.calendarContainer}>
                 <ReactCalendar />
