@@ -24,23 +24,23 @@ class CreateTravelRequest extends FormRequest
     public function rules()
     {
         return [
-            'mode' => 'string|in:bus,plane,car,ship,motorcycle,train,bicycle,walk,horse',
+            'mode' => 'string|in:bus,plane,car,ship,motorcycle,train,bicycle,walk,horse|required',
             'description' => 'string|nullable',
-            'from.lat' => 'string',
-            'from.lng' => 'string',
+            'from.lat' => 'string|required',
+            'from.lng' => 'string|required',
             'from.address' => 'string',
             'from.time' => [
-                'date',
+                'date', 'required',
                 // RFC3339 RegEx
                 'regex:' . '/^(?<fullyear>\d{4})-(?<month>0[1-9]|1[0-2])-(?<mday>0[1-9]|[12][0-9]|3[01])' . 'T' .
                 '(?<hour>[01][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]|60)(?<secfrac>\.[0-9]+)?' .
                 '(Z|(\+|-)(?<offset_hour>[01][0-9]|2[0-3]):(?<offset_minute>[0-5][0-9]))$/i'
             ],
-            'to.lat' => 'string',
-            'to.lng' => 'string',
+            'to.lat' => 'string|required',
+            'to.lng' => 'string|required',
             'to.address' => 'string',
             'to.time' => [
-                'date',
+                'date', 'after:from.time', 'required',
                 // RFC3339 RegEx
                 'regex:' . '/^(?<fullyear>\d{4})-(?<month>0[1-9]|1[0-2])-(?<mday>0[1-9]|[12][0-9]|3[01])' . 'T' .
                 '(?<hour>[01][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>[0-5][0-9]|60)(?<secfrac>\.[0-9]+)?' .

@@ -352,8 +352,8 @@ class TripController extends Controller
         $lng = $request->input('location.lng');
 
         $location = new Location([
-            'name' => $request->input('location.address'),
-            'address' => $request->input('location.address'),
+            'name' => $request->input('location.address', 'Unknown Address'),
+            'address' => $request->input('location.address', 'Unknown Address'),
             'coordinates' => "$lat, $lng"
         ]);
         $location->save();
