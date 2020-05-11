@@ -68,7 +68,7 @@ class TravelControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => "Successfully added note to \"$travel->name\"",
+            'message' => "Successfully added note.",
             'note' => [
                 'author' => [
                     'id' => $user->id,

@@ -84,7 +84,37 @@ class TravelController extends Controller
         $travel->notes()->save($note);
 
         $vm = [
-            'message' => "Successfully added note to \"$travel->name\"",
+            'message' => "Successfully added note.",
+            'note' => new NoteResource($note)
+        ];
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Updates the currently logged in user's note tied to the given activity
+     * @param Request $request
+     * @param Travel $travel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateNote(Request $request, Travel $travel)
+    {
+        $request->validate([
+            'content' => 'string|required'
+        ]);
+
+        $user = $request->user();
+
+        $note = Note::where([
+            ['user_id', $user->id],
+            ['pointer_type', Travel::class],
+            ['pointer_id', $travel->id],
+        ])->first();
+        $note->body = $request->input('content');
+        $note->save();
+
+        $vm = [
+            'message' => "Successfully updated note.",
             'note' => new NoteResource($note)
         ];
 

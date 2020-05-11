@@ -19,6 +19,7 @@ Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
  */
 Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
 Route::post('/travel/{travel}/notes', 'TravelController@addNote');
+Route::patch('/travel/{travel}/notes', 'TravelController@updateNote');
 
 /*
  * TripController
