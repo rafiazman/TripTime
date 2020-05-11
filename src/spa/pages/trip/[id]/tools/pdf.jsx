@@ -85,7 +85,7 @@ export default function Pdf(props) {
                     trip={trip}
                   />
                 }
-                fileName='trip-plan.pdf'
+                fileName={`${trip.name}.pdf`}
               >
                 {({ loading }) =>
                   loading ? 'Loading document...' : 'Download File'
