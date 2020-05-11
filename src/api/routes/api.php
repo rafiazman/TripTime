@@ -8,11 +8,14 @@ Route::post('/register', 'Auth\RegisterController@register');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 /*
- * UserController
+ * ActivityController
  */
-Route::get('/user', 'UserController@show');
-Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
-Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
+Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
+
+/*
+ * TravelController
+ */
+Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
 
 /*
  * TripController
@@ -33,5 +36,13 @@ Route::post('/trip/{trip}/activities', 'TripController@addActivity');
 
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 Route::post('/trip/{trip}/travels', 'TripController@addTravel');
+
+
+/*
+ * UserController
+ */
+Route::get('/user', 'UserController@show');
+Route::match('head', '/user/email/{user:email}', 'UserController@checkExists');
+Route::match('head', '/user/name/{user:name}', 'UserController@checkExists');
 
 

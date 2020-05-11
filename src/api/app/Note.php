@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Note extends Model
 {
+    protected $guarded = [];
+
     /**
      * Gets the owning pointer of this note
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

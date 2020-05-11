@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NoteCollection;
 use App\Travel;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,13 @@ class TravelController extends Controller
     public function show(Travel $travel)
     {
         //
+    }
+
+    public function showNotes(Travel $travel)
+    {
+        $notes = $travel->notes()->get();
+
+        return new NoteCollection($notes);
     }
 
     /**
