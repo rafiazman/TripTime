@@ -98,6 +98,36 @@ class ActivityController extends Controller
     }
 
     /**
+     * Updates the currently logged in user's note tied to the given activity
+     * @param Request $request
+     * @param Activity $activity
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateNote(Request $request, Activity $activity)
+    {
+        $request->validate([
+            'content' => 'string|required'
+        ]);
+
+        $user = $request->user();
+
+        $note = Note::where([
+            ['user_id', $user->id],
+            ['pointer_type', Activity::class],
+            ['pointer_id', $activity->id],
+        ])->first();
+        $note->body = $request->input('content');
+        $note->save();
+
+        $vm = [
+            'message' => "Successfully updated note for \"$activity->name\"",
+            'note' => new NoteResource($note)
+        ];
+
+        return response()->json($vm);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Activity  $activity

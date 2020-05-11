@@ -12,6 +12,7 @@ Route::get('/logout', 'Auth\LoginController@logout');
  */
 Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
 Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
+Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
 
 /*
  * TravelController
