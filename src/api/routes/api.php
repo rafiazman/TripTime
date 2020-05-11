@@ -17,6 +17,7 @@ Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
  * TravelController
  */
 Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
+Route::post('/travel/{travel}/notes', 'TravelController@addNote');
 
 /*
  * TripController
