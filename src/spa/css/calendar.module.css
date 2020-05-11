@@ -1,7 +1,6 @@
 .calendarContainer {
-    color: var(--trip-orange);
     display: grid;
-    grid-template-columns: 60% 1fr;
+    grid-template-columns: 1fr 60%;
     padding: 2rem;
     overflow-y: auto;
     grid-column-gap: 2rem;
@@ -12,26 +11,12 @@
         grid-template-columns: 1fr;
         grid-template-rows: auto;
     }
-    .calendarSummary{
-       max-height: fit-content;
+
+    .calendarSummary {
+        max-height: fit-content;
     }
 }
 
-.calendarContainer > div:first-child button:focus {
-    outline: none;
-    color: white;
-    background-color: var(--trip-orange);
-    border-style: inset;
-}
-
-.calendarContainer > div:first-child button {
-    height: 4rem;
-    width: 3rem;
-    border: 2px var(--trip-orange) outset;
-    border-radius: 2px;
-    font-size: 1rem;
-    color: var(--secondary-text-color);
-}
 
 .calendarSummary {
     max-height: 100%;
