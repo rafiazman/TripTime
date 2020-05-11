@@ -87,4 +87,46 @@ class TravelControllerTest extends TestCase
             'pointer_type' => Travel::class
         ]);
     }
+
+    /** @test */
+    public function updates_existing_user_added_note_tied_to_an_activity()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        $note = new Note([
+            'body' => 'Test body',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+        $note->save();
+
+        $response = $this->actingAs($user)
+            ->json('patch', "/api/travel/$travel->id/notes", [
+                'content' => 'My new note content'
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'author' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url,
+            ],
+            'content' => 'My new note content',
+            'updated' => date(DATE_RFC3339, strtotime($note->updated_at))
+        ]);
+        $this->assertDatabaseHas('notes', [
+            'body' => 'My new note content',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+    }
 }
