@@ -11,11 +11,15 @@ Route::get('/logout', 'Auth\LoginController@logout');
  * ActivityController
  */
 Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
+Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
+Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
 
 /*
  * TravelController
  */
 Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
+Route::post('/travel/{travel}/notes', 'TravelController@addNote');
+Route::patch('/travel/{travel}/notes', 'TravelController@updateNote');
 
 /*
  * TripController

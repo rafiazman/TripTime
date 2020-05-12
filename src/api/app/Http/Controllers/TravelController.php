@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NoteCollection;
+use App\Http\Resources\NoteResource;
+use App\Note;
 use App\Travel;
 use Illuminate\Http\Request;
 
@@ -50,11 +52,73 @@ class TravelController extends Controller
         //
     }
 
+    /**
+     * Displays all Notes tied to this Travel
+     * @param Travel $travel
+     * @return NoteCollection
+     */
     public function showNotes(Travel $travel)
     {
         $notes = $travel->notes()->get();
 
         return new NoteCollection($notes);
+    }
+
+    /**
+     * Adds a Note to the given Travel
+     * @param Request $request
+     * @param Travel $travel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addNote(Request $request, Travel $travel)
+    {
+        $request->validate([
+            'content' => 'string|required'
+        ]);
+
+        $note = new Note([
+            'body' => $request->input('content'),
+            'user_id' => $request->user()->id
+        ]);
+
+        $travel->notes()->save($note);
+
+        $vm = [
+            'message' => "Successfully added note.",
+            'note' => new NoteResource($note)
+        ];
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Updates the currently logged in user's note tied to the given activity
+     * @param Request $request
+     * @param Travel $travel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateNote(Request $request, Travel $travel)
+    {
+        $request->validate([
+            'content' => 'string|required'
+        ]);
+
+        $user = $request->user();
+
+        $note = Note::where([
+            ['user_id', $user->id],
+            ['pointer_type', Travel::class],
+            ['pointer_id', $travel->id],
+        ])->first();
+        $note->body = $request->input('content');
+        $note->save();
+
+        $vm = [
+            'message' => "Successfully updated note.",
+            'note' => new NoteResource($note)
+        ];
+
+        return response()->json($vm);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Note;
 use App\Travel;
 use App\Trip;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -47,6 +48,148 @@ class TravelControllerTest extends TestCase
             ],
             'content' => $note->body,
             'updated' => date(DATE_RFC3339, strtotime($note->updated_at))
+        ]);
+    }
+
+    /** @test */
+    public function creates_notes_tied_to_a_travel()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $travel = factory(Travel::class)->create();
+        $user->activities()->attach($travel);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/travel/$travel->id/notes", [
+                'content' => 'Test note contents here'
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => "Successfully added note.",
+            'note' => [
+                'author' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatarPath' => $user->avatar_url,
+                ],
+                'content' => 'Test note contents here',
+                'updated' => date(DATE_RFC3339, strtotime(now()->toDateTimeString()))
+            ]
+        ]);
+        $this->assertDatabaseHas('notes', [
+            'body' => 'Test note contents here',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+    }
+
+    /** @test */
+    public function updates_existing_user_added_note_tied_to_an_activity()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        $note = new Note([
+            'body' => 'Test body',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+        $note->save();
+
+        $response = $this->actingAs($user)
+            ->json('patch', "/api/travel/$travel->id/notes", [
+                'content' => 'My new note content'
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'author' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url,
+            ],
+            'content' => 'My new note content',
+            'updated' => date(DATE_RFC3339, strtotime($note->updated_at))
+        ]);
+        $this->assertDatabaseHas('notes', [
+            'body' => 'My new note content',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+    }
+
+    /** @test */
+    public function updated_notes_have_updated_timestamp_changed()
+    {
+        // Set "current time" for this test to a specific datetime
+        Carbon::setTestNow(Carbon::create(2020, 1, 1));
+
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        $note = new Note([
+            'body' => 'Test body',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+        $note->created_at = Carbon::now(); // Create using set datetime earlier
+        $note->updated_at = Carbon::now(); // Create using set datetime earlier
+        $note->save();
+
+        // Check that the created note is really in the past
+        $this->assertDatabaseHas('notes', [
+            'body' => 'Test body',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class,
+            'created_at' => '2020-01-01 00:00:00',
+            'updated_at' => '2020-01-01 00:00:00',
+        ]);
+
+        // Clear mocked date
+        Carbon::setTestNow();
+
+        $response = $this->actingAs($user)
+            ->json('patch', "/api/travel/$travel->id/notes", [
+                'content' => 'My new note content'
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'author' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url,
+            ],
+            'content' => 'My new note content',
+            'updated' => date(DATE_RFC3339, strtotime(now()))
+        ]);
+        $this->assertDatabaseHas('notes', [
+            'body' => 'My new note content',
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class,
+            'created_at' => '2020-01-01 00:00:00',
+            'updated_at' => Carbon::now()
         ]);
     }
 }
