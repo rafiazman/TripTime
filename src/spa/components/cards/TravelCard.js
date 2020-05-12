@@ -57,21 +57,28 @@ export default class TravelCard extends React.Component {
         {({ currentUser }) => {
           return (
             <div className={styles.travelCard}>
-              <span className={styles.travelTitle}>
-                <FontAwesomeIcon icon={travelModeIcons[travel.mode]} />{' '}
-                {travel.description}
-              </span>
-              <PeopleList people={travel.people} />
-              <div className={styles.time}>
-                <span>
-                  <FontAwesomeIcon icon={faClock} /> Departs:
-                  <TimeDisplay time={travel.start} />
-                </span>
-                <span>
-                  <FontAwesomeIcon icon={faClock} /> Arrives:
-                  <TimeDisplay time={travel.end} />
-                </span>
+              <div className={styles.travelTitle}>
+                <FontAwesomeIcon icon={travelModeIcons[travel.mode]}
+                                 style={{'verticalAlign': 'middle', 'margin': '0 5px 0 0'}} />
+                <span style={{'verticalAlign': 'middle'}}>{travel.description}</span>
               </div>
+
+              <PeopleList people={travel.people} />
+
+              <div className={styles.time} style={{'marginBottom': '10px', 'marginTop': '5px'}}>
+                <div>
+                  <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                  <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>Departs:</span>
+                  <TimeDisplay time={travel.start} />
+                </div>
+
+                <div>
+                  <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                  <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>Arrives:</span>
+                  <TimeDisplay time={travel.end} />
+                </div>
+              </div>
+
               <div className={styles.options}>
                 <span onClick={() => this.toggleNotes()}>
                   {this.state.notePopped ? (
