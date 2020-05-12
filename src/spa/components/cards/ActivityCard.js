@@ -16,7 +16,7 @@ import TimeDisplay from '../TimeDisplay';
 
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
-import { DateTimePicker } from "@material-ui/pickers";
+import {DateTimePicker} from "@material-ui/pickers";
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
@@ -25,9 +25,11 @@ export default class ActivityCard extends React.Component {
     this.state = {
       start: {
         show: false,
+        dateTime: props.activity.start
       },
       end: {
         show: false,
+        dateTime: props.activity.end
       },
       notePopped: false,
       unreadNote: false,
@@ -40,17 +42,37 @@ export default class ActivityCard extends React.Component {
     }));
   }
 
-  showStartDateTimePicker() {
+  handleStartDateChange = newDate => {
     this.setState(state => ({
       start: {
+        ...state.start,
+        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
+      }
+    }));
+  }
+
+  handleEndDateChange = newDate => {
+    this.setState(state => ({
+      end: {
+        ...state.end,
+        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
+      }
+    }));
+  }
+
+  toggleStartDateTimePicker() {
+    this.setState(state => ({
+      start: {
+        ...state.start,
         show: !state.start.show
       },
     }));
   }
 
-  showEndDateTimePicker() {
+  toggleEndDateTimePicker() {
     this.setState(state => ({
       end: {
+        ...state.end,
         show: !state.end.show
       },
     }));
@@ -73,22 +95,34 @@ export default class ActivityCard extends React.Component {
                   <strong>{activity.name}</strong>
                   <PeopleList people={activity.people} />
 
-                  <div className={styles.startTime} onClick={() => this.showStartDateTimePicker()}>
-                    <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                  <div className={styles.startTime}>
+                    <FontAwesomeIcon icon={faClock}
+                                     style={{'verticalAlign': 'middle'}}
+                                     onClick={() => this.toggleStartDateTimePicker()} />
                     <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>From:</span>
-                    {
-                      this.state.start.show ?
-                      <span>Show time</span>
-                      :
-                      <TimeDisplay time={activity.start} />
-                    }
+                    <TimeDisplay time={this.state.start.dateTime} />
                   </div>
 
-                  <div className={styles.endTime} onClick={() => this.showEndDateTimePicker()}>
+                  <div className={styles.endTime} onClick={() => this.toggleEndDateTimePicker()}>
                     <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
                     <span style={{'margin': '0 27px 0px 5px', 'verticalAlign': 'middle'}}>To:</span>
-                    <TimeDisplay time={activity.end} />
+                    <TimeDisplay time={this.state.end.dateTime} />
                   </div>
+
+                  <DateTimePicker value={this.state.start.dateTime}
+                                  onChange={this.handleStartDateChange}
+                                  open={this.state.start.show}
+                                  onOpen={() => this.toggleStartDateTimePicker()}
+                                  onClose={() => this.toggleStartDateTimePicker()}
+                                  TextFieldComponent={() => null}
+                  />
+                  <DateTimePicker value={this.state.end.dateTime}
+                                  onChange={this.handleEndDateChange}
+                                  open={this.state.end.show}
+                                  onOpen={() => this.toggleEndDateTimePicker()}
+                                  onClose={() => this.toggleEndDateTimePicker()}
+                                  TextFieldComponent={() => null}
+                  />
 
                   <div style={{'marginTop': '15px'}}>{activity.description}</div>
 
