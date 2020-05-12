@@ -44,6 +44,16 @@ class Travel extends Model
     protected $guarded = [];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start',
+        'end'
+    ];
+
+    /**
      * Gets the trip of this travel path
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
