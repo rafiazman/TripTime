@@ -16,12 +16,19 @@ import TimeDisplay from '../TimeDisplay';
 
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
+import { DateTimePicker } from "@material-ui/pickers";
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      start: {
+        show: false,
+      },
+      end: {
+        show: false,
+      },
       notePopped: false,
       unreadNote: false,
     };
@@ -30,6 +37,22 @@ export default class ActivityCard extends React.Component {
   toggleNotes() {
     this.setState(state => ({
       notePopped: !state.notePopped,
+    }));
+  }
+
+  showStartDateTimePicker() {
+    this.setState(state => ({
+      start: {
+        show: !state.start.show
+      },
+    }));
+  }
+
+  showEndDateTimePicker() {
+    this.setState(state => ({
+      end: {
+        show: !state.end.show
+      },
     }));
   }
 
@@ -47,17 +70,28 @@ export default class ActivityCard extends React.Component {
                 style={onMap ? { border: '0' } : {}}
               >
                 <div className={onMap ? styles.cardOnMap : undefined}>
-                  <strong>{activity.name}</strong>{' '}
+                  <strong>{activity.name}</strong>
                   <PeopleList people={activity.people} />
-                  <span className={styles.startTime}>
-                    <FontAwesomeIcon icon={faClock} /> From:{' '}
-                    <TimeDisplay time={activity.start} />
-                  </span>
-                  <span className={styles.endTime}>
-                    <FontAwesomeIcon icon={faClock} /> To:
+
+                  <div className={styles.startTime} onClick={() => this.showStartDateTimePicker()}>
+                    <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                    <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>From:</span>
+                    {
+                      this.state.start.show ?
+                      <span>Show time</span>
+                      :
+                      <TimeDisplay time={activity.start} />
+                    }
+                  </div>
+
+                  <div className={styles.endTime} onClick={() => this.showEndDateTimePicker()}>
+                    <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                    <span style={{'margin': '0 27px 0px 5px', 'verticalAlign': 'middle'}}>To:</span>
                     <TimeDisplay time={activity.end} />
-                  </span>
-                  <span>{activity.description}</span>
+                  </div>
+
+                  <div style={{'marginTop': '15px'}}>{activity.description}</div>
+
                   <div className={onMap ? styles.optionsOnMap : styles.options}>
                     {!onMap && (
                       <span>
