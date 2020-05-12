@@ -23,6 +23,7 @@ import TimeDisplay from '../TimeDisplay';
 import Tooltip from '../Tooltip';
 import NotesCard from './NotesCard';
 import { AuthContext } from '../../contexts/AuthContext';
+import {DateTimePicker} from "@material-ui/pickers";
 
 const travelModeIcons = {
   bus: faBus,
@@ -38,7 +39,16 @@ const travelModeIcons = {
 export default class TravelCard extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      start: {
+        show: false,
+        dateTime: props.travel.start
+      },
+      end: {
+        show: false,
+        dateTime: props.travel.end
+      },
       notePopped: false,
       unreadNote: false,
     };
@@ -47,6 +57,42 @@ export default class TravelCard extends React.Component {
   toggleNotes() {
     this.setState(state => ({
       notePopped: !state.notePopped,
+    }));
+  }
+
+  toggleStartDateTimePicker() {
+    this.setState(state => ({
+      start: {
+        ...state.start,
+        show: !state.start.show
+      },
+    }));
+  }
+
+  toggleEndDateTimePicker() {
+    this.setState(state => ({
+      end: {
+        ...state.end,
+        show: !state.end.show
+      },
+    }));
+  }
+
+  handleStartDateChange = newDate => {
+    this.setState(state => ({
+      start: {
+        ...state.start,
+        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
+      }
+    }));
+  }
+
+  handleEndDateChange = newDate => {
+    this.setState(state => ({
+      end: {
+        ...state.end,
+        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
+      }
     }));
   }
 
@@ -67,17 +113,36 @@ export default class TravelCard extends React.Component {
 
               <div className={styles.time} style={{'marginBottom': '10px', 'marginTop': '5px'}}>
                 <div>
-                  <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                  <FontAwesomeIcon icon={faClock}
+                                   style={{'verticalAlign': 'middle'}}
+                                   onClick={() => this.toggleStartDateTimePicker()} />
                   <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>Departs:</span>
-                  <TimeDisplay time={travel.start} />
+                  <TimeDisplay time={this.state.start.dateTime} />
                 </div>
 
                 <div>
-                  <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
+                  <FontAwesomeIcon icon={faClock}
+                                   style={{'verticalAlign': 'middle'}}
+                                   onClick={() => this.toggleEndDateTimePicker()} />
                   <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>Arrives:</span>
-                  <TimeDisplay time={travel.end} />
+                  <TimeDisplay time={this.state.end.dateTime} />
                 </div>
               </div>
+
+              <DateTimePicker value={this.state.start.dateTime}
+                              onChange={this.handleStartDateChange}
+                              open={this.state.start.show}
+                              onOpen={() => this.toggleStartDateTimePicker()}
+                              onClose={() => this.toggleStartDateTimePicker()}
+                              TextFieldComponent={() => null}
+              />
+              <DateTimePicker value={this.state.end.dateTime}
+                              onChange={this.handleEndDateChange}
+                              open={this.state.end.show}
+                              onOpen={() => this.toggleEndDateTimePicker()}
+                              onClose={() => this.toggleEndDateTimePicker()}
+                              TextFieldComponent={() => null}
+              />
 
               <div className={styles.options}>
                 <span onClick={() => this.toggleNotes()}>
@@ -94,6 +159,7 @@ export default class TravelCard extends React.Component {
                   )}
                 </span>
               </div>
+
               {this.state.notePopped && (
                 <NotesCard
                   notes={travel.notes}
