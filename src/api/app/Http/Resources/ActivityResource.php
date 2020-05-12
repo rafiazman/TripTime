@@ -31,8 +31,8 @@ class ActivityResource extends JsonResource
                 'lat' => $lat,
                 'lng' => $lng,
             ],
-            'people' => UserCollection::collection($this->users),
-            'notes' => NoteCollection::collection($this->notes)
+            'people' => UserResource::collection($this->users),
+            'notes' => NoteResource::collection($this->notes)
         ];
     }
 }

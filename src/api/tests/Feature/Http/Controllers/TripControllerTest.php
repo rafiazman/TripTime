@@ -9,11 +9,13 @@ use App\Travel;
 use App\Trip;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TripControllerTest extends TestCase
 {
     use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function gets_list_of_all_trips()
@@ -171,11 +173,11 @@ class TripControllerTest extends TestCase
             ->assertJsonFragment([
                 'id' => $activity->id,
                 'type' => $activity->type,
-                'start' => $activity->start_time->format('Y-m-d H:i:s'),
-                'end' => $activity->end_time->format('Y-m-d H:i:s'),
+                'start' => $activity->start_time->format(DATE_RFC3339),
+                'end' => $activity->end_time->format(DATE_RFC3339),
                 'name' => $activity->name,
                 'description' => $activity->description,
-                'updated' => $activity->updated_at,
+                'updated' => $activity->updated_at->format(DATE_RFC3339),
                 'address' => $location->address,
                 'gps' => [
                     'lat' => '100.22',
@@ -184,20 +186,21 @@ class TripControllerTest extends TestCase
                 'people' => [
                     [
                         'id' => $user->id,
+                        'email' => $user->email,
                         'name' => $user->name,
                         'avatarPath' => $user->avatar_url
                     ]
                 ],
                 'notes' => [
                     [
-                        'id' => $note->id,
                         'author' => [
                             'id' => $user->id,
                             'name' => $user->name,
+                            'email' => $user->email,
                             'avatarPath' => $user->avatar_url
                         ],
                         'content' => $note->body,
-                        'updated' => $note->updated_at
+                        'updated' => $note->updated_at->format(DATE_RFC3339)
                     ]
                 ]
             ]);
@@ -767,5 +770,56 @@ class TripControllerTest extends TestCase
 
             $response->assertStatus(422);
         }
+    }
+
+    /** @test */
+    public function edits_existing_activity_within_database()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/activities", [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => 'Successfully added "Activity name here" to database.',
+            'activity' => [
+                'id' => 1,
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50+00:00',
+                'end' => '2020-05-20T07:22:50+00:00',
+                'name' => 'Activity name here',
+                'description' => 'Activity description here',
+                'updated' => date(DATE_RFC3339, strtotime(now())),
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'gps' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228'
+                ],
+                'people' => [],
+                'notes' => []
+            ]
+        ]);
+        $this->assertDatabaseHas('activities', [
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start_time' => '2020-05-20 07:20:50',
+            'end_time' => '2020-05-20 07:22:50',
+            'description' => 'Activity description here',
+            'location_coordinates' => '-36.880765, 174.801228',
+            'trip_id' => $trip->id
+        ]);
     }
 }

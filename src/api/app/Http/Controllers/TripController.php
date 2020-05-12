@@ -6,6 +6,7 @@ use App\Activity;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Http\Resources\ActivityCollection;
 use App\Http\Resources\ActivityResource;
 use App\Location;
 use App\Travel;
@@ -25,7 +26,7 @@ class TripController extends Controller
      * logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -47,7 +48,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function currentTrips(Request $request)
     {
@@ -75,7 +76,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function pastTrips(Request $request)
     {
@@ -100,7 +101,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function futureTrips(Request $request)
     {
@@ -136,7 +137,7 @@ class TripController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateTripRequest $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateTripRequest $request)
     {
@@ -171,7 +172,7 @@ class TripController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Trip $trip)
     {
@@ -183,56 +184,15 @@ class TripController extends Controller
     /**
      * Display all activities associated with the given Trip
      * @param Trip $trip
-     * @return \App\Activity[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function showActivities(Trip $trip)
     {
         $activities = $trip->activities;
 
-        $vmActivities = $activities->map(function ($activity) {
-            $location = $activity->location;
+        $vm = ActivityResource::collection($activities);
 
-            $fullCoordinates = $location->coordinates;
-            $coordinates = explode(', ', $fullCoordinates);
-            $lat = $coordinates[0];
-            $lng = $coordinates[1];
-
-            return [
-                'id' => $activity->id,
-                'type' => $activity->type,
-                'start' => $activity->start_time,
-                'end' => $activity->end_time,
-                'name' => $activity->name,
-                'description' => $activity->description,
-                'updated' => $activity->updated_at,
-                'address' => $location->address,
-                'gps' => [
-                    'lat' => $lat,
-                    'lng' => $lng,
-                ],
-                'people' => $activity->users->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'avatarPath' => $user->avatar_url,
-                    ];
-                }),
-                'notes' => $activity->notes->map(function ($note) {
-                    return [
-                        'id' => $note->id,
-                        'author' => [
-                            'id' => $note->user->id,
-                            'name' => $note->user->name,
-                            'avatarPath' => $note->user->avatar_url,
-                        ],
-                        'content' => $note->body,
-                        'updated' => $note->updated_at
-                    ];
-                }),
-            ];
-        });
-
-        return $vmActivities;
+        return response()->json($vm);
     }
 
     /**
