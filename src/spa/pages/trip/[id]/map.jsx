@@ -15,7 +15,7 @@ export default function Map() {
   return (
     <AuthContext.Consumer>
       {({ currentUser }) => (
-        <TripTeamLayout user={currentUser} tripID={tripID}>
+        <TripTeamLayout user={currentUser} tripID={tripID} activeLink={'Map'}>
           {currentUser ? (
             <TripMapNoSSR tripID={tripID} />
           ) : (

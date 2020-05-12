@@ -1,0 +1,23 @@
+.optionsContainer > span {
+    padding: 1rem;
+    color: var(--trip-orange);
+    display: inline-block;
+}
+.optionsContainer a {
+    color: inherit;
+}
+
+.pdfToolContainer {
+    display: grid;
+    grid-template-rows: 3rem 1fr;
+}
+
+.pdfLoading {
+    width: 25rem;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--trip-orange);
+}

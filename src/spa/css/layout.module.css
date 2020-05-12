@@ -12,6 +12,7 @@
     z-index: 2;
     grid-area: main;
     overflow-y: auto;
+    overflow-x: hidden;
     display: grid;
     grid-template-rows: 1fr auto;
     box-shadow: var(--box-shadow-color) -1px 2px 2px;

@@ -9,7 +9,11 @@ export default function Timeline(props) {
   return (
     <AuthContext.Consumer>
       {({ currentUser }) => (
-        <TripTeamLayout user={currentUser} tripID={props.tripID}>
+        <TripTeamLayout
+          user={currentUser}
+          tripID={props.tripID}
+          activeLink={'Timeline'}
+        >
           <TripSummary tripID={props.tripID} user={currentUser} />
         </TripTeamLayout>
       )}
