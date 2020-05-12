@@ -32,6 +32,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.12.1",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
+    "@material-ui/core": "^4.9.14",
     "@react-pdf/renderer": "^1.6.8",
     "@react-pdf/styled-components": "^1.4.0",
     "@zeit/next-css": "^1.0.1",
