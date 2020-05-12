@@ -777,9 +777,13 @@ class TripControllerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
-        $trip->users()->save($user);
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
 
-        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/activities", [
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/activities", [
+            'id' => $activity->id,
             'name' => 'Activity name here',
             'type' => 'outdoors',
             'start' => '2020-05-20T07:20:50.52Z',
@@ -794,7 +798,7 @@ class TripControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => 'Successfully added "Activity name here" to database.',
+            'message' => 'Successfully updated activity with id: 1',
             'activity' => [
                 'id' => 1,
                 'type' => 'outdoors',
@@ -813,6 +817,7 @@ class TripControllerTest extends TestCase
             ]
         ]);
         $this->assertDatabaseHas('activities', [
+            'id' => $activity->id,
             'name' => 'Activity name here',
             'type' => 'outdoors',
             'start_time' => '2020-05-20 07:20:50',
