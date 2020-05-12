@@ -225,8 +225,8 @@ class TripControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonFragment([
                 'id' => $travel->id,
-                'start' => $travel->start->format('Y-m-d H:i:s'),
-                'end' => $travel->end->format('Y-m-d H:i:s'),
+                'start' => $travel->start,
+                'end' => $travel->end,
                 'mode' => $travel->mode,
                 'description' => $travel->description,
                 'from' => [
@@ -826,5 +826,121 @@ class TripControllerTest extends TestCase
             'location_coordinates' => '-36.880765, 174.801228',
             'trip_id' => $trip->id
         ]);
+    }
+
+    /** @test */
+    public function edits_existing_travel_within_database()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $locations = factory(Location::class, 2)->create();
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        // Force create Note tied to a Travel
+        $note = factory(Note::class)->create([
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => 'Successfully updated travel with id: 1',
+            'travel' => [
+                'id' => $travel->id,
+                'start' => '2020-05-20T07:20:50+00:00',
+                'end' => '2020-05-20T09:20:50+00:00',
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                ],
+                'people' => [
+                    [
+                        'id' => $user->id,
+                        'email' => $user->email,
+                        'name' => $user->name,
+                        'avatarPath' => $user->avatar_url
+                    ]
+                ],
+                'notes' => [
+                    [
+                        'author' => [
+                            'id' => $user->id,
+                            'email' => $user->email,
+                            'name' => $user->name,
+                            'avatarPath' => $user->avatar_url
+                        ],
+                        'content' => $note->body,
+                        'updated' => date(DATE_RFC3339, strtotime($note->updated_at))
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertDatabaseHas('travels', [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'start' => '2020-05-20 07:20:50',
+            'end' => '2020-05-20 09:20:50',
+            'trip_id' => $trip->id,
+            'from_coordinates' => "-36.880765, 174.801228",
+            'to_coordinates' => "-36.880765, 175.801228",
+        ]);
+    }
+
+    /** @test */
+    public function rejects_attempted_travel_edit_with_missing_gps_coordinate_pair()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $locations = factory(Location::class, 2)->create();
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        // Force create Note tied to a Travel
+        $note = factory(Note::class)->create([
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(422);
     }
 }
