@@ -6,6 +6,7 @@ use App\Activity;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Http\Requests\UpdateActivityRequest;
 use App\Http\Resources\ActivityCollection;
 use App\Http\Resources\ActivityResource;
 use App\Location;
@@ -307,6 +308,11 @@ class TripController extends Controller
         ]);
     }
 
+    /**
+     * @param CreateActivityRequest $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addActivity(CreateActivityRequest $request, Trip $trip)
     {
         $lat = $request->input('location.lat');
@@ -355,6 +361,52 @@ class TripController extends Controller
     public function update(Request $request, Trip $trip)
     {
         //
+    }
+
+    /**
+     * Edit an activity tied to the given Trip
+     * @param Request $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateActivity(UpdateActivityRequest $request, Trip $trip)
+    {
+        $id = $request->input('id');
+        $activity = Activity::findOrFail($id);
+
+        if ($request->filled('type')) $activity->type = $request->input('type');
+        if ($request->filled('name')) $activity->name = $request->input('name');
+        if ($request->filled('description')) $activity->description = $request->input('description');
+        if ($request->filled('type')) $activity->start_time = $request->input('start');
+        if ($request->filled('type')) $activity->end_time = $request->input('end');
+        $activity->save();
+
+        if ($request->filled('location.lat')
+            && $request->filled('location.lng'))
+        {
+            $lat = $request->input('location.lat');
+            $lng = $request->input('location.lng');
+            $coordinates =  $lat . ', ' . $lng;
+
+            $location = Location::firstOrCreate(
+                [
+                    ['coordinates', '=', $coordinates]
+                ],
+                [
+                    'name' => $activity->name,
+                    'address' => $request->input('location.address',
+                        'Unknown Address'),
+                    'coordinates' => $coordinates,
+                ]);
+            $location->activities()->save($activity);
+        }
+
+        $vm = [
+            'message' => "Successfully updated activity with id: $activity->id",
+            'activity' => new ActivityResource($activity)
+        ];
+
+        return response()->json($vm);
     }
 
     /**
