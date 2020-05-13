@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Activity;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateActivityRequest extends FormRequest
@@ -23,6 +24,10 @@ class UpdateActivityRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO: Implement validation against existing start and end time in DB
+        // $currentStart = Activity::find($this->id)->value('start_time');
+        // $currentEnd = Activity::find($this->id)->value('end_time');
+
         return [
             'id' => 'required|numeric',
             'name' => 'sometimes|string',
