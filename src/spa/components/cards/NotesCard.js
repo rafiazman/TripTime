@@ -18,23 +18,23 @@ export default class NotesCard extends React.Component {
     const otherNotes = notes.filter(x => x.author.id !== this.props.me.id);
 
     if (onMap) {
-      return <div className={styles.notesOnMap}>
-        {
-          otherNotes.length < 1 ? (
+      return (
+        <div className={styles.notesOnMap}>
+          {otherNotes.length < 1 ? (
             <div className={styles.noNote}>
               Your friends have not added notes to this activity yet...
             </div>
           ) : (
             <div className={styles.friendNotes}>
-              {otherNotes.map((note, i) => <OneNote key={i} note={note} />)}
+              {otherNotes.map((note, i) => (
+                <OneNote key={i} note={note} />
+              ))}
             </div>
-          )
-        }
-        <MyNote note={myNote} me={this.props.me} type={this.props.type} />
-      </div>
-    }
-
-    else {
+          )}
+          <MyNote note={myNote} me={this.props.me} type={this.props.type} />
+        </div>
+      );
+    } else {
       return (
         <div className={styles.notesCard}>
           {otherNotes.length < 1 ? (
@@ -43,7 +43,9 @@ export default class NotesCard extends React.Component {
             </div>
           ) : (
             <div className={styles.friendNotes}>
-              {otherNotes.map((note, i) => <OneNote key={i} note={note} />)}
+              {otherNotes.map((note, i) => (
+                <OneNote key={i} note={note} />
+              ))}
             </div>
           )}
           <MyNote note={myNote} me={this.props.me} type={this.props.type} />
@@ -67,13 +69,21 @@ class OneNote extends React.Component {
     return (
       <div className={styles.oneNote}>
         <div className={styles.authorField}>
-          <img className='inline-avatar' src={note.author.avatarPath} alt={note.author.name} />
-          <span style={{'margin': '0 10px'}}>{note.author.name}</span>
-          <TimeAgo date={note.updated} minPeriod={10} className={styles.timeUpdated} />
+          <img
+            className='inline-avatar'
+            src={note.author.avatarPath}
+            alt={note.author.name}
+          />
+          <span style={{ margin: '0 10px' }}>{note.author.name}</span>
+          <TimeAgo
+            date={note.updated}
+            minPeriod={10}
+            className={styles.timeUpdated}
+          />
           :
         </div>
 
-        <div style={{'margin': '10px 0'}}>{note.content}</div>
+        <div style={{ margin: '10px 0' }}>{note.content}</div>
       </div>
     );
   }
@@ -97,7 +107,12 @@ function EditNote(props) {
             setNoteInput(e.target.value);
           }}
         />
-        <button className={styles.addNoteButton} onClick={() => props.onCancel()}>Cancel</button>
+        <button
+          className={styles.addNoteButton}
+          onClick={() => props.onCancel()}
+        >
+          Cancel
+        </button>
         <button
           className={styles.addNoteButton}
           onClick={() => props.noteHandler(noteInput)}
@@ -112,7 +127,7 @@ function EditNote(props) {
 EditNote.propTypes = {
   noteContent: PropTypes.string.isRequired,
   noteHandler: PropTypes.func.isRequired,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
 };
 
 class MyNote extends React.Component {
@@ -142,10 +157,14 @@ class MyNote extends React.Component {
       );
     else
       return (
-        <div className={styles.myNoteContainer} style={{'marginLeft': '5px'}}>
-          <div className="note-user-detail" style={{'marginTop': '5px'}}>
-            <img className='inline-avatar' src={this.props.me.avatarPath} alt={this.props.me.name} />
-            <span style={{'margin': '5px 10px'}}>You</span>
+        <div className={styles.myNoteContainer} style={{ marginLeft: '5px' }}>
+          <div className='note-user-detail' style={{ marginTop: '5px' }}>
+            <img
+              className='inline-avatar'
+              src={this.props.me.avatarPath}
+              alt={this.props.me.name}
+            />
+            <span style={{ margin: '5px 10px' }}>You</span>
             <TimeAgo
               date={this.state.myNote.updated}
               minPeriod={10}
@@ -165,7 +184,7 @@ class MyNote extends React.Component {
             />
           </div>
 
-          <div style={{'margin': '10px 0'}}>{this.state.myNote.content}</div>
+          <div style={{ margin: '10px 0' }}>{this.state.myNote.content}</div>
         </div>
       );
   }
@@ -174,25 +193,28 @@ class MyNote extends React.Component {
     this.setState(() => ({ editing: !this.state.editing }));
   }
 
-  updateMyNote = (newContent) => {
+  updateMyNote = newContent => {
     const vm = this;
     const type = this.props.type.name;
     const id = this.props.type.id;
 
-    axios.post(`${process.env.API_HOSTNAME}/api/${type}/${id}/notes`, {
-      'content': newContent,
-    }).then(({ data }) => {
-      vm.setState(() => ({
-        myNote: {
-          content: data.note.content,
-          updated: data.note.updated,
-          author: data.note.author,
-        },
-        editing: false,
-      }));
-    }).catch(err => {
-      alert('Error: Failed to POST note. \nCheck console for details.')
-      console.log(err);
-    });
+    axios
+      .post(`${process.env.API_HOSTNAME}/api/${type}/${id}/notes`, {
+        content: newContent,
+      })
+      .then(({ data }) => {
+        vm.setState(() => ({
+          myNote: {
+            content: data.note.content,
+            updated: data.note.updated,
+            author: data.note.author,
+          },
+          editing: false,
+        }));
+      })
+      .catch(err => {
+        alert('Error: Failed to POST note. \nCheck console for details.');
+        console.log(err);
+      });
   };
 }
