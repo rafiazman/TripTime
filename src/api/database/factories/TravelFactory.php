@@ -22,7 +22,7 @@ $factory->define(Travel::class, function (Faker $faker) {
         'end' => $faker->unique()->dateTimeBetween('-7 days', '+7 days'),
 
         'trip_id' => $faker->randomElement($trips),
-        'from_coordinates' => $faker->randomElement($locationCoords),
-        'to_coordinates' => $faker->randomElement($locationCoords),
+        'from_coordinates' => $faker->unique()->randomElement($locationCoords),
+        'to_coordinates' => $faker->unique()->randomElement($locationCoords),
     ];
 });
