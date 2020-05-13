@@ -209,6 +209,7 @@ export default class TravelCard extends React.Component {
 
               {this.state.notePopped && (
                 <NotesCard
+                  type={{ name: 'travel', id: travel.id }}
                   notes={travel.notes}
                   me={currentUser}
                   className={styles.noteCard}

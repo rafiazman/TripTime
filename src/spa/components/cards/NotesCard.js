@@ -107,12 +107,14 @@ function EditNote(props) {
             setNoteInput(e.target.value);
           }}
         />
-        <button
-          className={styles.addNoteButton}
-          onClick={() => props.onCancel()}
-        >
-          Cancel
-        </button>
+        {props.noteContent ? (
+          <button
+            className={styles.addNoteButton}
+            onClick={() => props.onCancel()}
+          >
+            Cancel
+          </button>
+        ) : null}
         <button
           className={styles.addNoteButton}
           onClick={() => props.noteHandler(noteInput)}
