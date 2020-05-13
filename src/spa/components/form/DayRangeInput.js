@@ -13,6 +13,7 @@ export default class DayRangeInput extends React.Component {
   static propTypes = {
     fromChanged: PropTypes.func,
     toChanged: PropTypes.func,
+    required: PropTypes.bool,
   };
 
   constructor(props) {
@@ -49,6 +50,7 @@ export default class DayRangeInput extends React.Component {
   render() {
     const { from, to } = this.state;
     const modifiers = { start: from, end: to };
+    const required = this.props.required;
     return (
       <div className='InputFromTo'>
         <DayPickerInput
@@ -66,6 +68,7 @@ export default class DayRangeInput extends React.Component {
             onDayClick: () => this.to.getInput().focus(),
           }}
           onDayChange={this.handleFromChange}
+          inputProps={{ required: required }}
         />{' '}
         —{' '}
         <span className='InputFromTo-to'>
@@ -78,13 +81,14 @@ export default class DayRangeInput extends React.Component {
             parseDate={parseDate}
             dayPickerProps={{
               selectedDays: [from, { from, to }],
-              disabledDays: { before: from },
+              disabledDays: { before: from || new Date() },
               modifiers,
               month: from,
               fromMonth: from,
               numberOfMonths: 2,
             }}
             onDayChange={this.handleToChange}
+            inputProps={{ required: required }}
           />
         </span>
         <Helmet>
