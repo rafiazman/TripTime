@@ -9,11 +9,13 @@ use App\Travel;
 use App\Trip;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TripControllerTest extends TestCase
 {
     use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function gets_list_of_all_trips()
@@ -171,11 +173,11 @@ class TripControllerTest extends TestCase
             ->assertJsonFragment([
                 'id' => $activity->id,
                 'type' => $activity->type,
-                'start' => $activity->start_time->format('Y-m-d H:i:s'),
-                'end' => $activity->end_time->format('Y-m-d H:i:s'),
+                'start' => $activity->start_time->format(DATE_RFC3339),
+                'end' => $activity->end_time->format(DATE_RFC3339),
                 'name' => $activity->name,
                 'description' => $activity->description,
-                'updated' => $activity->updated_at,
+                'updated' => $activity->updated_at->format(DATE_RFC3339),
                 'address' => $location->address,
                 'gps' => [
                     'lat' => '100.22',
@@ -184,20 +186,21 @@ class TripControllerTest extends TestCase
                 'people' => [
                     [
                         'id' => $user->id,
+                        'email' => $user->email,
                         'name' => $user->name,
                         'avatarPath' => $user->avatar_url
                     ]
                 ],
                 'notes' => [
                     [
-                        'id' => $note->id,
                         'author' => [
                             'id' => $user->id,
                             'name' => $user->name,
+                            'email' => $user->email,
                             'avatarPath' => $user->avatar_url
                         ],
                         'content' => $note->body,
-                        'updated' => $note->updated_at
+                        'updated' => $note->updated_at->format(DATE_RFC3339)
                     ]
                 ]
             ]);
@@ -222,8 +225,8 @@ class TripControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonFragment([
                 'id' => $travel->id,
-                'start' => $travel->start->format('Y-m-d H:i:s'),
-                'end' => $travel->end->format('Y-m-d H:i:s'),
+                'start' => $travel->start,
+                'end' => $travel->end,
                 'mode' => $travel->mode,
                 'description' => $travel->description,
                 'from' => [
@@ -767,5 +770,257 @@ class TripControllerTest extends TestCase
 
             $response->assertStatus(422);
         }
+    }
+
+    /** @test */
+    public function edits_existing_activity_within_database()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/activities", [
+            'id' => $activity->id,
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => 'Successfully updated activity with id: 1',
+            'activity' => [
+                'id' => 1,
+                'type' => 'outdoors',
+                'start' => '2020-05-20T07:20:50+00:00',
+                'end' => '2020-05-20T07:22:50+00:00',
+                'name' => 'Activity name here',
+                'description' => 'Activity description here',
+                'updated' => date(DATE_RFC3339, strtotime(now())),
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'gps' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228'
+                ],
+                'people' => [],
+                'notes' => []
+            ]
+        ]);
+        $this->assertDatabaseHas('activities', [
+            'id' => $activity->id,
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start_time' => '2020-05-20 07:20:50',
+            'end_time' => '2020-05-20 07:22:50',
+            'description' => 'Activity description here',
+            'location_coordinates' => '-36.880765, 174.801228',
+            'trip_id' => $trip->id
+        ]);
+    }
+
+    /** @test */
+    public function attempted_activity_edit_creates_location_if_it_doesnt_exist_yet()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '50, 170'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $user->activities()->attach($activity);
+        $note = factory(Note::class)->create();
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/activities", [
+            'id' => $activity->id,
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 174.801228',
+            'address' => '10 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertEquals(2, Location::all()->count());
+    }
+
+    /** @test */
+    public function edits_existing_travel_within_database()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $locations = factory(Location::class, 2)->create();
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        // Force create Note tied to a Travel
+        $note = factory(Note::class)->create([
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'message' => 'Successfully updated travel with id: 1',
+            'travel' => [
+                'id' => $travel->id,
+                'start' => '2020-05-20T07:20:50+00:00',
+                'end' => '2020-05-20T09:20:50+00:00',
+                'mode' => 'bus',
+                'description' => 'Travel description',
+                'from' => [
+                    'lat' => '-36.880765',
+                    'lng' => '174.801228',
+                ],
+                'to' => [
+                    'lat' => '-36.880765',
+                    'lng' => '175.801228',
+                ],
+                'people' => [
+                    [
+                        'id' => $user->id,
+                        'email' => $user->email,
+                        'name' => $user->name,
+                        'avatarPath' => $user->avatar_url
+                    ]
+                ],
+                'notes' => [
+                    [
+                        'author' => [
+                            'id' => $user->id,
+                            'email' => $user->email,
+                            'name' => $user->name,
+                            'avatarPath' => $user->avatar_url
+                        ],
+                        'content' => $note->body,
+                        'updated' => date(DATE_RFC3339, strtotime($note->updated_at))
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertDatabaseHas('travels', [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'start' => '2020-05-20 07:20:50',
+            'end' => '2020-05-20 09:20:50',
+            'trip_id' => $trip->id,
+            'from_coordinates' => "-36.880765, 174.801228",
+            'to_coordinates' => "-36.880765, 175.801228",
+        ]);
+    }
+
+    /** @test */
+    public function rejects_attempted_travel_edit_with_missing_gps_coordinate_pair()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $locations = factory(Location::class, 2)->create();
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        // Force create Note tied to a Travel
+        $note = factory(Note::class)->create([
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function attempted_travel_edit_creates_location_if_it_doesnt_exist_yet()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location1 = factory(Location::class)->create([
+            'coordinates' => '50, 170'
+        ]);
+        $location2 = factory(Location::class)->create([
+            'coordinates' => '51, 171'
+        ]);
+        // Creates Travel with random from and to locations in DB
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        $note = factory(Note::class)->create();
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '20 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 174.801228',
+            'address' => '10 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 175.801228',
+            'address' => '20 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertEquals(4, Location::all()->count());
     }
 }

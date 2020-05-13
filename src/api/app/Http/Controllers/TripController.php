@@ -6,7 +6,11 @@ use App\Activity;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
+use App\Http\Requests\UpdateActivityRequest;
+use App\Http\Requests\UpdateTravelRequest;
+use App\Http\Resources\ActivityCollection;
 use App\Http\Resources\ActivityResource;
+use App\Http\Resources\TravelResource;
 use App\Location;
 use App\Travel;
 use App\Trip;
@@ -25,7 +29,7 @@ class TripController extends Controller
      * logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -47,7 +51,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function currentTrips(Request $request)
     {
@@ -75,7 +79,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function pastTrips(Request $request)
     {
@@ -100,7 +104,7 @@ class TripController extends Controller
      * currently logged in user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function futureTrips(Request $request)
     {
@@ -136,7 +140,7 @@ class TripController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateTripRequest $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateTripRequest $request)
     {
@@ -171,7 +175,7 @@ class TripController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Trip  $trip
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Trip $trip)
     {
@@ -183,56 +187,15 @@ class TripController extends Controller
     /**
      * Display all activities associated with the given Trip
      * @param Trip $trip
-     * @return \App\Activity[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function showActivities(Trip $trip)
     {
         $activities = $trip->activities;
 
-        $vmActivities = $activities->map(function ($activity) {
-            $location = $activity->location;
+        $vm = ActivityResource::collection($activities);
 
-            $fullCoordinates = $location->coordinates;
-            $coordinates = explode(', ', $fullCoordinates);
-            $lat = $coordinates[0];
-            $lng = $coordinates[1];
-
-            return [
-                'id' => $activity->id,
-                'type' => $activity->type,
-                'start' => $activity->start_time,
-                'end' => $activity->end_time,
-                'name' => $activity->name,
-                'description' => $activity->description,
-                'updated' => $activity->updated_at,
-                'address' => $location->address,
-                'gps' => [
-                    'lat' => $lat,
-                    'lng' => $lng,
-                ],
-                'people' => $activity->users->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'avatarPath' => $user->avatar_url,
-                    ];
-                }),
-                'notes' => $activity->notes->map(function ($note) {
-                    return [
-                        'id' => $note->id,
-                        'author' => [
-                            'id' => $note->user->id,
-                            'name' => $note->user->name,
-                            'avatarPath' => $note->user->avatar_url,
-                        ],
-                        'content' => $note->body,
-                        'updated' => $note->updated_at
-                    ];
-                }),
-            ];
-        });
-
-        return $vmActivities;
+        return response()->json($vm);
     }
 
     /**
@@ -347,6 +310,11 @@ class TripController extends Controller
         ]);
     }
 
+    /**
+     * @param CreateActivityRequest $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addActivity(CreateActivityRequest $request, Trip $trip)
     {
         $lat = $request->input('location.lat');
@@ -395,6 +363,115 @@ class TripController extends Controller
     public function update(Request $request, Trip $trip)
     {
         //
+    }
+
+    /**
+     * Edit an activity tied to the given Trip
+     * @param Request $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateActivity(UpdateActivityRequest $request, Trip $trip)
+    {
+        $id = $request->input('id');
+        $activity = Activity::findOrFail($id);
+
+        if ($request->filled('type')) $activity->type = $request->input('type');
+        if ($request->filled('name')) $activity->name = $request->input('name');
+        if ($request->filled('description')) $activity->description = $request->input('description');
+        if ($request->filled('start')) $activity->start_time = $request->input('start');
+        if ($request->filled('end')) $activity->end_time = $request->input('end');
+        $activity->save();
+
+        if ($request->filled('location.lat')
+            && $request->filled('location.lng'))
+        {
+            $lat = $request->input('location.lat');
+            $lng = $request->input('location.lng');
+            $coordinates =  $lat . ', ' . $lng;
+
+            $location = Location::firstOrCreate(
+                [
+                    ['coordinates', '=', $coordinates]
+                ],
+                [
+                    'name' => $activity->name,
+                    'address' => $request->input('location.address',
+                        'Unknown Address'),
+                    'coordinates' => $coordinates,
+                ]);
+            $location->activities()->save($activity);
+        }
+
+        $vm = [
+            'message' => "Successfully updated activity with id: $activity->id",
+            'activity' => new ActivityResource($activity)
+        ];
+
+        return response()->json($vm);
+    }
+
+    /**
+     * Edit a travel tied to the given Trip
+     * @param UpdateTravelRequest $request
+     * @param Trip $trip
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTravel(UpdateTravelRequest $request, Trip $trip)
+    {
+        $id = $request->input('id');
+        $travel = Travel::findOrFail($id);
+
+        if ($request->filled('mode')) $travel->mode = $request->input('mode');
+        if ($request->filled('description')) $travel->description = $request->input('description');
+        if ($request->filled('from.time')) $travel->start = $request->input('from.time');
+        if ($request->filled('to.time')) $travel->end = $request->input('to.time');
+        $travel->save();
+
+        if ($request->filled('from.lat')
+            && $request->filled('from.lng'))
+        {
+            $coordinates = $request->input('from.lat') .
+                ', ' . $request->input('from.lng');
+
+            $location = Location::firstOrCreate(
+                [
+                    ['coordinates', '=', $coordinates]
+                ],
+                [
+                    'name' => 'Travel From Location',
+                    'address' => $request->input('from.address',
+                        'Unknown Address'),
+                    'coordinates' => $coordinates,
+                ]);
+            $location->travel_froms()->save($travel);
+        }
+
+        if ($request->filled('to.lat')
+            && $request->filled('to.lng'))
+        {
+            $coordinates = $request->input('to.lat') .
+                ', ' . $request->input('to.lng');
+
+            $location = Location::firstOrCreate(
+                [
+                    ['coordinates', '=', $coordinates]
+                ],
+                [
+                    'name' => 'Travel From Location',
+                    'address' => $request->input('to.address',
+                        'Unknown Address'),
+                    'coordinates' => $coordinates,
+                ]);
+            $location->travel_tos()->save($travel);
+        }
+
+        $vm = [
+            'message' => "Successfully updated travel with id: $travel->id",
+            'travel' => new TravelResource($travel)
+        ];
+
+        return response()->json($vm);
     }
 
     /**

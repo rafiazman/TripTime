@@ -25,6 +25,9 @@ class TravelControllerTest extends TestCase
         factory(Location::class)->create([
             'coordinates' => '100.22, 20.36'
         ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
+        ]);
         $travel = factory(Travel::class)->create();
         $user->activities()->attach($travel);
         $note = new Note([
@@ -56,8 +59,11 @@ class TravelControllerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
-        $location = factory(Location::class)->create([
+        factory(Location::class)->create([
             'coordinates' => '100.22, 20.36'
+        ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
         ]);
         $travel = factory(Travel::class)->create();
         $user->activities()->attach($travel);
@@ -94,8 +100,11 @@ class TravelControllerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
-        $location = factory(Location::class)->create([
+        factory(Location::class)->create([
             'coordinates' => '100.22, 20.36'
+        ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
         ]);
         $travel = factory(Travel::class)->create();
         $user->travels()->attach($travel);
@@ -139,8 +148,11 @@ class TravelControllerTest extends TestCase
 
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
-        $location = factory(Location::class)->create([
+        factory(Location::class)->create([
             'coordinates' => '100.22, 20.36'
+        ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
         ]);
         $travel = factory(Travel::class)->create();
         $user->travels()->attach($travel);

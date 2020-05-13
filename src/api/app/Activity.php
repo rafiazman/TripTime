@@ -50,6 +50,16 @@ class Activity extends Model
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start_time',
+        'end_time'
+    ];
+
+    /**
      * Gets the trip of this activity
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -13,7 +13,12 @@ export default function TimeDisplay(props) {
     lastWeek: 'dddd[,] DD/MM/YYYY [at] LT',
     sameElse: 'dddd[,] DD/MM/YYYY [at] LT',
   };
-  return <span>{moment(props.time).calendar(null, calendarFormat)}</span>;
+
+  return (
+    <span style={{'verticalAlign': 'middle'}}>
+      {moment(props.time).calendar(null, calendarFormat)}
+    </span>
+  );
 }
 
 TimeDisplay.propTypes = {

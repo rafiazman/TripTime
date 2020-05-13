@@ -37,9 +37,11 @@ Route::post('/trip/{trip}/users', 'TripController@addUser');
 
 Route::get('/trip/{trip}/activities', 'TripController@showActivities');
 Route::post('/trip/{trip}/activities', 'TripController@addActivity');
+Route::patch('/trip/{trip}/activities', 'TripController@updateActivity');
 
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 Route::post('/trip/{trip}/travels', 'TripController@addTravel');
+Route::patch('/trip/{trip}/travels', 'TripController@updateTravel');
 
 
 /*

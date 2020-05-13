@@ -38,4 +38,19 @@ class Location extends Model
     {
         return $this->hasMany(Activity::class, 'location_coordinates');
     }
+
+    public function travel_froms()
+    {
+        return $this->hasMany(Travel::class, 'from_coordinates');
+    }
+
+    public function travel_tos()
+    {
+        return $this->hasMany(Travel::class, 'to_coordinates');
+    }
+
+    public function travels()
+    {
+        return $this->travel_froms()->union($this->travel_tos()->toBase());
+    }
 }

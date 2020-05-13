@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import TravelCard from '../cards/TravelCard';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
+import MomentUtils from "@date-io/moment";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 export default class TripTimeline extends React.Component {
   _isMounted = false;
@@ -31,7 +33,7 @@ export default class TripTimeline extends React.Component {
         return (
           <div key={index} className={styles.travelCardContainer}>
             <div className={styles.travelCard}>
-              <TravelCard travel={event} />
+              <TravelCard travel={event} tripId={this.props.tripID} />
             </div>
           </div>
         );
@@ -42,7 +44,7 @@ export default class TripTimeline extends React.Component {
             key={index}
             className={left ? styles.timelineLeft : styles.timelineRight}
           >
-            <ActivityCard onMap={false} activity={event} onClose={null} />
+            <ActivityCard onMap={false} activity={event} onClose={null} tripId={this.props.tripID} />
           </div>
         );
       }
@@ -83,20 +85,28 @@ export default class TripTimeline extends React.Component {
     return (
       <div className={styles.tripTimelineContainer}>
         <div className={styles.tripTimeline}>
-          {this.state.activityLoading || this.state.travelLoading ? (
-            <div className={styles.timelineLoading}>
-              <ReactLoading type='spinningBubbles' color='#ff4200' />
-              <p> Loading the timeline...</p>
-            </div>
-          ) : (
-            this.populateTimeline(
-              this.state.activities,
-              this.state.travels.map(travel => {
-                travel.type = 'travel';
-                return travel;
-              }),
+          {
+            this.state.activityLoading || this.state.travelLoading
+            ?
+              (
+                <div className={styles.timelineLoading}>
+                  <ReactLoading type='spinningBubbles' color='#ff4200' />
+                  <p> Loading the timeline...</p>
+                </div>
+              )
+            :
+            (
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                {this.populateTimeline(
+                  this.state.activities,
+                  this.state.travels.map(travel => {
+                    travel.type = 'travel';
+                    return travel;
+                  }),
+                )}
+              </MuiPickersUtilsProvider>
             )
-          )}
+          }
           <div className={styles.line} />
         </div>
       </div>
