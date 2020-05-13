@@ -11,8 +11,8 @@ import TravelCard from '../cards/TravelCard';
 import styles from '../../css/map.module.css';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
-import MomentUtils from "@date-io/moment";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 export default class TripMap extends React.Component {
   constructor(props) {
@@ -89,7 +89,12 @@ export default class TripMap extends React.Component {
     const activity_markers = this.state.activities.map((v, i) => (
       <Marker key={i} position={v.gps} icon={generateActivityIcon(v.type)}>
         <Popup>
-          <ActivityCard onMap={true} activity={v} messageIfNoEvent={''} tripId={this.props.tripID} />
+          <ActivityCard
+            onMap={true}
+            activity={v}
+            messageIfNoEvent={''}
+            tripId={this.props.tripID}
+          />
         </Popup>
       </Marker>
     ));
