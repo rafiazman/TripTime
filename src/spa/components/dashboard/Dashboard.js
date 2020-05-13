@@ -82,7 +82,7 @@ export default class Dashboard extends React.Component {
             displayIfNoTrip={
               <h3>
                 No plans yet.
-                <Link href='/'>
+                <Link href='/newtrip'>
                   <a>Plan for a trip</a>
                 </Link>{' '}
                 today!
