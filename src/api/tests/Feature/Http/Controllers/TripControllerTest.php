@@ -829,6 +829,40 @@ class TripControllerTest extends TestCase
     }
 
     /** @test */
+    public function attempted_activity_edit_creates_location_if_it_doesnt_exist_yet()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '50, 170'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $user->activities()->attach($activity);
+        $note = factory(Note::class)->create();
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/activities", [
+            'id' => $activity->id,
+            'name' => 'Activity name here',
+            'type' => 'outdoors',
+            'start' => '2020-05-20T07:20:50.52Z',
+            'end' => '2020-05-20T07:22:50.52Z',
+            'description' => 'Activity description here',
+            'location' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland'
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 174.801228',
+            'address' => '10 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertEquals(2, Location::all()->count());
+    }
+
+    /** @test */
     public function edits_existing_travel_within_database()
     {
         $user = factory(User::class)->create();
@@ -942,5 +976,51 @@ class TripControllerTest extends TestCase
         ]);
 
         $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function attempted_travel_edit_creates_location_if_it_doesnt_exist_yet()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location1 = factory(Location::class)->create([
+            'coordinates' => '50, 170'
+        ]);
+        $location2 = factory(Location::class)->create([
+            'coordinates' => '51, 171'
+        ]);
+        // Creates Travel with random from and to locations in DB
+        $travel = factory(Travel::class)->create();
+        $user->travels()->attach($travel);
+        $note = factory(Note::class)->create();
+
+        $response = $this->actingAs($user)->json('patch', "/api/trip/$trip->id/travels", [
+            'id' => $travel->id,
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'address' => '10 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'address' => '20 Some Street, Auckland, 1010 Auckland',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 174.801228',
+            'address' => '10 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertDatabaseHas('locations', [
+            'coordinates' => '-36.880765, 175.801228',
+            'address' => '20 Some Street, Auckland, 1010 Auckland'
+        ]);
+        $this->assertEquals(4, Location::all()->count());
     }
 }
