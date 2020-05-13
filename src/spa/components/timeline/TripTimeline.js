@@ -33,7 +33,7 @@ export default class TripTimeline extends React.Component {
         return (
           <div key={index} className={styles.travelCardContainer}>
             <div className={styles.travelCard}>
-              <TravelCard travel={event} />
+              <TravelCard travel={event} tripId={this.props.tripID} />
             </div>
           </div>
         );
@@ -44,7 +44,7 @@ export default class TripTimeline extends React.Component {
             key={index}
             className={left ? styles.timelineLeft : styles.timelineRight}
           >
-            <ActivityCard onMap={false} activity={event} onClose={null} />
+            <ActivityCard onMap={false} activity={event} onClose={null} tripId={this.props.tripID} />
           </div>
         );
       }

@@ -17,6 +17,7 @@ import TimeDisplay from '../TimeDisplay';
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
 import {DateTimePicker} from "@material-ui/pickers";
+import axios from 'axios';
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
@@ -36,6 +37,10 @@ export default class ActivityCard extends React.Component {
     };
   }
 
+  componentDidMount() {
+    axios.defaults.withCredentials = true;
+  }
+
   toggleNotes() {
     this.setState(state => ({
       notePopped: !state.notePopped,
@@ -43,22 +48,44 @@ export default class ActivityCard extends React.Component {
   }
 
   handleStartDateChange = newDate => {
-    this.setState(state => ({
-      start: {
-        ...state.start,
-        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
-      }
-    }));
-  }
+    const tripId = this.props.tripId;
+
+    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
+      'id': this.props.activity.id,
+      'start': newDate.format()
+    }).then(res => {
+      this.setState(state => ({
+        start: {
+          ...state.start,
+          dateTime: res.data.activity.start
+        }
+      }));
+    }).catch(err => {
+      alert('Error: Failed to update start date. \nCheck console for details.');
+      console.log(err);
+    });
+  };
 
   handleEndDateChange = newDate => {
-    this.setState(state => ({
-      end: {
-        ...state.end,
-        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
-      }
-    }));
-  }
+    const tripId = this.props.tripId;
+
+    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
+      'id': this.props.activity.id,
+      'end': newDate.format()
+    }).then(res => {
+      this.setState(state => ({
+        end: {
+          ...state.end,
+          dateTime: res.data.activity.end
+        }
+      }));
+    }).catch(err => {
+      alert('Error: Failed to update start date. \nCheck console for details.');
+      console.log(err);
+    });
+
+
+  };
 
   toggleStartDateTimePicker() {
     this.setState(state => ({
@@ -178,4 +205,5 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
+  tripId: PropTypes.string,
 };

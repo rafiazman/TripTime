@@ -24,6 +24,7 @@ import Tooltip from '../Tooltip';
 import NotesCard from './NotesCard';
 import { AuthContext } from '../../contexts/AuthContext';
 import {DateTimePicker} from "@material-ui/pickers";
+import axios from "axios";
 
 const travelModeIcons = {
   bus: faBus,
@@ -36,6 +37,7 @@ const travelModeIcons = {
   walk: faWalking,
   horse: faHorse,
 };
+
 export default class TravelCard extends React.Component {
   constructor(props) {
     super(props);
@@ -52,6 +54,10 @@ export default class TravelCard extends React.Component {
       notePopped: false,
       unreadNote: false,
     };
+  }
+
+  componentDidMount() {
+    axios.defaults.withCredentials = true;
   }
 
   toggleNotes() {
@@ -79,22 +85,42 @@ export default class TravelCard extends React.Component {
   }
 
   handleStartDateChange = newDate => {
-    this.setState(state => ({
-      start: {
-        ...state.start,
-        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
-      }
-    }));
-  }
+    const tripId = this.props.tripId;
+
+    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/travels`, {
+      'id': this.props.travel.id,
+      'from': { time: newDate.format()}
+    }).then(res => {
+      this.setState(state => ({
+        start: {
+          ...state.start,
+          dateTime: res.data.travel.start
+        }
+      }));
+    }).catch(err => {
+      alert('Error: Failed to update start date. \nCheck console for details.');
+      console.log(err);
+    });
+  };
 
   handleEndDateChange = newDate => {
-    this.setState(state => ({
-      end: {
-        ...state.end,
-        dateTime: newDate.format("YYYY-MM-DD HH:mm:ss")
-      }
-    }));
-  }
+    const tripId = this.props.tripId;
+
+    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/travels`, {
+      'id': this.props.travel.id,
+      'to': { time: newDate.format()}
+    }).then(res => {
+      this.setState(state => ({
+        end: {
+          ...state.end,
+          dateTime: res.data.travel.end
+        }
+      }));
+    }).catch(err => {
+      alert('Error: Failed to update start date. \nCheck console for details.');
+      console.log(err);
+    });
+  };
 
   render() {
     const travel = this.props.travel;
@@ -177,4 +203,5 @@ export default class TravelCard extends React.Component {
 
 TravelCard.propTypes = {
   travel: PropTypes.object.isRequired,
+  tripId: PropTypes.string,
 };
