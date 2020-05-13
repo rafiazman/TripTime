@@ -76,10 +76,18 @@ class TravelController extends Controller
             'content' => 'string|required'
         ]);
 
-        $note = new Note([
+        $note = Note::firstOrCreate([
+            'user_id' => $request->user()->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ], [
             'body' => $request->input('content'),
-            'user_id' => $request->user()->id
+            'user_id' => $request->user()->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
         ]);
+        $note->body = $request->input('content');
+        $note->save();
 
         $travel->notes()->save($note);
 

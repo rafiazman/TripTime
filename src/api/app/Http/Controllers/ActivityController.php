@@ -82,10 +82,18 @@ class ActivityController extends Controller
             'content' => 'string|required'
         ]);
 
-        $note = new Note([
+        $note = Note::firstOrCreate([
+            'user_id' => $request->user()->id,
+            'pointer_id' => $activity->id,
+            'pointer_type' => Activity::class
+        ], [
             'body' => $request->input('content'),
-            'user_id' => $request->user()->id
+            'user_id' => $request->user()->id,
+            'pointer_id' => $activity->id,
+            'pointer_type' => Activity::class
         ]);
+        $note->body = $request->input('content');
+        $note->save();
 
         $activity->notes()->save($note);
 
