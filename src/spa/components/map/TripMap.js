@@ -11,6 +11,8 @@ import TravelCard from '../cards/TravelCard';
 import styles from '../../css/map.module.css';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
+import MomentUtils from "@date-io/moment";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 export default class TripMap extends React.Component {
   constructor(props) {
@@ -37,6 +39,7 @@ export default class TripMap extends React.Component {
     });
     const hostName = process.env.API_HOSTNAME;
     const tripID = this.props.tripID;
+
     axios.defaults.withCredentials = true;
     axios
       .get(`${hostName}/api/trip/${tripID}/activities`)
@@ -86,13 +89,13 @@ export default class TripMap extends React.Component {
     const activity_markers = this.state.activities.map((v, i) => (
       <Marker key={i} position={v.gps} icon={generateActivityIcon(v.type)}>
         <Popup>
-          <ActivityCard onMap={true} activity={v} messageIfNoEvent={''} />
+          <ActivityCard onMap={true} activity={v} messageIfNoEvent={''} tripId={this.props.tripID} />
         </Popup>
       </Marker>
     ));
 
     const travelMarkers = this.state.travels.map((travel, i) => (
-      <TravelMarkerPair travel={travel} key={i} />
+      <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
     ));
 
     const prov = OpenStreetMapProvider();
@@ -116,8 +119,12 @@ export default class TripMap extends React.Component {
             keepResult={false}
           />
           <MarkerSplitter>
-            {travelMarkers}
-            {activity_markers}
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <>
+                {travelMarkers}
+                {activity_markers}
+              </>
+            </MuiPickersUtilsProvider>
           </MarkerSplitter>
         </Map>
         {(this.state.activityLoading || this.state.travelLoading) && (
@@ -145,6 +152,7 @@ function generateRandomRGB() {
 class TravelMarkerPair extends React.Component {
   static propTypes = {
     travel: PropTypes.object.isRequired,
+    tripId: PropTypes.string,
   };
 
   constructor(props) {
@@ -169,7 +177,7 @@ class TravelMarkerPair extends React.Component {
           ref={this.toMarker}
         >
           <Popup>
-            <TravelCard travel={travel} />
+            <TravelCard travel={travel} tripId={this.props.tripId} />
             <span className={styles.travelExplain}>
               Arrive here.
               <a href='#' onClick={() => this.toggleFocus(true)}>
