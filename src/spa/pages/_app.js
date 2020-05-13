@@ -8,6 +8,7 @@ import '../css/global.css';
 import '../css/react-leaflet-geosearch.css';
 import '../css/leaflet.css';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import 'react-day-picker/lib/style.css';
 
 import MainLayout from '../components/layout/MainLayout';
 import { AuthProvider } from '../contexts/AuthContext';

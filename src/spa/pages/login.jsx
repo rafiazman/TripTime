@@ -36,7 +36,7 @@ export default class Login extends React.Component {
               return (
                 <div className={styles.formContainer}>
                   {errorMessage ? (
-                    <div className={styles.failed}>
+                    <div className={'failed'}>
                       <p>Sorry, we failed to log in for you because:</p>
                       <p>{errorMessage}</p>
                       <p>Please try again:</p>

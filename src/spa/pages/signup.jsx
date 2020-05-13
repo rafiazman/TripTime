@@ -46,7 +46,7 @@ export default class SignUp extends React.Component {
             return (
               <div className={styles.regFormContainer}>
                 {errorMessage ? (
-                  <div className={styles.failed}>
+                  <div className='failed'>
                     <p>
                       Sorry, we failed to create an account for you because:
                     </p>
@@ -54,8 +54,8 @@ export default class SignUp extends React.Component {
                     <p>Please try again:</p>
                   </div>
                 ) : (
-                  <h1>
-                    <img src='/img/logo.svg' className={styles.logo} alt='' />
+                  <h1 className='form-title'>
+                    <img src='/img/logo.svg' alt='' />
                     Hey, nice to have you joining us :)
                   </h1>
                 )}

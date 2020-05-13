@@ -8,7 +8,8 @@
     width: 90vw;
     margin: 5rem auto;
 }
-.regFormContainer{
+
+.regFormContainer {
     width: 90vw;
     margin: 1rem auto;
 }
@@ -17,6 +18,7 @@
     margin: 1rem;
     align-items: stretch;
 }
+
 .regForm {
     margin-top: 0.5rem;
 }
@@ -50,6 +52,7 @@
     padding: 0.3rem;
 
 }
+
 .regForm > label > input {
     font-size: 1rem;
     border: 1px solid var(--trip-orange);
@@ -68,6 +71,7 @@
     cursor: pointer;
     border: none;
 }
+
 .loginSubmit {
     margin: 0.5rem;
     background-color: var(--trip-orange);
@@ -78,6 +82,7 @@
     border: none;
     max-width: 100%;
 }
+
 .regSubmit {
     margin: 0.8rem 0.3rem;
 
@@ -98,26 +103,8 @@
     color: rgb(255, 50, 0);
 }
 
-.logo {
-    max-height: 1.2em;
-    max-width: 1.2em;
-    padding-right: 0.5rem;
-    position: relative;
-    top: 0.2em;
-}
-
 .regSubmit:disabled, .loginSubmit:disabled {
     background-color: var(--disabled-trip-orange);
 
 }
 
-.failed {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.failed > p:nth-child(2) {
-    margin-left: 1rem;
-    color: var(--trip-orange);
-    font-size: 1rem;
-}

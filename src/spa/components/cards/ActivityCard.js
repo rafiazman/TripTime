@@ -16,7 +16,7 @@ import TimeDisplay from '../TimeDisplay';
 
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
-import {DateTimePicker} from "@material-ui/pickers";
+import { DateTimePicker } from '@material-ui/pickers';
 import axios from 'axios';
 
 export default class ActivityCard extends React.Component {
@@ -26,11 +26,11 @@ export default class ActivityCard extends React.Component {
     this.state = {
       start: {
         show: false,
-        dateTime: props.activity.start
+        dateTime: props.activity.start,
       },
       end: {
         show: false,
-        dateTime: props.activity.end
+        dateTime: props.activity.end,
       },
       notePopped: false,
       unreadNote: false,
@@ -50,48 +50,58 @@ export default class ActivityCard extends React.Component {
   handleStartDateChange = newDate => {
     const tripId = this.props.tripId;
 
-    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
-      'id': this.props.activity.id,
-      'start': newDate.format()
-    }).then(res => {
-      this.setState(state => ({
-        start: {
-          ...state.start,
-          dateTime: res.data.activity.start
-        }
-      }));
-    }).catch(err => {
-      alert('Error: Failed to update start date. \nCheck console for details.');
-      console.log(err);
-    });
+    axios
+      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
+        id: this.props.activity.id,
+        start: newDate.format(),
+      })
+      .then(res => {
+        this.setState(state => ({
+          start: {
+            ...state.start,
+            dateTime: res.data.activity.start,
+          },
+        }));
+      })
+      .catch(err => {
+        alert(
+          'Error: Failed to update start date. \nCheck console for details.',
+        );
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   };
 
   handleEndDateChange = newDate => {
     const tripId = this.props.tripId;
 
-    axios.patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
-      'id': this.props.activity.id,
-      'end': newDate.format()
-    }).then(res => {
-      this.setState(state => ({
-        end: {
-          ...state.end,
-          dateTime: res.data.activity.end
-        }
-      }));
-    }).catch(err => {
-      alert('Error: Failed to update start date. \nCheck console for details.');
-      console.log(err);
-    });
-
-
+    axios
+      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
+        id: this.props.activity.id,
+        end: newDate.format(),
+      })
+      .then(res => {
+        this.setState(state => ({
+          end: {
+            ...state.end,
+            dateTime: res.data.activity.end,
+          },
+        }));
+      })
+      .catch(err => {
+        alert(
+          'Error: Failed to update start date. \nCheck console for details.',
+        );
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   };
 
   toggleStartDateTimePicker() {
     this.setState(state => ({
       start: {
         ...state.start,
-        show: !state.start.show
+        show: !state.start.show,
       },
     }));
   }
@@ -100,7 +110,7 @@ export default class ActivityCard extends React.Component {
     this.setState(state => ({
       end: {
         ...state.end,
-        show: !state.end.show
+        show: !state.end.show,
       },
     }));
   }
@@ -123,35 +133,56 @@ export default class ActivityCard extends React.Component {
                   <PeopleList people={activity.people} />
 
                   <div className={styles.startTime}>
-                    <FontAwesomeIcon icon={faClock}
-                                     style={{'verticalAlign': 'middle'}}
-                                     onClick={() => this.toggleStartDateTimePicker()} />
-                    <span style={{'margin': '0 5px', 'verticalAlign': 'middle'}}>From:</span>
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      style={{ verticalAlign: 'middle' }}
+                      onClick={() => this.toggleStartDateTimePicker()}
+                    />
+                    <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
+                      From:
+                    </span>
                     <TimeDisplay time={this.state.start.dateTime} />
                   </div>
 
-                  <div className={styles.endTime} onClick={() => this.toggleEndDateTimePicker()}>
-                    <FontAwesomeIcon icon={faClock} style={{'verticalAlign': 'middle'}} />
-                    <span style={{'margin': '0 27px 0px 5px', 'verticalAlign': 'middle'}}>To:</span>
+                  <div
+                    className={styles.endTime}
+                    onClick={() => this.toggleEndDateTimePicker()}
+                  >
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      style={{ verticalAlign: 'middle' }}
+                    />
+                    <span
+                      style={{
+                        margin: '0 27px 0px 5px',
+                        verticalAlign: 'middle',
+                      }}
+                    >
+                      To:
+                    </span>
                     <TimeDisplay time={this.state.end.dateTime} />
                   </div>
 
-                  <DateTimePicker value={this.state.start.dateTime}
-                                  onChange={this.handleStartDateChange}
-                                  open={this.state.start.show}
-                                  onOpen={() => this.toggleStartDateTimePicker()}
-                                  onClose={() => this.toggleStartDateTimePicker()}
-                                  TextFieldComponent={() => null}
+                  <DateTimePicker
+                    value={this.state.start.dateTime}
+                    onChange={this.handleStartDateChange}
+                    open={this.state.start.show}
+                    onOpen={() => this.toggleStartDateTimePicker()}
+                    onClose={() => this.toggleStartDateTimePicker()}
+                    TextFieldComponent={() => null}
                   />
-                  <DateTimePicker value={this.state.end.dateTime}
-                                  onChange={this.handleEndDateChange}
-                                  open={this.state.end.show}
-                                  onOpen={() => this.toggleEndDateTimePicker()}
-                                  onClose={() => this.toggleEndDateTimePicker()}
-                                  TextFieldComponent={() => null}
+                  <DateTimePicker
+                    value={this.state.end.dateTime}
+                    onChange={this.handleEndDateChange}
+                    open={this.state.end.show}
+                    onOpen={() => this.toggleEndDateTimePicker()}
+                    onClose={() => this.toggleEndDateTimePicker()}
+                    TextFieldComponent={() => null}
                   />
 
-                  <div style={{'marginTop': '15px'}}>{activity.description}</div>
+                  <div style={{ marginTop: '15px' }}>
+                    {activity.description}
+                  </div>
 
                   <div className={onMap ? styles.optionsOnMap : styles.options}>
                     {!onMap && (

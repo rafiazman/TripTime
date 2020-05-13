@@ -115,3 +115,25 @@ a:hover, .pretend-link:hover {
     align-items: center;
 }
 
+.failed {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.failed > p:nth-child(2) {
+    margin-left: 1rem;
+    color: var(--trip-orange);
+    font-size: 1rem;
+}
+
+.form-title {
+
+}
+
+.form-title > img{
+    max-height: 1.2em;
+    max-width: 1.2em;
+    padding-right: 0.5rem;
+    position: relative;
+    top: 0.2em;
+}

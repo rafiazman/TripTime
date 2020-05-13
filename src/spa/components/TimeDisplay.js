@@ -15,7 +15,7 @@ export default function TimeDisplay(props) {
   };
 
   return (
-    <span style={{'verticalAlign': 'middle'}}>
+    <span style={{ verticalAlign: 'middle' }}>
       {moment(props.time).calendar(null, calendarFormat)}
     </span>
   );

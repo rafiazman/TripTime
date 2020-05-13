@@ -19,7 +19,7 @@ export default class TopBar extends React.Component {
         <Link href='/' key={0}>
           <a>My Trips</a>
         </Link>,
-        <Link href='/' key={1}>
+        <Link href='/newtrip' key={1}>
           <a>New Trip</a>
         </Link>,
         <span
