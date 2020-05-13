@@ -13,26 +13,43 @@ export default class NotesCard extends React.Component {
   render() {
     const notes = this.props.notes;
     const onMap = this.props.onMap;
-    return (
-      <div className={onMap ? styles.notesOnMap : styles.notesCard}>
-        {notes.length < 1 ? (
-          <div className={styles.noNote}>
-            Your friends have not added notes to this activity yet...
-          </div>
-        ) : (
-          <div className={styles.friendNotes}>
-            {notes.map((note, index) => {
-              if (note.author.id !== this.props.me.id)
-                return <OneNote key={index} note={note} />;
-            })}
-          </div>
-        )}
-        <MyNote
-          note={notes.find(note => note.author.id === this.props.me.id)}
-          me={this.props.me}
-        />
+
+    const myNote = notes.find(note => note.author.id === this.props.me.id);
+    const otherNotes = notes.filter(x => x.author.id !== this.props.me.id);
+
+    if (onMap) {
+      return <div className={styles.notesOnMap}>
+        {
+          otherNotes.length < 1 ? (
+            <div className={styles.noNote}>
+              Your friends have not added notes to this activity yet...
+            </div>
+          ) : (
+            <div className={styles.friendNotes}>
+              {otherNotes.map((note, i) => <OneNote key={i} note={note} />)}
+            </div>
+          )
+        }
+        <MyNote note={myNote} me={this.props.me} />
       </div>
-    );
+    }
+
+    else {
+      return (
+        <div className={styles.notesCard}>
+          {otherNotes.length < 1 ? (
+            <div className={styles.noNote}>
+              Your friends have not added notes to this activity yet...
+            </div>
+          ) : (
+            <div className={styles.friendNotes}>
+              {otherNotes.map((note, i) => <OneNote key={i} note={note} />)}
+            </div>
+          )}
+          <MyNote note={myNote} me={this.props.me} />
+        </div>
+      );
+    }
   }
 }
 
@@ -45,19 +62,17 @@ NotesCard.propTypes = {
 class OneNote extends React.Component {
   render() {
     const note = this.props.note;
+
     return (
       <div className={styles.oneNote}>
         <div className={styles.authorField}>
-          <img className='inline-avatar' src={note.author.avatarPath} alt='' />
-          <span> &nbsp;{note.author.name}, </span>
-          <TimeAgo
-            date={note.updated}
-            minPeriod={10}
-            className={styles.timeUpdated}
-          />
+          <img className='inline-avatar' src={note.author.avatarPath} alt={note.author.name} />
+          <span style={{'margin': '0 10px'}}>{note.author.name}</span>
+          <TimeAgo date={note.updated} minPeriod={10} className={styles.timeUpdated} />
           :
         </div>
-        <div>{note.content}</div>
+
+        <div style={{'margin': '10px 0'}}>{note.content}</div>
       </div>
     );
   }
@@ -118,26 +133,30 @@ class MyNote extends React.Component {
       );
     else
       return (
-        <div className={styles.myNoteContainer}>
-          <span> Your Note, </span>
-          <TimeAgo
-            date={this.state.myNote.updated}
-            minPeriod={10}
-            className={styles.timeUpdated}
-          />
-          <Tooltip
-            text='Edit Note'
-            component={
-              <FontAwesomeIcon
-                icon={faPencilAlt}
-                onClick={e => {
-                  this.startEditing(e);
-                }}
-                className={styles.editIcon}
-              />
-            }
-          />
-          <div>{this.state.myNote.content}</div>
+        <div className={styles.myNoteContainer} style={{'marginLeft': '5px'}}>
+          <div className="note-user-detail" style={{'marginTop': '5px'}}>
+            <img className='inline-avatar' src={this.props.me.avatarPath} alt={this.props.me.name} />
+            <span style={{'margin': '5px 10px'}}>You</span>
+            <TimeAgo
+              date={this.state.myNote.updated}
+              minPeriod={10}
+              className={styles.timeUpdated}
+            />
+            <Tooltip
+              text='Edit Note'
+              component={
+                <FontAwesomeIcon
+                  icon={faPencilAlt}
+                  onClick={e => {
+                    this.startEditing(e);
+                  }}
+                  className={styles.editIcon}
+                />
+              }
+            />
+          </div>
+
+          <div style={{'margin': '10px 0'}}>{this.state.myNote.content}</div>
         </div>
       );
   }
