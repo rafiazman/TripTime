@@ -63,12 +63,8 @@ export default class ActivityCard extends React.Component {
           },
         }));
       })
-      .catch(err => {
-        alert(
-          'Error: Failed to update start date. \nCheck console for details.',
-        );
-        // eslint-disable-next-line no-console
-        console.log(err);
+      .catch(() => {
+        alert('Error: Failed to update start date.');
       });
   };
 
@@ -88,12 +84,8 @@ export default class ActivityCard extends React.Component {
           },
         }));
       })
-      .catch(err => {
-        alert(
-          'Error: Failed to update start date. \nCheck console for details.',
-        );
-        // eslint-disable-next-line no-console
-        console.log(err);
+      .catch(() => {
+        alert('Error: Failed to update start date.');
       });
   };
 

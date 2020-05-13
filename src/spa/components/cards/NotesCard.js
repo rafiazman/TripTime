@@ -212,9 +212,8 @@ class MyNote extends React.Component {
           editing: false,
         }));
       })
-      .catch(err => {
-        alert('Error: Failed to POST note. \nCheck console for details.');
-        console.log(err);
+      .catch(() => {
+        alert('Error: Failed to update note.');
       });
   };
 }
