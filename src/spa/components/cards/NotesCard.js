@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../css/note.module.css';
 import TimeAgo from 'react-timeago/lib';
-// import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Tooltip from '../Tooltip';
+import axios from 'axios';
 
 export default class NotesCard extends React.Component {
   render() {
@@ -30,7 +30,7 @@ export default class NotesCard extends React.Component {
             </div>
           )
         }
-        <MyNote note={myNote} me={this.props.me} />
+        <MyNote note={myNote} me={this.props.me} type={this.props.type} />
       </div>
     }
 
@@ -46,7 +46,7 @@ export default class NotesCard extends React.Component {
               {otherNotes.map((note, i) => <OneNote key={i} note={note} />)}
             </div>
           )}
-          <MyNote note={myNote} me={this.props.me} />
+          <MyNote note={myNote} me={this.props.me} type={this.props.type} />
         </div>
       );
     }
@@ -57,6 +57,7 @@ NotesCard.propTypes = {
   notes: PropTypes.array.isRequired,
   me: PropTypes.object.isRequired,
   onMap: PropTypes.bool,
+  type: PropTypes.object,
 };
 
 class OneNote extends React.Component {
@@ -96,6 +97,7 @@ function EditNote(props) {
             setNoteInput(e.target.value);
           }}
         />
+        <button className={styles.addNoteButton} onClick={() => props.onCancel()}>Cancel</button>
         <button
           className={styles.addNoteButton}
           onClick={() => props.noteHandler(noteInput)}
@@ -110,12 +112,14 @@ function EditNote(props) {
 EditNote.propTypes = {
   noteContent: PropTypes.string.isRequired,
   noteHandler: PropTypes.func.isRequired,
+  onCancel: PropTypes.func
 };
 
 class MyNote extends React.Component {
   static propTypes = {
     note: PropTypes.object,
     me: PropTypes.object.isRequired,
+    type: PropTypes.object,
   };
 
   constructor(props) {
@@ -123,12 +127,17 @@ class MyNote extends React.Component {
     this.state = { myNote: this.props.note, editing: false };
   }
 
+  componentDidMount() {
+    axios.defaults.withCredentials = true;
+  }
+
   render() {
     if (!this.state.myNote || this.state.editing)
       return (
         <EditNote
           noteContent={this.state.myNote ? this.state.myNote.content : ''}
-          noteHandler={this.updateMyNote()}
+          noteHandler={this.updateMyNote}
+          onCancel={() => this.startEditing()}
         />
       );
     else
@@ -162,20 +171,28 @@ class MyNote extends React.Component {
   }
 
   startEditing() {
-    this.setState(() => ({ editing: true }));
+    this.setState(() => ({ editing: !this.state.editing }));
   }
 
-  updateMyNote() {
-    const that = this;
-    return function(newContent) {
-      that.setState(() => ({
+  updateMyNote = (newContent) => {
+    const vm = this;
+    const type = this.props.type.name;
+    const id = this.props.type.id;
+
+    axios.post(`${process.env.API_HOSTNAME}/api/${type}/${id}/notes`, {
+      'content': newContent,
+    }).then(({ data }) => {
+      vm.setState(() => ({
         myNote: {
-          content: newContent,
-          updated: new Date(),
-          author: that.props.me,
+          content: data.note.content,
+          updated: data.note.updated,
+          author: data.note.author,
         },
         editing: false,
       }));
-    };
-  }
+    }).catch(err => {
+      alert('Error: Failed to POST note. \nCheck console for details.')
+      console.log(err);
+    });
+  };
 }

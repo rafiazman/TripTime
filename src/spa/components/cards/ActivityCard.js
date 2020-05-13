@@ -214,6 +214,7 @@ export default class ActivityCard extends React.Component {
                 </div>
                 {this.state.notePopped && (
                   <NotesCard
+                    type={{ name: 'activity', id: activity.id }}
                     notes={activity.notes}
                     me={currentUser}
                     onMap={onMap}
