@@ -104,6 +104,7 @@ export default class TravelCard extends React.Component {
         alert(
           'Error: Failed to update start date. \nCheck console for details.',
         );
+        // eslint-disable-next-line no-console
         console.log(err);
       });
   };
@@ -128,6 +129,7 @@ export default class TravelCard extends React.Component {
         alert(
           'Error: Failed to update start date. \nCheck console for details.',
         );
+        // eslint-disable-next-line no-console
         console.log(err);
       });
   };
