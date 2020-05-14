@@ -21,7 +21,7 @@ export default function Calendar(props) {
   }, []);
   return (
     <AuthContext.Consumer>
-      {({ currentUser }) => (
+      {({ currentUser, setAnchor }) => (
         <TripTeamLayout
           user={currentUser}
           activeLink={'Calendar'}
@@ -42,7 +42,10 @@ export default function Calendar(props) {
           ) : (
             <div className={'fit-center'}>
               <Link href={'/login'}>
-                <a> Log in </a>
+                <a onClick={() => setAnchor(`/trip/${tripID}/calendar`)}>
+                  {' '}
+                  Log in{' '}
+                </a>
               </Link>
               to see the calendar
             </div>

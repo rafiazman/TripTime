@@ -14,14 +14,14 @@ export default function Map() {
   const tripID = useRouter().query.id;
   return (
     <AuthContext.Consumer>
-      {({ currentUser }) => (
+      {({ currentUser, setAnchor }) => (
         <TripTeamLayout user={currentUser} tripID={tripID} activeLink={'Map'}>
           {currentUser ? (
             <TripMapNoSSR tripID={tripID} />
           ) : (
             <div className={'fit-center'}>
               <Link href={'/login'}>
-                <a> Log in </a>
+                <a onClick={() => setAnchor(`/trip/${tripID}/map`)}> Log in </a>
               </Link>
               to see the map
             </div>

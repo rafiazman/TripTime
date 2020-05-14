@@ -47,7 +47,14 @@ class TripSummary extends React.Component {
           <div className={'fit-center'}>
             <br />
             <Link href={'/login'}>
-              <a> Log in </a>
+              <a
+                onClick={() =>
+                  this.props.setAnchor(`/trip/${this.props.tripID}`)
+                }
+              >
+                {' '}
+                Log in{' '}
+              </a>
             </Link>
             to view trip details
           </div>
@@ -63,4 +70,5 @@ TripSummary.propTypes = {
   tripID: PropTypes.string,
   user: PropTypes.any,
   router: PropTypes.object.isRequired,
+  setAnchor: PropTypes.func.isRequired,
 };

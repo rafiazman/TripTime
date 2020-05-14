@@ -32,7 +32,7 @@ export default function Pdf(props) {
       .then(
         res => setTrip(res.data),
         err => {
-          if (err.response.status === 401) router.push('/login');
+          if (err.response.status === 401) router.push(`/trip/${tripID}/tools`);
           else router.push('/');
         },
       )
