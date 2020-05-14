@@ -40,8 +40,9 @@ export default class SignUp extends React.Component {
             userPassword,
             userNameInput,
             userConfirmedPassword,
+            redirectTo,
           }) => {
-            if (currentUser) Router.push('/');
+            if (currentUser) Router.push(redirectTo);
 
             return (
               <div className={styles.regFormContainer}>

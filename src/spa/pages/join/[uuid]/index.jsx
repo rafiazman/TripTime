@@ -26,7 +26,7 @@ export default function JoinTripIndex({ uuid }) {
               </Link>{' '}
               or{' '}
               <Link href={'/signup'}>
-                <a onClick={() => setAnchor('/join/${uuid}')}> sign up</a>
+                <a onClick={() => setAnchor(`/join/${uuid}`)}> sign up</a>
               </Link>{' '}
               to accept the invitation.
             </div>

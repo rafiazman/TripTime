@@ -26,6 +26,7 @@ const AuthProvider = props => {
   const [nameOccupied, setNameOccupied] = useState(false);
   const [passwordConfirmed, setPasswordConfirmed] = useState(true);
   const [userConfirmedPassword, setUserConfirmedPassword] = useState('');
+  const [redirectTo, setRedirectTo] = useState('/');
 
   useEffect(() => {
     if (!currentUser) {
@@ -33,6 +34,10 @@ const AuthProvider = props => {
       loadCurrentAuthStatus();
     }
   }, []);
+
+  function setAnchor(link) {
+    setRedirectTo(link);
+  }
 
   function loadCurrentAuthStatus() {
     setLoading(true);
@@ -255,6 +260,8 @@ const AuthProvider = props => {
         nameOccupied,
         passwordConfirmed,
         handleUserPasswordConfirm,
+        setAnchor,
+        redirectTo,
       }}
     >
       {/* eslint-disable-next-line react/prop-types */}
