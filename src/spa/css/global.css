@@ -100,14 +100,14 @@ a:hover, .pretend-link:hover {
     display: inline;
 }
 
-.loading-cover{
+.loading-cover {
     width: 100vw;
     height: 100vh;
-    z-index: 999!important;
+    z-index: 999 !important;
     position: fixed;
     left: 0;
     top: 0;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     color: var(--trip-orange);
     display: flex;
     flex-direction: column;
@@ -130,10 +130,14 @@ a:hover, .pretend-link:hover {
 
 }
 
-.form-title > img{
+.form-title > img {
     max-height: 1.2em;
     max-width: 1.2em;
     padding-right: 0.5rem;
     position: relative;
     top: 0.2em;
+}
+
+button:focus {
+    outline-color: var(--trip-orange);
 }
