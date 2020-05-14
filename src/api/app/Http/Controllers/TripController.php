@@ -484,29 +484,4 @@ class TripController extends Controller
     {
         //
     }
-
-    /**
-     * Gets the Trip JSON ViewModel from a given Trip
-     * @param Trip $trip
-     * @return array
-     */
-    private function getTripVm(Trip $trip) {
-        $participants = $trip->users->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatarPath' => $user->avatar_url,
-            ];
-        });
-        $participants = $participants->sortBy('id');
-
-        return [
-            'name' => $trip->name,
-            'description' => $trip->description,
-            'participants' => $participants,
-            'start' => $trip->start_date,
-            'end' => $trip->end_date
-        ];
-    }
 }
