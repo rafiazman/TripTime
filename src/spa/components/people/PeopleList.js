@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import Tooltip from './Tooltip';
+import Tooltip from '../Tooltip';
 import PropTypes from 'prop-types';
 
 class PeopleList extends React.Component {

@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from '../../css/trip-summary.module.css';
 import PropTypes from 'prop-types';
-import PeopleList from '../PeopleList';
+import PeopleList from '../people/PeopleList';
 
 export default class TripTitle extends React.Component {
   render() {
