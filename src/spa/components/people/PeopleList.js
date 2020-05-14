@@ -17,12 +17,14 @@ class PeopleList extends React.Component {
             }
           />
         ))}
+        {this.props.addComponent}
       </div>
     );
   }
 }
 PeopleList.propTypes = {
   people: PropTypes.array.isRequired,
+  addComponent: PropTypes.node,
 };
 
 export default PeopleList;
