@@ -1,0 +1,19 @@
+.authPrompt {
+    min-width: 50vw;
+    max-width: 90vw;
+    margin: 4rem auto;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.authPrompt a{
+    background-color: var(--trip-orange);
+    color: white;
+    padding: 0 0.2rem;
+    border: 2px solid var(--trip-orange);
+}
+
+.authPrompt a:hover{
+    background-color: white;
+    color: var(--trip-orange);
+}

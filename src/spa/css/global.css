@@ -29,8 +29,8 @@ div, input, button {
 }
 
 .block-avatar {
-    max-height: 2rem;
-    max-width: 2rem;
+    height: 2rem;
+    width: 2rem;
     border: 2px var(--box-shadow-color) solid;
     border-radius: 100%;
     display: inline-block;
