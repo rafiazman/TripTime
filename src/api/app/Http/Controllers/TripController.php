@@ -174,11 +174,17 @@ class TripController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Trip  $trip
+     * @param Request $request
+     * @param \App\Trip $trip
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Trip $trip)
+    public function show(Request $request, Trip $trip)
     {
+        $user = $request->user();
+
+        if (!$trip->hasParticipant($user))
+            return response()->json('', 401);
+
         $vm = new TripResource($trip);
 
         return response()->json($vm);
@@ -186,11 +192,17 @@ class TripController extends Controller
 
     /**
      * Display all activities associated with the given Trip
+     * @param Request $request
      * @param Trip $trip
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showActivities(Trip $trip)
+    public function showActivities(Request $request, Trip $trip)
     {
+        $user = $request->user();
+
+        if (!$trip->hasParticipant($user))
+            return response()->json('', 401);
+
         $activities = $trip->activities;
 
         $vm = ActivityResource::collection($activities);
@@ -201,60 +213,20 @@ class TripController extends Controller
     /**
      * Display all travels associated with the given Trip
      * @param Trip $trip
-     * @return \App\Travel[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function showTravels(Trip $trip)
+    public function showTravels(Request $request, Trip $trip)
     {
+        $user = $request->user();
+
+        if (!$trip->hasParticipant($user))
+            return response()->json('', 401);
+
         $travels = $trip->travels;
 
-        $vmActivities = $travels->map(function ($travel) {
-            $fromLocation = $travel->from;
-            $fromCoords = explode(', ', $fromLocation->coordinates);
-            $fromLat = $fromCoords[0];
-            $fromLng = $fromCoords[1];
+        $vm = TravelResource::collection($travels);
 
-            $toLocation = $travel->to;
-            $toCoords = explode(', ', $toLocation->coordinates);
-            $toLat = $toCoords[0];
-            $toLng = $toCoords[1];
-
-            return [
-                'id' => $travel->id,
-                'start' => $travel->start,
-                'end' => $travel->end,
-                'mode' => $travel->mode,
-                'description' => $travel->description,
-                'from' => [
-                    'lat' => $fromLat,
-                    'lng' => $fromLng,
-                ],
-                'to' => [
-                    'lat' => $toLat,
-                    'lng' => $toLng,
-                ],
-                'people' => $travel->users->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'avatarPath' => $user->avatar_url,
-                    ];
-                }),
-                'notes' => $travel->notes->map(function ($note) {
-                    return [
-                        'id' => $note->id,
-                        'author' => [
-                            'id' => $note->user->id,
-                            'name' => $note->user->name,
-                            'avatarPath' => $note->user->avatar_url,
-                        ],
-                        'content' => $note->body,
-                        'updated' => $note->updated_at
-                    ];
-                }),
-            ];
-        });
-
-        return $vmActivities;
+        return response()->json($vm);
     }
 
     public function addTravel(CreateTravelRequest $request, Trip $trip)

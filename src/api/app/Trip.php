@@ -71,4 +71,14 @@ class Trip extends Model
             ->where('user_id', $user->id)
             ->value('last_checked_trip');
     }
+
+    /**
+     * Checks if user is a participant of this trip
+     * @param User $user
+     * @return bool
+     */
+    public function hasParticipant(User $user)
+    {
+        return $this->users->contains('id', '=', $user->id);
+    }
 }

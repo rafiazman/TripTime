@@ -14,6 +14,7 @@ class TravelResource extends JsonResource
      */
     public function toArray($request)
     {
+        // TODO: Use Laravel Mutators for Date Casting
         return [
             'id' => $this->id,
             'start' => date(DATE_RFC3339, strtotime($this->start)),
