@@ -8,6 +8,7 @@ use App\Note;
 use App\Travel;
 use App\Trip;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -152,7 +153,24 @@ class TripControllerTest extends TestCase
     }
 
     /** @test */
-    public function gets_activities_tied_to_a_trip()
+    public function show__rejects_user_who_is_not_a_trip_member()
+    {
+        $tomorrow = now()->addDays(1);
+        $weekAfter = now()->addDays(7);
+
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create([
+            'start_date' => $tomorrow,
+            'end_date' => $weekAfter
+        ]);
+
+        $response = $this->actingAs($user)->json('get', "/api/trip/$trip->id");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function showActivities__gets_activities_tied_to_a_trip()
     {
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
@@ -165,6 +183,10 @@ class TripControllerTest extends TestCase
         $note = factory(Note::class)->create([
             'pointer_id' => $activity->id,
             'pointer_type' => Activity::class
+        ]);
+        $user->trips()->attach($trip, [
+            'last_checked_trip' => now(),
+            'last_checked_chat' => now()
         ]);
 
         $response = $this->actingAs($user)->json('get', "/api/trip/$trip->id/activities");
@@ -207,7 +229,24 @@ class TripControllerTest extends TestCase
     }
 
     /** @test */
-    public function gets_travels_tied_to_a_trip()
+    public function showActivities__rejects_user_who_is_not_a_trip_member()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $user->activities()->attach($activity);
+        $user2 = factory(User::class)->create();
+
+        $response = $this->actingAs($user2)->json('get', "/api/trip/$trip->id/activities");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function showTravels__gets_travels_tied_to_a_trip()
     {
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
@@ -219,14 +258,18 @@ class TripControllerTest extends TestCase
             'pointer_id' => $travel->id,
             'pointer_type' => Travel::class
         ]);
+        $user->trips()->attach($trip, [
+            'last_checked_trip' => now(),
+            'last_checked_chat' => now()
+        ]);
 
         $response = $this->actingAs($user)->json('get', "/api/trip/$trip->id/travels");
 
         $response->assertStatus(200)
             ->assertJsonFragment([
                 'id' => $travel->id,
-                'start' => $travel->start,
-                'end' => $travel->end,
+                'start' => date(DATE_RFC3339, strtotime($travel->start)),
+                'end' => date(DATE_RFC3339, strtotime($travel->end)),
                 'mode' => $travel->mode,
                 'description' => $travel->description,
                 'from' => [
@@ -240,23 +283,37 @@ class TripControllerTest extends TestCase
                 'people' => [
                     [
                         'id' => $user->id,
+                        'email' => $user->email,
                         'name' => $user->name,
                         'avatarPath' => $user->avatar_url
                     ]
                 ],
                 'notes' => [
                     [
-                        'id' => $note->id,
                         'author' => [
                             'id' => $user->id,
+                            'email' => $user->email,
                             'name' => $user->name,
                             'avatarPath' => $user->avatar_url
                         ],
                         'content' => $note->body,
-                        'updated' => $note->updated_at
+                        'updated' => date(DATE_RFC3339, strtotime($travel->updated_at))
                     ]
                 ]
             ]);
+    }
+
+    /** @test */
+    public function showTravels__rejects_user_who_is_not_a_trip_member()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $locations = factory(Location::class, 2)->create();
+        $travel = factory(Travel::class)->create();
+
+        $response = $this->actingAs($user)->json('get', "/api/trip/$trip->id/travels");
+
+        $response->assertStatus(401);
     }
 
 

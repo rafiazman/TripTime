@@ -6,8 +6,8 @@ import TripTitle from './TripTitle';
 import TripTimeline from './TripTimeline';
 import styles from '../../css/trip-summary.module.css';
 import Link from 'next/link';
-import axios from 'axios';
 import { withRouter } from 'next/router';
+import axios from '../../app/axios';
 
 class TripSummary extends React.Component {
   constructor(props) {
@@ -17,14 +17,17 @@ class TripSummary extends React.Component {
 
   componentDidMount() {
     const tripID = this.props.tripID;
-    const hostName = process.env.API_HOSTNAME;
-    axios.defaults.withCredentials = true;
-    axios.get(`${hostName}/api/trip/${tripID}`).then(
+
+    axios.get(`/trip/${tripID}`).then(
       res => this.setState(() => ({ trip: res.data })),
-      err => {
-        if (err.response.status === 401)
-          this.setState(() => ({ trip: undefined }));
-        else this.props.router.push('/');
+      () => {
+        // TODO: Implement API for getting "preview" of a trip
+        // if (err.response.status === 401)
+        //   this.setState(() => ({ trip: undefined }));
+        // else this.props.router.push('/');
+
+        this.setState(() => ({ trip: undefined }));
+        this.props.router.push('/');
       },
     );
   }
@@ -32,6 +35,10 @@ class TripSummary extends React.Component {
   render() {
     const trip = this.state.trip;
     const user = this.props.user;
+
+    // TODO: Implement API for getting "preview" of a trip
+    if (!trip) return null;
+
     return (
       <div className={styles.tripSummary}>
         {trip && (
