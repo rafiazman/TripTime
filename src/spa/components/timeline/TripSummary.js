@@ -6,8 +6,8 @@ import TripTitle from './TripTitle';
 import TripTimeline from './TripTimeline';
 import styles from '../../css/trip-summary.module.css';
 import Link from 'next/link';
-import axios from 'axios';
 import { withRouter } from 'next/router';
+import axios from '../../app/axios';
 
 class TripSummary extends React.Component {
   constructor(props) {
@@ -17,9 +17,8 @@ class TripSummary extends React.Component {
 
   componentDidMount() {
     const tripID = this.props.tripID;
-    const hostName = process.env.API_HOSTNAME;
-    axios.defaults.withCredentials = true;
-    axios.get(`${hostName}/api/trip/${tripID}`).then(
+
+    axios.get(`/trip/${tripID}`).then(
       res => this.setState(() => ({ trip: res.data })),
       () => {
         // TODO: Implement API for getting "preview" of a trip
