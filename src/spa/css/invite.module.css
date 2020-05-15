@@ -1,0 +1,61 @@
+.linkContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.linkContainer + .linkContainer {
+    border-top: 1px solid #bbb;
+    padding-top: 0.5rem;
+}
+
+.buttonCopied, .buttonToCopy {
+    border: 2px white solid;
+    border-radius: 3px;
+    background-color: white;
+    color: var(--trip-orange);
+    margin-left: 0.3rem;
+    cursor: pointer;
+}
+
+.linkContainer button svg {
+    position: relative;
+    top: 0.1rem;
+}
+
+.linkContainer button:focus {
+    outline: none;
+}
+
+.generateButton {
+    color: var(--trip-orange);
+    font-size: 1rem;
+    background-color: white;
+    border: 2px solid var(--trip-orange);
+    margin: 0.5rem auto;
+    cursor: pointer;
+}
+
+.links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.generatorLoading {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem auto;
+    font-size: 1rem;
+    color: var(--trip-orange);
+    height: 2rem;
+}
+
+.generatorLoading p {
+    position: relative;
+    bottom: 0.6rem;
+    left: 0.3rem;
+}

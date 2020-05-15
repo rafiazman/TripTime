@@ -48,7 +48,6 @@
     "leaflet-geosearch": "^2.7.0",
     "moment": "^2.25.3",
     "next": "^9.3.6",
-    "mongoose": "^5.9.13",
     "overlapping-marker-spiderfier-leaflet": "^0.2.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

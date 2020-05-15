@@ -11,7 +11,7 @@ import {
   faChevronCircleDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
-import PeopleList from '../PeopleList';
+import PeopleList from '../people/PeopleList';
 import TimeDisplay from '../TimeDisplay';
 
 import Tooltip from '../Tooltip';

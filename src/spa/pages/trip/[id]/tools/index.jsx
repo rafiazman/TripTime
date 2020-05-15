@@ -12,7 +12,7 @@ export default function Index() {
   const tripID = useRouter().query.id;
   return (
     <AuthContext.Consumer>
-      {({ currentUser }) => (
+      {({ currentUser, setAnchor }) => (
         <TripTeamLayout user={currentUser} tripID={tripID} activeLink={'Tools'}>
           {currentUser && (
             <div className={styles.toolsContainer}>
@@ -36,7 +36,10 @@ export default function Index() {
           {!currentUser && (
             <div className={'fit-center'}>
               <Link href={'/login'}>
-                <a> Log in </a>
+                <a onClick={() => setAnchor(`/trip/${tripID}/tools`)}>
+                  {' '}
+                  Log in{' '}
+                </a>
               </Link>
               to access the tools
             </div>

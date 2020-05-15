@@ -14,6 +14,7 @@ class TripSummary extends React.Component {
     super(props);
     this.state = { trip: undefined };
   }
+
   componentDidMount() {
     const tripID = this.props.tripID;
     const hostName = process.env.API_HOSTNAME;
@@ -38,6 +39,7 @@ class TripSummary extends React.Component {
             name={trip.name}
             people={trip.participants}
             description={trip.description}
+            id={this.props.tripID}
           />
         )}
         {user && <TripTimeline tripID={this.props.tripID} />}
@@ -45,7 +47,14 @@ class TripSummary extends React.Component {
           <div className={'fit-center'}>
             <br />
             <Link href={'/login'}>
-              <a> Log in </a>
+              <a
+                onClick={() =>
+                  this.props.setAnchor(`/trip/${this.props.tripID}`)
+                }
+              >
+                {' '}
+                Log in{' '}
+              </a>
             </Link>
             to view trip details
           </div>
@@ -61,4 +70,5 @@ TripSummary.propTypes = {
   tripID: PropTypes.string,
   user: PropTypes.any,
   router: PropTypes.object.isRequired,
+  setAnchor: PropTypes.func.isRequired,
 };

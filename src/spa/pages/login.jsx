@@ -30,8 +30,9 @@ export default class Login extends React.Component {
             handleUserPassword,
             currentUser,
             errorMessage,
+            redirectTo,
           }) => {
-            if (currentUser) Router.push('/');
+            if (currentUser) Router.push(redirectTo);
             else
               return (
                 <div className={styles.formContainer}>

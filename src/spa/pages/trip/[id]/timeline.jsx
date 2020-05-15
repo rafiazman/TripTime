@@ -8,13 +8,17 @@ import PropTypes from 'prop-types';
 export default function Timeline(props) {
   return (
     <AuthContext.Consumer>
-      {({ currentUser }) => (
+      {({ currentUser, setAnchor }) => (
         <TripTeamLayout
           user={currentUser}
           tripID={props.tripID}
           activeLink={'Timeline'}
         >
-          <TripSummary tripID={props.tripID} user={currentUser} />
+          <TripSummary
+            tripID={props.tripID}
+            user={currentUser}
+            setAnchor={setAnchor}
+          />
         </TripTeamLayout>
       )}
     </AuthContext.Consumer>

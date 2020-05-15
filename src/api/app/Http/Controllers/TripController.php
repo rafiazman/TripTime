@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateTravelRequest;
 use App\Http\Resources\ActivityCollection;
 use App\Http\Resources\ActivityResource;
 use App\Http\Resources\TravelResource;
+use App\Http\Resources\TripResource;
 use App\Location;
 use App\Travel;
 use App\Trip;
@@ -160,8 +161,7 @@ class TripController extends Controller
             'last_checked_chat' => now(),
         ]);
 
-        $tripVm = $this->getTripVm($trip);
-        $tripVm['id'] = $trip->id;
+        $tripVm = new TripResource($trip);
 
         $vm = [
             'message' => 'Trip successfully created.',
@@ -179,7 +179,7 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        $vm = $this->getTripVm($trip);
+        $vm = new TripResource($trip);
 
         return response()->json($vm);
     }
@@ -283,7 +283,7 @@ class TripController extends Controller
         ]);
         $travel->save();
 
-        $tripVm = $this->getTripVm($trip);
+        $tripVm = new TripResource($trip);
 
         return response()->json([
             'message' => "Successfully added a new Travel to $trip->name",
@@ -302,7 +302,7 @@ class TripController extends Controller
         $user = $request->user();
         $trip->users()->save($user);
 
-        $tripVm = $this->getTripVm($trip);
+        $tripVm = new TripResource($trip);
 
         return response()->json([
             'message' => "Successfully added $user->email to $trip->name",
@@ -483,30 +483,5 @@ class TripController extends Controller
     public function destroy(Trip $trip)
     {
         //
-    }
-
-    /**
-     * Gets the Trip JSON ViewModel from a given Trip
-     * @param Trip $trip
-     * @return array
-     */
-    private function getTripVm(Trip $trip) {
-        $participants = $trip->users->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatarPath' => $user->avatar_url,
-            ];
-        });
-        $participants = $participants->sortBy('id');
-
-        return [
-            'name' => $trip->name,
-            'description' => $trip->description,
-            'participants' => $participants,
-            'start' => $trip->start_date,
-            'end' => $trip->end_date
-        ];
     }
 }

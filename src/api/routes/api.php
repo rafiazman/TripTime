@@ -43,6 +43,12 @@ Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 Route::post('/trip/{trip}/travels', 'TripController@addTravel');
 Route::patch('/trip/{trip}/travels', 'TripController@updateTravel');
 
+/*
+ * TripInviteController
+ */
+Route::get('/trip/{trip}/invites', 'TripInviteController@index');
+Route::post('/trip/{trip}/invite', 'TripInviteController@createInvitationLink');
+Route::post('/join/{uuid}', 'TripInviteController@joinByInvitationLink');
 
 /*
  * UserController

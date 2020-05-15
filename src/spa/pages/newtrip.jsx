@@ -45,12 +45,12 @@ export default function NewTrip() {
         <PageLoading message={'TripTime is creating the trip for you:)'} />
       )}
       <AuthContext.Consumer>
-        {({ currentUser }) => {
+        {({ currentUser, setAnchor }) => {
           if (!currentUser)
             return (
               <div className={'fit-center'}>
                 <Link href={'/login'}>
-                  <a> Log in </a>
+                  <a onClick={() => setAnchor('/newtrip')}> Log in </a>
                 </Link>
                 to create your trip
               </div>

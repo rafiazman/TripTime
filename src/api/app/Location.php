@@ -23,6 +23,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Location whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Location whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Location whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Travel[] $travel_froms
+ * @property-read int|null $travel_froms_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Travel[] $travel_tos
+ * @property-read int|null $travel_tos_count
  */
 class Location extends Model
 {
