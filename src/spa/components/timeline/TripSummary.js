@@ -21,10 +21,14 @@ class TripSummary extends React.Component {
     axios.defaults.withCredentials = true;
     axios.get(`${hostName}/api/trip/${tripID}`).then(
       res => this.setState(() => ({ trip: res.data })),
-      err => {
-        if (err.response.status === 401)
-          this.setState(() => ({ trip: undefined }));
-        else this.props.router.push('/');
+      () => {
+        // TODO: Implement API for getting "preview" of a trip
+        // if (err.response.status === 401)
+        //   this.setState(() => ({ trip: undefined }));
+        // else this.props.router.push('/');
+
+        this.setState(() => ({ trip: undefined }));
+        this.props.router.push('/');
       },
     );
   }
@@ -32,6 +36,10 @@ class TripSummary extends React.Component {
   render() {
     const trip = this.state.trip;
     const user = this.props.user;
+
+    // TODO: Implement API for getting "preview" of a trip
+    if (!trip) return null;
+
     return (
       <div className={styles.tripSummary}>
         {trip && (
