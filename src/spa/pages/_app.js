@@ -12,6 +12,16 @@ import 'react-day-picker/lib/style.css';
 
 import MainLayout from '../components/layout/MainLayout';
 import { AuthProvider } from '../contexts/AuthContext';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#ff6400' },
+    secondary: {
+      main: '#888',
+    },
+  },
+});
 
 export default class MyApp extends App {
   constructor() {
@@ -33,12 +43,13 @@ export default class MyApp extends App {
             rel='stylesheet'
           />
         </Head>
-
-        <AuthProvider>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+          <AuthProvider>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </AuthProvider>
+        </ThemeProvider>
       </>
     );
   }
