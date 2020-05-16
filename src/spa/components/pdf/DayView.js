@@ -51,6 +51,10 @@ function ActivityView(props) {
           <GrayText>From:</GrayText> {formatTimeString(activity.start)}{' '}
           <GrayText>To:</GrayText> {formatTimeString(activity.end)}
         </Text>
+        <Text>
+          <GrayText>Location (Lat, Long):</GrayText>({activity.gps.lat},
+          {activity.gps.lng})
+        </Text>
       </View>
     </View>
   );
