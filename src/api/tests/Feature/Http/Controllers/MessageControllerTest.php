@@ -42,4 +42,81 @@ class MessageControllerTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    /** @test */
+    public function index__return_error_if_user_is_not_logged_in() {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+        $messages = factory(Message::class, 20)->create();
+
+        $response = $this->json('get', "/api/trip/$trip->id/messages");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function create__creates_message_with_currently_logged_in_user() {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/messages", [
+                'content' => 'test message'
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'id' => 1,
+            'content' => 'test message',
+            'author' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatarPath' => $user->avatar_url
+            ]
+        ]);
+        $this->assertDatabaseHas('messages', [
+            'body' => 'test message',
+            'user_id' => $user->id,
+            'trip_id' => $trip->id
+        ]);
+    }
+
+    /** @test */
+    public function create__return_error_if_user_is_not_trip_participant() {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/trip/$trip->id/messages", [
+                'content' => 'test message'
+            ]);
+
+        $response->assertStatus(401);
+        $this->assertDatabaseMissing('messages', [
+            'body' => 'test message',
+            'user_id' => $user->id,
+            'trip_id' => $trip->id
+        ]);
+    }
+
+    /** @test */
+    public function create__return_error_if_user_is_not_logged_in() {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->json('post', "/api/trip/$trip->id/messages", [
+                'content' => 'test message'
+            ]);
+
+        $response->assertStatus(401);
+        $this->assertDatabaseMissing('messages', [
+            'body' => 'test message',
+            'user_id' => $user->id,
+            'trip_id' => $trip->id
+        ]);
+    }
 }
