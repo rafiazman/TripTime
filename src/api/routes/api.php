@@ -49,6 +49,8 @@ Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 Route::post('/trip/{trip}/travels', 'TripController@addTravel');
 Route::patch('/trip/{trip}/travels', 'TripController@updateTravel');
 
+Route::get('/trip/{trip}/messages', 'MessageController@index');
+
 /*
  * TripInviteController
  */

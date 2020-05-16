@@ -22,7 +22,6 @@ class TripController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        // TODO: Incorporate Laravel Resources to transform Model to JSON
     }
 
     /**
@@ -183,7 +182,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $vm = new TripResource($trip);
 
@@ -201,7 +202,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $activities = $trip->activities;
 
@@ -220,7 +223,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $travels = $trip->travels;
 
