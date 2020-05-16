@@ -24,7 +24,6 @@ class MessageController extends Controller
     public function index(Request $request, Trip $trip)
     {
         $user = $request->user();
-
         if (!$trip->hasParticipant($user)) return response()->json([
             'message' => 'You are not a participant of this trip.'
         ], 401);
@@ -45,6 +44,11 @@ class MessageController extends Controller
      */
     public function create(Request $request, Trip $trip)
     {
+        $user = $request->user();
+        if (!$trip->hasParticipant($user)) return response()->json([
+            'message' => 'You are not a participant of this trip.'
+        ], 401);
+
         $message = Message::create([
             'body' => $request->input('content'),
             'user_id' => auth()->id(),

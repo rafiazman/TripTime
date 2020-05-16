@@ -18,6 +18,12 @@ Route::post('/activity/{activity}/join', 'ActivityController@addUser');
 Route::delete('/activity/{activity}', 'ActivityController@destroy');
 
 /*
+ * MessageController
+ */
+Route::get('/trip/{trip}/messages', 'MessageController@index');
+Route::post('/trip/{trip}/messages', 'MessageController@create');
+
+/*
  * TravelController
  */
 Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
@@ -48,8 +54,6 @@ Route::patch('/trip/{trip}/activities', 'TripController@updateActivity');
 Route::get('/trip/{trip}/travels', 'TripController@showTravels');
 Route::post('/trip/{trip}/travels', 'TripController@addTravel');
 Route::patch('/trip/{trip}/travels', 'TripController@updateTravel');
-
-Route::get('/trip/{trip}/messages', 'MessageController@index');
 
 /*
  * TripInviteController
