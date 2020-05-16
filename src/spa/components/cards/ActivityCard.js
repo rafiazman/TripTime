@@ -1,7 +1,7 @@
 /** @format */
 
 import NotesCard from './NotesCard';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,219 +9,234 @@ import {
   faMapMarkerAlt,
   faChevronCircleUp,
   faChevronCircleDown,
+  faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import PeopleList from '../people/PeopleList';
 import TimeDisplay from '../TimeDisplay';
-
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
 import axios from 'axios';
+import ActivityDetailsDialog from './ActivityDetailsDialog';
+import moment from 'moment';
+import ErrorDialog from '../dialog/ErrorDialog';
+import { ActivityIcon } from './ActivityIcon';
 
-export default class ActivityCard extends React.Component {
-  constructor(props) {
-    super(props);
+export default function ActivityCard(props) {
+  const [activity, setActivity] = useState(props.activity);
+  const [startChanging, setStartChanging] = useState(false);
+  const [endChanging, setEndChanging] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [notePopped, setNotePopped] = useState(false);
+  const [timeError, setTimeError] = useState(undefined);
+  const [timeErrorDisplay, setTimeErrorDisplay] = useState(false);
+  const [requestError, setRequestError] = useState(undefined);
+  const [requestErrorDisplay, setRequestErrorDisplay] = useState(false);
+  const tripId = props.tripId;
+  const activityId = props.activity.id;
 
-    this.state = {
-      start: {
-        show: false,
-        dateTime: props.activity.start,
-      },
-      end: {
-        show: false,
-        dateTime: props.activity.end,
-      },
-      notePopped: false,
-      unreadNote: false,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     axios.defaults.withCredentials = true;
-  }
+  }, []);
 
-  toggleNotes() {
-    this.setState(state => ({
-      notePopped: !state.notePopped,
-    }));
-  }
-
-  handleStartDateChange = newDate => {
-    const tripId = this.props.tripId;
-
-    axios
-      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
-        id: this.props.activity.id,
-        start: newDate.format(),
-      })
-      .then(res => {
-        this.setState(state => ({
-          start: {
-            ...state.start,
-            dateTime: res.data.activity.start,
-          },
-        }));
-      })
-      .catch(() => {
-        alert('Error: Failed to update start date.');
-      });
+  const toggleNotes = () => {
+    setNotePopped(!notePopped);
   };
 
-  handleEndDateChange = newDate => {
-    const tripId = this.props.tripId;
-
-    axios
-      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
-        id: this.props.activity.id,
-        end: newDate.format(),
-      })
-      .then(res => {
-        this.setState(state => ({
-          end: {
-            ...state.end,
-            dateTime: res.data.activity.end,
-          },
-        }));
-      })
-      .catch(() => {
-        alert('Error: Failed to update start date.');
-      });
+  const handleEdit = activityPatch => {
+    if (checkTimeValid(activityPatch))
+      axios
+        .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
+          id: activityId,
+          ...activityPatch,
+        })
+        .then(res => {
+          setActivity(res.data.activity);
+        })
+        .catch(err => {
+          setRequestError(
+            `Sorry, we failed to update the activity ${
+              activityPatch.name
+            } ${err.response &&
+              err.response.data &&
+              err.response.data.message &&
+              'because' + err.response.data.message}`,
+          );
+          setRequestErrorDisplay(true);
+        });
+    else {
+      setTimeErrorDisplay(true);
+    }
   };
 
-  toggleStartDateTimePicker() {
-    this.setState(state => ({
-      start: {
-        ...state.start,
-        show: !state.start.show,
-      },
-    }));
-  }
+  const checkTimeValid = ({ start, end }) => {
+    if (start && moment(start).isBefore(moment())) {
+      setTimeError('Activity plan should start in the future');
+      return false;
+    }
 
-  toggleEndDateTimePicker() {
-    this.setState(state => ({
-      end: {
-        ...state.end,
-        show: !state.end.show,
-      },
-    }));
-  }
+    if (end && moment(activity.start).isAfter(moment(end))) {
+      setTimeError('Activity should end after it starts');
+      return false;
+    }
+    return true;
+  };
 
-  render() {
-    const activity = this.props.activity;
-    const messageIfNoEvent = this.props.messageIfNoEvent;
-    const onMap = this.props.onMap;
-    if (activity) {
-      return (
-        <AuthContext.Consumer>
-          {({ currentUser }) => {
-            return (
-              <div
-                className={styles.eventCard}
-                style={onMap ? { border: '0' } : {}}
-              >
-                <div className={onMap ? styles.cardOnMap : undefined}>
-                  <strong>{activity.name}</strong>
-                  <PeopleList people={activity.people} />
+  const messageIfNoEvent = props.messageIfNoEvent;
+  const onMap = props.onMap;
+  if (activity) {
+    return (
+      <AuthContext.Consumer>
+        {({ currentUser }) => {
+          return (
+            <div
+              className={styles.eventCard}
+              style={onMap ? { border: '0' } : {}}
+            >
+              <div className={onMap ? styles.cardOnMap : undefined}>
+                <strong>
+                  <ActivityIcon type={activity.type} /> {activity.name}
+                </strong>
+                <PeopleList people={activity.people} />
 
-                  <div className={styles.startTime}>
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      style={{ verticalAlign: 'middle' }}
-                      onClick={() => this.toggleStartDateTimePicker()}
-                    />
-                    <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
-                      From:
-                    </span>
-                    <TimeDisplay time={this.state.start.dateTime} />
-                  </div>
-
-                  <div
-                    className={styles.endTime}
-                    onClick={() => this.toggleEndDateTimePicker()}
-                  >
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      style={{ verticalAlign: 'middle' }}
-                    />
-                    <span
-                      style={{
-                        margin: '0 27px 0px 5px',
-                        verticalAlign: 'middle',
-                      }}
-                    >
-                      To:
-                    </span>
-                    <TimeDisplay time={this.state.end.dateTime} />
-                  </div>
-
-                  <DateTimePicker
-                    value={this.state.start.dateTime}
-                    onChange={this.handleStartDateChange}
-                    open={this.state.start.show}
-                    onOpen={() => this.toggleStartDateTimePicker()}
-                    onClose={() => this.toggleStartDateTimePicker()}
-                    TextFieldComponent={() => null}
+                <div className={styles.startTime}>
+                  <FontAwesomeIcon
+                    icon={faClock}
+                    style={{ verticalAlign: 'middle' }}
+                    onClick={() => setStartChanging(true)}
                   />
-                  <DateTimePicker
-                    value={this.state.end.dateTime}
-                    onChange={this.handleEndDateChange}
-                    open={this.state.end.show}
-                    onOpen={() => this.toggleEndDateTimePicker()}
-                    onClose={() => this.toggleEndDateTimePicker()}
-                    TextFieldComponent={() => null}
-                  />
-
-                  <div style={{ marginTop: '15px' }}>
-                    {activity.description}
-                  </div>
-
-                  <div className={onMap ? styles.optionsOnMap : styles.options}>
-                    {!onMap && (
-                      <span>
-                        <Tooltip
-                          text={'Show on Map'}
-                          component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
-                        />
-                      </span>
-                    )}
-                    <span onClick={() => this.toggleNotes()}>
-                      {this.state.notePopped ? (
-                        <Tooltip
-                          text={'Hide Notes'}
-                          component={
-                            <FontAwesomeIcon icon={faChevronCircleUp} />
-                          }
-                        />
-                      ) : (
-                        <Tooltip
-                          text={'Show Notes'}
-                          component={
-                            <FontAwesomeIcon icon={faChevronCircleDown} />
-                          }
-                        />
-                      )}
-                    </span>
-                  </div>
+                  <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
+                    From:
+                  </span>
+                  <TimeDisplay time={activity.start} />
                 </div>
-                {this.state.notePopped && (
-                  <NotesCard
-                    type={{ name: 'activity', id: activity.id }}
-                    notes={activity.notes}
-                    me={currentUser}
-                    onMap={onMap}
+
+                <div
+                  className={styles.endTime}
+                  onClick={() => setEndChanging(true)}
+                >
+                  <FontAwesomeIcon
+                    icon={faClock}
+                    style={{ verticalAlign: 'middle' }}
+                  />
+                  <span
+                    style={{
+                      margin: '0 27px 0px 5px',
+                      verticalAlign: 'middle',
+                    }}
+                  >
+                    To:
+                  </span>
+                  <TimeDisplay time={activity.end} />
+                </div>
+
+                {startChanging && (
+                  <DateTimePicker
+                    value={activity.start}
+                    ampm={false}
+                    onChange={start => handleEdit({ start })}
+                    open={startChanging}
+                    onClose={() => setStartChanging(false)}
+                    TextFieldComponent={() => null}
+                    showTodayButton
                   />
                 )}
+                {endChanging && (
+                  <DateTimePicker
+                    value={activity.end}
+                    ampm={false}
+                    onChange={end => handleEdit({ end })}
+                    open={endChanging}
+                    onClose={() => setEndChanging(false)}
+                    TextFieldComponent={() => null}
+                    showTodayButton
+                  />
+                )}
+                {timeErrorDisplay && (
+                  <ErrorDialog
+                    open={timeErrorDisplay}
+                    message={timeError}
+                    title={'Invalid Time'}
+                    onClose={() => {
+                      setTimeError(undefined);
+                      setTimeErrorDisplay(false);
+                    }}
+                  />
+                )}
+
+                {requestErrorDisplay && (
+                  <ErrorDialog
+                    open={requestErrorDisplay}
+                    message={requestError}
+                    title={'Activity Update Failed'}
+                    onClose={() => {
+                      setRequestError(undefined);
+                      setRequestErrorDisplay(false);
+                    }}
+                  />
+                )}
+
+                <div style={{ marginTop: '15px' }}>{activity.description}</div>
+
+                <div className={onMap ? styles.optionsOnMap : styles.options}>
+                  <span onClick={() => setEditing(true)}>
+                    <Tooltip
+                      text={'Edit Activity'}
+                      component={<FontAwesomeIcon icon={faPencilAlt} />}
+                    />
+                  </span>
+                  {editing && (
+                    <ActivityDetailsDialog
+                      activity={activity}
+                      onCancel={() => setEditing(false)}
+                      open={editing}
+                      onOk={activity => {
+                        handleEdit(activity);
+                        setEditing(false);
+                      }}
+                    />
+                  )}
+                  {!onMap && (
+                    <span>
+                      <Tooltip
+                        text={'Show on Map'}
+                        component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
+                      />
+                    </span>
+                  )}
+                  <span onClick={() => toggleNotes()}>
+                    {notePopped ? (
+                      <Tooltip
+                        text={'Hide Notes'}
+                        component={<FontAwesomeIcon icon={faChevronCircleUp} />}
+                      />
+                    ) : (
+                      <Tooltip
+                        text={'Show Notes'}
+                        component={
+                          <FontAwesomeIcon icon={faChevronCircleDown} />
+                        }
+                      />
+                    )}
+                  </span>
+                </div>
               </div>
-            );
-          }}
-        </AuthContext.Consumer>
-      );
-    } else {
-      return (
-        <p>{messageIfNoEvent ? messageIfNoEvent : 'No upcoming events'}</p>
-      );
-    }
+              {notePopped && (
+                <NotesCard
+                  type={{ name: 'activity', id: activity.id }}
+                  notes={activity.notes}
+                  me={currentUser}
+                  onMap={onMap}
+                />
+              )}
+            </div>
+          );
+        }}
+      </AuthContext.Consumer>
+    );
+  } else {
+    return <p>{messageIfNoEvent ? messageIfNoEvent : 'No upcoming events'}</p>;
   }
 }
 
