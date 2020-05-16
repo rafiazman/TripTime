@@ -3,6 +3,9 @@
 import React, { createRef } from 'react';
 import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
+import Control from 'react-leaflet-control';
+import { IconButton } from '@material-ui/core';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 import { generateActivityIcon, generateTravelIcon } from './MarkerIcon';
 import PropTypes from 'prop-types';
 import MarkerSplitter from './MarkerSplitter';
@@ -131,6 +134,11 @@ export default class TripMap extends React.Component {
               </>
             </MuiPickersUtilsProvider>
           </MarkerSplitter>
+          <Control position='topleft'>
+            <IconButton aria-label='add custom marker'>
+              <LocalActivityIcon />
+            </IconButton>
+          </Control>
         </Map>
         {(this.state.activityLoading || this.state.travelLoading) && (
           <MapPlanLoading />
