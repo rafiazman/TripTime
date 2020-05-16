@@ -7,8 +7,9 @@ import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
 import ChatMessageList from './ChatMessageList';
 import ChatInputForm from './ChatInputForm';
+import axios from '../../app/axios';
 
-import chatMessages from '../../app/dummy-data/chat-messages';
+import PropTypes from 'prop-types';
 
 const headBackgroundStyle = {
   backgroundImage: `linear-gradient(to right, rgba(244,244,244,0.9), rgba(244,244,244,0.9)),
@@ -34,10 +35,10 @@ export default class ChatBox extends React.Component {
     }));
   }
 
-  handleIncomingNewMessages(incomeMessages) {
+  handleIncomingNewMessages(newMessages) {
     this.setState(state => ({
-      newMessageNum: state.newMessageNum + incomeMessages.length,
-      messages: state.messages.concat(incomeMessages),
+      newMessageNum: state.newMessageNum + newMessages.length,
+      messages: state.messages.concat(newMessages),
     }));
   } // This is the method to take care of API call for new message
 
@@ -58,7 +59,10 @@ export default class ChatBox extends React.Component {
   } // this is the method to figure out who's the current user
 
   componentDidMount() {
-    this.handleIncomingNewMessages(chatMessages);
+    const tripId = this.props.tripId;
+    axios.get(`/trip/${tripId}/messages`).then(res => {
+      this.handleIncomingNewMessages(res.data);
+    });
   }
 
   render() {
@@ -95,3 +99,7 @@ export default class ChatBox extends React.Component {
     );
   }
 }
+
+ChatBox.propTypes = {
+  tripId: PropTypes.string,
+};
