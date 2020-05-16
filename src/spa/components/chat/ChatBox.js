@@ -43,11 +43,15 @@ export default class ChatBox extends React.Component {
   } // This is the method to take care of API call for new message
 
   handleMyNewMessage(myNewMessage) {
-    this.setState(state => ({
-      newMessageNum: 0,
-      messages: [...state.messages, myNewMessage],
-      // Also need to submit it to the backend here
-    }));
+    const tripId = this.props.tripId;
+
+    // TODO: Add isLoading boolean variable to display loading circle animation
+    axios.post(`/trip/${tripId}/messages`, myNewMessage).then(() => {
+      this.setState(state => ({
+        newMessageNum: 0,
+        messages: [...state.messages, myNewMessage],
+      }));
+    });
   }
 
   getCurrentUser() {
@@ -60,6 +64,7 @@ export default class ChatBox extends React.Component {
 
   componentDidMount() {
     const tripId = this.props.tripId;
+
     axios.get(`/trip/${tripId}/messages`).then(res => {
       this.handleIncomingNewMessages(res.data);
     });
