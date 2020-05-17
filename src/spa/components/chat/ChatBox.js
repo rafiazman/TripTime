@@ -20,12 +20,27 @@ export default class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newMessageNum: 1,
+      newMessageNum: 0,
       popUp: false,
       messages: [],
     };
     this.handleIncomingNewMessages = this.handleIncomingNewMessages.bind(this);
     this.handleMyNewMessage = this.handleMyNewMessage.bind(this);
+  }
+
+  componentDidMount() {
+    const tripId = this.props.tripId;
+
+    axios.get(`/trip/${tripId}/messages`).then(res => {
+      this.handleIncomingNewMessages(res.data);
+    });
+
+    // Listen to private channel named "messages.trip.1"
+    window.laravelEcho
+      .private(`messages.trip.${tripId}`)
+      .listen('NewMessage', e => {
+        this.handleIncomingNewMessages(e.message);
+      });
   }
 
   togglePop() {
@@ -44,14 +59,8 @@ export default class ChatBox extends React.Component {
 
   handleMyNewMessage(myNewMessage) {
     const tripId = this.props.tripId;
-
     // TODO: Add isLoading boolean variable to display loading circle animation
-    axios.post(`/trip/${tripId}/messages`, myNewMessage).then(() => {
-      this.setState(state => ({
-        newMessageNum: 0,
-        messages: [...state.messages, myNewMessage],
-      }));
-    });
+    axios.post(`/trip/${tripId}/messages`, myNewMessage);
   }
 
   getCurrentUser() {
@@ -61,14 +70,6 @@ export default class ChatBox extends React.Component {
       avatarPath: '/img/avatar/avatar2.jpg',
     };
   } // this is the method to figure out who's the current user
-
-  componentDidMount() {
-    const tripId = this.props.tripId;
-
-    axios.get(`/trip/${tripId}/messages`).then(res => {
-      this.handleIncomingNewMessages(res.data);
-    });
-  }
 
   render() {
     const alerting = !this.state.popUp && this.state.newMessageNum > 0;
