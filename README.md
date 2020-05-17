@@ -32,13 +32,13 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
 
 ### Development
-To run the web application with hot module reload, execute the following command and go to http://localhost:3000. The Laravel application is located at http://localhost:8080
+To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
 ```shell script
 $ docker-compose up
 ```
 
 ### Development (API only)
-To run the API only, execute the following command
+To run the API only (served on http://localhost:8080/), execute the following command:
 ```shell script
 $ docker-compose -f docker-compose.api-only.yml up
 ```
@@ -50,7 +50,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 This deploys all three services using the configuration in `docker-compose.yml` and `docker-compose.prod.yml` (but not the dev configuration in `docker-compose.override.yml`).
 
-The Next.js application will be served on http://localhost and the Laravel application on http://localhost:8080
+The application will be served on http://localhost
 
 ### Termination
 

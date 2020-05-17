@@ -12,8 +12,6 @@ services:
     build:
       context: ./src/spa
       dockerfile: Dockerfile
-    depends_on:
-      - api
     restart: always
     networks:
       - triptime
@@ -29,8 +27,10 @@ services:
     depends_on:
       - php
       - mysql
+      - spa
     networks:
       - triptime
+    restart: always
     healthcheck:
       test: curl --fail -s http://localhost:80 || exit 1
       interval: 30s
