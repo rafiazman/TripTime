@@ -20,7 +20,7 @@ export default class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newMessageNum: 0,
+      unreadCount: 0,
       popUp: false,
       messages: [],
     };
@@ -32,27 +32,35 @@ export default class ChatBox extends React.Component {
     const tripId = this.props.tripId;
 
     axios.get(`/trip/${tripId}/messages`).then(res => {
-      this.handleIncomingNewMessages(res.data);
+      const unreadCount = res.data.unread;
+      const messages = res.data.messages;
+
+      this.setState(() => ({
+        unreadCount,
+      }));
+      this.handleIncomingNewMessages(messages);
     });
 
     // Listen to private channel named "messages.trip.1"
     window.laravelEcho
       .private(`messages.trip.${tripId}`)
       .listen('NewMessage', e => {
+        this.setState(state => ({
+          unreadCount: state.unreadCount + 1,
+        }));
         this.handleIncomingNewMessages(e.message);
       });
   }
 
   togglePop() {
     this.setState(state => ({
+      unreadCount: 0,
       popUp: !state.popUp,
-      newMessageNum: 0,
     }));
   }
 
   handleIncomingNewMessages(newMessages) {
     this.setState(state => ({
-      newMessageNum: state.newMessageNum + newMessages.length,
       messages: state.messages.concat(newMessages),
     }));
   } // This is the method to take care of API call for new message
@@ -72,7 +80,7 @@ export default class ChatBox extends React.Component {
   } // this is the method to figure out who's the current user
 
   render() {
-    const alerting = !this.state.popUp && this.state.newMessageNum > 0;
+    const alerting = !this.state.popUp && this.state.unreadCount > 0;
     const popUp = this.state.popUp;
     return (
       <div className={styles.chatBox}>
@@ -83,7 +91,7 @@ export default class ChatBox extends React.Component {
         >
           {alerting ? (
             <div className={styles.chatBoxHeadAlert}>
-              <FontAwesomeIcon icon={faComment} /> {this.state.newMessageNum}
+              <FontAwesomeIcon icon={faComment} /> {this.state.unreadCount}
             </div>
           ) : (
             <FontAwesomeIcon icon={popUp ? faChevronCircleDown : faComment} />
