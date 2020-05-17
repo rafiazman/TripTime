@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import ErrorDialog from '../components/dialog/ErrorDialog';
 
 const TripContext = React.createContext(undefined, undefined);
 
@@ -14,7 +15,11 @@ const TripProvider = props => {
   const [travelsLoading, setTravelsLoading] = useState(true);
   const [tripLoading, setTripLoading] = useState(true);
   const [errorStatus, setErrorStatus] = useState(undefined);
+  const [dialogError, setDialogError] = useState(undefined);
+  const [dialogErrorDisplay, setDialogErrorDisplay] = useState(false);
   const router = useRouter();
+  const hostName = process.env.API_HOSTNAME;
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     loadTrip();
@@ -22,8 +27,6 @@ const TripProvider = props => {
 
   function loadTrip() {
     const tripID = router.query.id;
-    const hostName = process.env.API_HOSTNAME;
-    axios.defaults.withCredentials = true;
     // TODO: Implement API for getting "preview" of a trip for non-members
     axios
       .get(`${hostName}/api/trip/${tripID}`)
@@ -63,12 +66,33 @@ const TripProvider = props => {
       });
   }
 
-  function handleActivityEdit(updatedActivity) {
-    setActivities(
-      activities.map(activity =>
-        updatedActivity.id === activity.id ? updatedActivity : activity,
-      ),
-    );
+  async function updateOneActivity(activityPatch, activityId) {
+    const tripID = router.query.id;
+    await axios
+      .patch(`${hostName}/api/trip/${tripID}/activities`, {
+        id: activityId,
+        ...activityPatch,
+      })
+      .then(res => {
+        setActivities(activities =>
+          activities.map(activity =>
+            activityId === activity.id ? res.data.activity : activity,
+          ),
+        );
+      })
+      .catch(err => {
+        setDialogError({
+          title: 'Activity Update Failed',
+          message: `Sorry, we failed to update the activity ${
+            activityPatch.name
+          } because: ${
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An internal error happened'
+          }`,
+        });
+        setDialogErrorDisplay(true);
+      });
   }
 
   return (
@@ -76,7 +100,7 @@ const TripProvider = props => {
       value={{
         activities,
         activitiesLoading,
-        handleActivityEdit,
+        updateOneActivity,
 
         travels,
         travelsLoading,
@@ -90,6 +114,17 @@ const TripProvider = props => {
     >
       {/* eslint-disable-next-line react/prop-types */}
       {props.children}
+      {dialogErrorDisplay && (
+        <ErrorDialog
+          open={dialogErrorDisplay}
+          message={dialogError.message}
+          title={dialogError.title}
+          onClose={() => {
+            setDialogError(undefined);
+            setDialogErrorDisplay(false);
+          }}
+        />
+      )}
     </TripContext.Provider>
   );
 };
