@@ -204,4 +204,46 @@ class TravelControllerTest extends TestCase
             'updated_at' => Carbon::now()
         ]);
     }
+
+    /** @test */
+    public function addUser__returns_error_if_user_not_logged_in()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
+        ]);
+        $travel = factory(Travel::class)->create();
+        $trip->users()->attach($user);
+
+        $response = $this->json('post', "/api/travel/$travel->id/join");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function addUser__returns_error_if_user_not_trip_participant()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        factory(Location::class)->create([
+            'coordinates' => '100.23, 20.37'
+        ]);
+        $travel = factory(Travel::class)->create();
+
+        $response = $this->json('post', "/api/travel/$travel->id/join");
+
+        $response->assertStatus(401);
+        $this->assertDatabaseMissing('user_pointer', [
+            'user_id' => $user->id,
+            'pointer_id' => $travel->id,
+            'pointer_type' => Travel::class
+        ]);
+    }
 }

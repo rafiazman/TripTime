@@ -160,6 +160,11 @@ class ActivityControllerTest extends TestCase
             ->json('post', "/api/activity/$activity->id/join");
 
         $response->assertStatus(401);
+        $this->assertDatabaseMissing('user_pointer', [
+            'user_id' => $user->id,
+            'pointer_id' => $activity->id,
+            'pointer_type' => Activity::class
+        ]);
     }
 
     /** @test */

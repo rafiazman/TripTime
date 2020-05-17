@@ -23,6 +23,8 @@ Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
 Route::post('/travel/{travel}/notes', 'TravelController@addNote');
 Route::patch('/travel/{travel}/notes', 'TravelController@updateNote');
 
+Route::post('/travel/{travel}/join', 'TravelController@addUser');
+
 /*
  * TripController
  */
