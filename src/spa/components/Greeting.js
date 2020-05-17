@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 export default class Greeting extends React.Component {
   render() {
     const name = this.props.name;
-    const hour = new Date().getHours();
+    const date = new Date();
+    const hour = date.getHours();
     if (hour > 6 && hour < 12)
       return name ? (
         <h1>Morning {name}!</h1>
