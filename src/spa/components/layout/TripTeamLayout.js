@@ -5,27 +5,23 @@ import styles from '../../css/layout.module.css';
 import SideBar from './SideBar';
 import ChatBox from '../chat/ChatBox';
 import PropTypes from 'prop-types';
+import { AuthContext } from '../../contexts/AuthContext';
 
-export default class TripTeamLayout extends React.Component {
-  render() {
-    return (
-      <div className={styles.tripTeamContainer}>
-        <SideBar
-          tripID={this.props.tripID}
-          activeLink={this.props.activeLink}
-        />
-        <main>
-          {this.props.children}
-          {this.props.user && <ChatBox />}
-        </main>
-      </div>
-    );
-  }
+export default function TripTeamLayout({ activeLink, children }) {
+  return (
+    <div className={styles.tripTeamContainer}>
+      <SideBar activeLink={activeLink} />
+      <main>
+        {children}
+        <AuthContext.Consumer>
+          {({ currentUser }) => currentUser && <ChatBox />}
+        </AuthContext.Consumer>
+      </main>
+    </div>
+  );
 }
 
 TripTeamLayout.propTypes = {
   children: PropTypes.node.isRequired,
-  user: PropTypes.any,
-  tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   activeLink: PropTypes.string.isRequired,
 };

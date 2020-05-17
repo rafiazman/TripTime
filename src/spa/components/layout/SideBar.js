@@ -55,7 +55,7 @@ class SideBar extends React.Component {
           <div className={layoutStyles.linksContainer}>
             {linkNames.map((linkName, index) => (
               <TripLink
-                tripID={this.props.tripID}
+                tripID={this.props.router.query.id}
                 linkName={linkName}
                 isActive={this.props.activeLink === linkName}
                 key={index}
@@ -111,6 +111,5 @@ TripLink.propTypes = {
 
 SideBar.propTypes = {
   router: PropTypes.object.isRequired,
-  tripID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   activeLink: PropTypes.string.isRequired,
 };
