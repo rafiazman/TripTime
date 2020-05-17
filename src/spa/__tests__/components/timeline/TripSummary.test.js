@@ -2,10 +2,7 @@
 import TestRenderer from 'react-test-renderer';
 import TripSummary from '../../../components/timeline/TripSummary';
 import React from 'react';
-
 import axios from 'axios';
-
-jest.mock('axios');
 
 describe('asks the user to login before showing the trip summary', () => {
   const errResp = {
@@ -13,7 +10,9 @@ describe('asks the user to login before showing the trip summary', () => {
     response: { message: 'mocking unauthorised response' },
   };
   axios.get.mockImplementation(() => Promise.reject(errResp));
-  const notLogInRenderer = TestRenderer.create(<TripSummary />);
+  const notLogInRenderer = TestRenderer.create(
+    <TripSummary setAnchor={() => {}} />,
+  );
 
   const notLogInInstance = notLogInRenderer.root;
 
