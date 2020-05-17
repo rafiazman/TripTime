@@ -129,4 +129,58 @@ class ActivityControllerTest extends TestCase
             'pointer_type' => Activity::class
         ]);
     }
+
+    /** @test */
+    public function addUser__returns_error_if_user_not_logged_in()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $trip->users()->attach($user);
+
+        $response = $this->json('post', "/api/activity/$activity->id/join");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function addUser__returns_error_if_user_not_trip_participant()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/activity/$activity->id/join");
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    public function addUser__adds_user_to_activity_if_user_is_trip_participant()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $location = factory(Location::class)->create([
+            'coordinates' => '100.22, 20.36'
+        ]);
+        $activity = factory(Activity::class)->create();
+        $trip->users()->attach($user);
+
+        $response = $this->actingAs($user)
+            ->json('post', "/api/activity/$activity->id/join");
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('user_pointer', [
+            'user_id' => $user->id,
+            'pointer_id' => $activity->id,
+            'pointer_type' => Activity::class
+        ]);
+    }
 }
