@@ -6,6 +6,7 @@ use App\Events\NewMessage;
 use App\Http\Resources\MessageResource;
 use App\Message;
 use App\Trip;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -29,9 +30,37 @@ class MessageController extends Controller
             'message' => 'You are not a participant of this trip.'
         ], 401);
 
-        $messages = Message::where('trip_id', $trip->id)->get();
+        $lastChecked = \DB::table('user_trip')->where([
+            ['user_id', $user->id],
+            ['trip_id', $trip->id]
+        ])->value('last_checked_chat');
 
-        $vm = MessageResource::collection($messages);
+        \DB::table('user_trip')->where([
+            ['user_id', $user->id],
+            ['trip_id', $trip->id]
+        ])->update(['last_checked_chat' => now()]);
+
+        if ($lastChecked == null)
+        {
+            $messages = Message::where('trip_id', $trip->id)->get();
+            $vm = [
+                'unread' => 0,
+                'messages' => MessageResource::collection($messages)
+            ];
+        }
+        else
+        {
+            $lastCheckedDate = Carbon::parse($lastChecked);
+            $unreadCount = Message::where('trip_id', $trip->id)
+                ->where('created_at', '>=', $lastCheckedDate->toDateTimeString())
+                ->count();
+            $messages = Message::where('trip_id', $trip->id)->get();
+
+            $vm = [
+                'unread' => $unreadCount,
+                'messages' => MessageResource::collection($messages)
+            ];
+        }
 
         return response()->json($vm);
     }

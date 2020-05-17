@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Message;
 use App\Trip;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,16 +18,23 @@ class MessageControllerTest extends TestCase
 
     /** @test */
     public function index__gets_all_messages_from_db_for_a_trip() {
+        Carbon::setTestNow(Carbon::create(2020, 1, 1, 1));
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
         $messages = factory(Message::class, 20)->create();
         $trip->users()->save($user);
 
+        Carbon::setTestNow(Carbon::create(2020, 1, 1, 2));
         $response = $this->actingAs($user)
             ->json('get', "/api/trip/$trip->id/messages");
 
         $response->assertStatus(200);
-        $response->assertJsonCount(20);
+        $this->assertCount(20, $response->json('messages'));
+        $this->assertDatabaseHas('user_trip', [
+            'user_id' => $user->id,
+            'trip_id' => $trip->id,
+            'last_checked_chat' => '2020-01-01 02:00:00'
+        ]);
     }
 
     /** @test */
