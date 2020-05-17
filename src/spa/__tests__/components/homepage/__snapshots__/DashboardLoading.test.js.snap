@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test Dashboard Check if Dashboard matches Snapshot 1`] = `
+exports[`Test Dashboard Loading Check if Dashboard displays three loading bars when the trips are loading 1`] = `
 <div
   className="page"
 >

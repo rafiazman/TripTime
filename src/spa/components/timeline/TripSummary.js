@@ -20,14 +20,14 @@ class TripSummary extends React.Component {
 
     axios.get(`/trip/${tripID}`).then(
       res => this.setState(() => ({ trip: res.data })),
-      () => {
+      err => {
         // TODO: Implement API for getting "preview" of a trip
-        // if (err.response.status === 401)
-        //   this.setState(() => ({ trip: undefined }));
-        // else this.props.router.push('/');
-
-        this.setState(() => ({ trip: undefined }));
-        this.props.router.push('/');
+        if (err.response.status === 401)
+          this.setState(() => ({ trip: undefined }));
+        else this.props.router.push('/');
+        //
+        // this.setState(() => ({ trip: undefined }));
+        // this.props.router.push('/');
       },
     );
   }
@@ -37,7 +37,7 @@ class TripSummary extends React.Component {
     const user = this.props.user;
 
     // TODO: Implement API for getting "preview" of a trip
-    if (!trip) return null;
+    // if (!trip) return null;
 
     return (
       <div className={styles.tripSummary}>
@@ -49,7 +49,7 @@ class TripSummary extends React.Component {
             id={this.props.tripID}
           />
         )}
-        {user && <TripTimeline tripID={this.props.tripID} />}
+        {user && trip && <TripTimeline tripID={this.props.tripID} />}
         {!user && (
           <div className={'fit-center'}>
             <br />
