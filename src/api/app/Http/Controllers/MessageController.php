@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessage;
 use App\Http\Resources\MessageResource;
 use App\Message;
 use App\Trip;
@@ -54,6 +55,9 @@ class MessageController extends Controller
             'user_id' => auth()->id(),
             'trip_id' => $trip->id
         ]);
+
+        // Broadcast to all listeners (trip participants)
+        broadcast(new NewMessage($message));
 
         $vm = new MessageResource($message);
 

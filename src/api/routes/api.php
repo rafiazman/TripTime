@@ -1,6 +1,12 @@
 <?php
 
 /*
+ * Broadcast Routes
+ */
+// https://laravel.com/docs/7.x/sanctum#authorizing-private-broadcast-channels
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
+
+/*
  * Authentication Controllers
  */
 Route::post('/login', 'Auth\LoginController@login');
