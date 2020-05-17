@@ -177,7 +177,7 @@ export default function ActivityCard(props) {
                   />
                 )}
 
-                <div style={{ marginTop: '15px' }}>{activity.description}</div>
+                <div style={{ margin: '15px 0' }}>{activity.description}</div>
 
                 <div className={onMap ? styles.optionsOnMap : styles.options}>
                   <span onClick={() => setEditing(true)}>
