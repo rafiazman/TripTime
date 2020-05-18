@@ -24,6 +24,7 @@ import ErrorDialog from '../dialog/ErrorDialog';
 import { ActivityIcon } from './ActivityIcon';
 import { TripContext } from '../../contexts/TripContext';
 import UpdateProcessing from './UpdateProcessing';
+import JoinButton from './JoinButton';
 
 export default function ActivityCard(props) {
   const activity = props.activity;
@@ -90,7 +91,20 @@ export default function ActivityCard(props) {
                         <strong>
                           <ActivityIcon type={activity.type} /> {activity.name}
                         </strong>
-                        <PeopleList people={activity.people} />
+                        <PeopleList
+                          people={activity.people}
+                          addComponent={
+                            currentUser &&
+                            !activity.people.find(
+                              person => person.id === currentUser.id,
+                            ) && (
+                              <JoinButton
+                                eventType={'activity'}
+                                eventID={activityID}
+                              />
+                            )
+                          }
+                        />
 
                         <div className={styles.startTime}>
                           <FontAwesomeIcon

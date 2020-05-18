@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../css/travel-card.module.css';
+import JoinButton from './JoinButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWalking,
@@ -143,7 +144,15 @@ export default class TravelCard extends React.Component {
                 </span>
               </div>
 
-              <PeopleList people={travel.people} />
+              <PeopleList
+                people={travel.people}
+                addComponent={
+                  currentUser &&
+                  !travel.people.find(
+                    person => person.id === currentUser.id,
+                  ) && <JoinButton eventType={'travel'} eventID={travel.id} />
+                }
+              />
 
               <div
                 className={styles.time}
