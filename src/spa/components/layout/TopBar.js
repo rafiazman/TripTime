@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../../contexts/AuthContext';
 import PageLoading from '../PageLoading';
+import withRouter from 'next/dist/client/with-router';
 
-export default class TopBar extends React.Component {
+class TopBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { fold: true, loggingOut: false };
@@ -29,6 +30,8 @@ export default class TopBar extends React.Component {
             this.setState(() => ({ loggingOut: true }));
             await logoutHandler();
             this.setState(() => ({ loggingOut: false }));
+            // eslint-disable-next-line react/prop-types
+            this.props.router.push('/');
           }}
         >
           Log out
@@ -119,3 +122,4 @@ export default class TopBar extends React.Component {
     this.setState(state => ({ fold: !state.fold }));
   }
 }
+export default withRouter(TopBar);
