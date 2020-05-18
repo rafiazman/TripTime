@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import ErrorDialog from '../components/dialog/ErrorDialog';
 
 const TripContext = React.createContext(undefined, undefined);
+const ACTIVITY = 'activity';
+const TRAVEL = 'travel';
 
 const TripProvider = props => {
   const [trip, setTrip] = useState(undefined);
@@ -66,20 +68,14 @@ const TripProvider = props => {
       });
   }
 
-  async function updateOneActivity(activityPatch, activityId) {
+  async function updateOneActivity(activityPatch, activityID) {
     const tripID = router.query.id;
     await axios
       .patch(`${hostName}/api/trip/${tripID}/activities`, {
-        id: activityId,
+        id: activityID,
         ...activityPatch,
       })
-      .then(res => {
-        setActivities(activities =>
-          activities.map(activity =>
-            activityId === activity.id ? res.data.activity : activity,
-          ),
-        );
-      })
+      .then(res => setOneEvent(ACTIVITY, activityID, res.data.activity))
       .catch(err => {
         setDialogError({
           title: 'Activity Update Failed',
@@ -95,6 +91,41 @@ const TripProvider = props => {
       });
   }
 
+  async function handleJoin(eventType, eventID) {
+    await axios.post(`${hostName}/api/${eventType}/${eventID}/join`).then(
+      res =>
+        setOneEvent(
+          eventType,
+          eventID,
+          eventType === ACTIVITY ? res.data.activity : res.data.travel,
+        ),
+      err => {
+        setDialogError({
+          title: 'Activity Join Failed',
+          message: `Sorry, we failed to join you in the ${eventType} because: ${
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An internal error happened'
+          }`,
+        });
+        setDialogErrorDisplay(true);
+      },
+    );
+  }
+
+  function setOneEvent(eventType, eventID, newEvent) {
+    if (eventType === ACTIVITY)
+      setActivities(activities =>
+        activities.map(activity =>
+          eventID === activity.id ? newEvent : activity,
+        ),
+      );
+    if (eventType === TRAVEL)
+      setTravels(travels =>
+        travels.map(travel => (eventID === travel.id ? newEvent : travel)),
+      );
+  }
+
   return (
     <TripContext.Provider
       value={{
@@ -104,6 +135,8 @@ const TripProvider = props => {
 
         travels,
         travelsLoading,
+
+        handleJoin,
 
         trip,
         tripLoading,
