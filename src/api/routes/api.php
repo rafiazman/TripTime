@@ -14,12 +14,16 @@ Route::get('/activity/{activity}/notes', 'ActivityController@showNotes');
 Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
 Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
 
+Route::post('/activity/{activity}/join', 'ActivityController@addUser');
+
 /*
  * TravelController
  */
 Route::get('/travel/{travel}/notes', 'TravelController@showNotes');
 Route::post('/travel/{travel}/notes', 'TravelController@addNote');
 Route::patch('/travel/{travel}/notes', 'TravelController@updateNote');
+
+Route::post('/travel/{travel}/join', 'TravelController@addUser');
 
 /*
  * TripController

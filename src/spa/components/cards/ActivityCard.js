@@ -22,19 +22,21 @@ import ActivityDetailsDialog from './ActivityDetailsDialog';
 import moment from 'moment';
 import ErrorDialog from '../dialog/ErrorDialog';
 import { ActivityIcon } from './ActivityIcon';
+import { TripContext } from '../../contexts/TripContext';
+import UpdateProcessing from './UpdateProcessing';
+import JoinButton from './JoinButton';
 
 export default function ActivityCard(props) {
-  const [activity, setActivity] = useState(props.activity);
+  const activity = props.activity;
+  const activityID = props.activity.id;
+
   const [startChanging, setStartChanging] = useState(false);
   const [endChanging, setEndChanging] = useState(false);
   const [editing, setEditing] = useState(false);
   const [notePopped, setNotePopped] = useState(false);
   const [timeError, setTimeError] = useState(undefined);
   const [timeErrorDisplay, setTimeErrorDisplay] = useState(false);
-  const [requestError, setRequestError] = useState(undefined);
-  const [requestErrorDisplay, setRequestErrorDisplay] = useState(false);
-  const tripId = props.tripId;
-  const activityId = props.activity.id;
+  const [editProcessing, setEditProcessing] = useState(false);
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
@@ -44,28 +46,13 @@ export default function ActivityCard(props) {
     setNotePopped(!notePopped);
   };
 
-  const handleEdit = activityPatch => {
-    if (checkTimeValid(activityPatch))
-      axios
-        .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/activities`, {
-          id: activityId,
-          ...activityPatch,
-        })
-        .then(res => {
-          setActivity(res.data.activity);
-        })
-        .catch(err => {
-          setRequestError(
-            `Sorry, we failed to update the activity ${
-              activityPatch.name
-            } ${err.response &&
-              err.response.data &&
-              err.response.data.message &&
-              'because' + err.response.data.message}`,
-          );
-          setRequestErrorDisplay(true);
-        });
-    else {
+  const handleEdit = (activityPatch, updateOneActivity) => {
+    if (checkTimeValid(activityPatch)) {
+      setEditProcessing(true);
+      updateOneActivity(activityPatch, activityID).then(() =>
+        setEditProcessing(false),
+      );
+    } else {
       setTimeErrorDisplay(true);
     }
   };
@@ -94,134 +81,162 @@ export default function ActivityCard(props) {
               className={styles.eventCard}
               style={onMap ? { border: '0' } : {}}
             >
-              <div className={onMap ? styles.cardOnMap : undefined}>
-                <strong>
-                  <ActivityIcon type={activity.type} /> {activity.name}
-                </strong>
-                <PeopleList people={activity.people} />
+              {editProcessing ? (
+                <UpdateProcessing />
+              ) : (
+                <TripContext.Consumer>
+                  {({ updateOneActivity }) => {
+                    return (
+                      <div className={onMap ? styles.cardOnMap : undefined}>
+                        <strong>
+                          <ActivityIcon type={activity.type} /> {activity.name}
+                        </strong>
+                        <PeopleList
+                          people={activity.people}
+                          addComponent={
+                            currentUser &&
+                            !activity.people.find(
+                              person => person.id === currentUser.id,
+                            ) && (
+                              <JoinButton
+                                eventType={'activity'}
+                                eventID={activityID}
+                              />
+                            )
+                          }
+                        />
 
-                <div className={styles.startTime}>
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    style={{ verticalAlign: 'middle' }}
-                    onClick={() => setStartChanging(true)}
-                  />
-                  <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
-                    From:
-                  </span>
-                  <TimeDisplay time={activity.start} />
-                </div>
+                        <div className={styles.startTime}>
+                          <FontAwesomeIcon
+                            icon={faClock}
+                            style={{ verticalAlign: 'middle' }}
+                            onClick={() => setStartChanging(true)}
+                          />
+                          <span
+                            style={{ margin: '0 5px', verticalAlign: 'middle' }}
+                          >
+                            From:
+                          </span>
+                          <TimeDisplay time={activity.start} />
+                        </div>
 
-                <div
-                  className={styles.endTime}
-                  onClick={() => setEndChanging(true)}
-                >
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    style={{ verticalAlign: 'middle' }}
-                  />
-                  <span
-                    style={{
-                      margin: '0 27px 0px 5px',
-                      verticalAlign: 'middle',
-                    }}
-                  >
-                    To:
-                  </span>
-                  <TimeDisplay time={activity.end} />
-                </div>
+                        <div
+                          className={styles.endTime}
+                          onClick={() => setEndChanging(true)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faClock}
+                            style={{ verticalAlign: 'middle' }}
+                          />
+                          <span
+                            style={{
+                              margin: '0 27px 0px 5px',
+                              verticalAlign: 'middle',
+                            }}
+                          >
+                            To:
+                          </span>
+                          <TimeDisplay time={activity.end} />
+                        </div>
 
-                {startChanging && (
-                  <DateTimePicker
-                    value={activity.start}
-                    ampm={false}
-                    onChange={start => handleEdit({ start })}
-                    open={startChanging}
-                    onClose={() => setStartChanging(false)}
-                    TextFieldComponent={() => null}
-                    showTodayButton
-                  />
-                )}
-                {endChanging && (
-                  <DateTimePicker
-                    value={activity.end}
-                    ampm={false}
-                    onChange={end => handleEdit({ end })}
-                    open={endChanging}
-                    onClose={() => setEndChanging(false)}
-                    TextFieldComponent={() => null}
-                    showTodayButton
-                  />
-                )}
-                {timeErrorDisplay && (
-                  <ErrorDialog
-                    open={timeErrorDisplay}
-                    message={timeError}
-                    title={'Invalid Time'}
-                    onClose={() => {
-                      setTimeError(undefined);
-                      setTimeErrorDisplay(false);
-                    }}
-                  />
-                )}
+                        {startChanging && (
+                          <DateTimePicker
+                            value={activity.start}
+                            ampm={false}
+                            onChange={start =>
+                              handleEdit({ start }, updateOneActivity)
+                            }
+                            open={startChanging}
+                            onClose={() => setStartChanging(false)}
+                            TextFieldComponent={() => null}
+                            showTodayButton
+                          />
+                        )}
+                        {endChanging && (
+                          <DateTimePicker
+                            value={activity.end}
+                            ampm={false}
+                            onChange={end =>
+                              handleEdit({ end }, updateOneActivity)
+                            }
+                            open={endChanging}
+                            onClose={() => setEndChanging(false)}
+                            TextFieldComponent={() => null}
+                            showTodayButton
+                          />
+                        )}
+                        {timeErrorDisplay && (
+                          <ErrorDialog
+                            open={timeErrorDisplay}
+                            message={timeError}
+                            title={'Invalid Time'}
+                            onClose={() => {
+                              setTimeError(undefined);
+                              setTimeErrorDisplay(false);
+                            }}
+                          />
+                        )}
 
-                {requestErrorDisplay && (
-                  <ErrorDialog
-                    open={requestErrorDisplay}
-                    message={requestError}
-                    title={'Activity Update Failed'}
-                    onClose={() => {
-                      setRequestError(undefined);
-                      setRequestErrorDisplay(false);
-                    }}
-                  />
-                )}
+                        <div style={{ margin: '15px 0' }}>
+                          {activity.description}
+                        </div>
 
-                <div style={{ margin: '15px 0' }}>{activity.description}</div>
+                        <div
+                          className={
+                            onMap ? styles.optionsOnMap : styles.options
+                          }
+                        >
+                          <span onClick={() => setEditing(true)}>
+                            <Tooltip
+                              text={'Edit Activity'}
+                              component={<FontAwesomeIcon icon={faPencilAlt} />}
+                            />
+                          </span>
+                          {editing && (
+                            <ActivityDetailsDialog
+                              activity={activity}
+                              onCancel={() => setEditing(false)}
+                              open={editing}
+                              onOk={activity => {
+                                handleEdit(activity, updateOneActivity);
+                                setEditing(false);
+                              }}
+                            />
+                          )}
+                          {!onMap && (
+                            <span>
+                              <Tooltip
+                                text={'Show on Map'}
+                                component={
+                                  <FontAwesomeIcon icon={faMapMarkerAlt} />
+                                }
+                              />
+                            </span>
+                          )}
+                          <span onClick={() => toggleNotes()}>
+                            {notePopped ? (
+                              <Tooltip
+                                text={'Hide Notes'}
+                                component={
+                                  <FontAwesomeIcon icon={faChevronCircleUp} />
+                                }
+                              />
+                            ) : (
+                              <Tooltip
+                                text={'Show Notes'}
+                                component={
+                                  <FontAwesomeIcon icon={faChevronCircleDown} />
+                                }
+                              />
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  }}
+                </TripContext.Consumer>
+              )}
 
-                <div className={onMap ? styles.optionsOnMap : styles.options}>
-                  <span onClick={() => setEditing(true)}>
-                    <Tooltip
-                      text={'Edit Activity'}
-                      component={<FontAwesomeIcon icon={faPencilAlt} />}
-                    />
-                  </span>
-                  {editing && (
-                    <ActivityDetailsDialog
-                      activity={activity}
-                      onCancel={() => setEditing(false)}
-                      open={editing}
-                      onOk={activity => {
-                        handleEdit(activity);
-                        setEditing(false);
-                      }}
-                    />
-                  )}
-                  {!onMap && (
-                    <span>
-                      <Tooltip
-                        text={'Show on Map'}
-                        component={<FontAwesomeIcon icon={faMapMarkerAlt} />}
-                      />
-                    </span>
-                  )}
-                  <span onClick={() => toggleNotes()}>
-                    {notePopped ? (
-                      <Tooltip
-                        text={'Hide Notes'}
-                        component={<FontAwesomeIcon icon={faChevronCircleUp} />}
-                      />
-                    ) : (
-                      <Tooltip
-                        text={'Show Notes'}
-                        component={
-                          <FontAwesomeIcon icon={faChevronCircleDown} />
-                        }
-                      />
-                    )}
-                  </span>
-                </div>
-              </div>
               {notePopped && (
                 <NotesCard
                   type={{ name: 'activity', id: activity.id }}

@@ -2,20 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-import {
-  NOT_LOGGED_IN,
-  LOG_IN_FORM,
-  SIGN_UP_FORM,
-  LOGGED_IN,
-} from '../constants/AuthStatus';
 import PageLoading from '../components/PageLoading';
 
 const AuthContext = React.createContext(undefined, undefined);
 const AuthProvider = props => {
   const hostName = process.env.API_HOSTNAME;
-
-  const [authStatus, setAuthStatus] = useState(NOT_LOGGED_IN);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [userNameInput, setUserNameInput] = useState('');
@@ -51,24 +42,16 @@ const AuthProvider = props => {
             avatarPath: response.data.avatarPath,
           });
           setErrorMessage('');
-          setAuthStatus(LOGGED_IN);
+          // setAuthStatus(LOGGED_IN);
         },
         () => {
           setCurrentUser(null);
-          setAuthStatus(NOT_LOGGED_IN);
+          // setAuthStatus(NOT_LOGGED_IN);
         },
       )
       .then(() => {
         setLoading(false);
       });
-  }
-
-  function changeAuthStatusLogin() {
-    setAuthStatus(LOG_IN_FORM);
-  }
-
-  function changeAuthStatusSignup() {
-    setAuthStatus(SIGN_UP_FORM);
   }
 
   function handleUserNameInput(changeEvent) {
@@ -142,7 +125,6 @@ const AuthProvider = props => {
                   });
 
                   setErrorMessage('');
-                  setAuthStatus(LOGGED_IN);
                 },
                 // GET USER ERROR
                 () => {
@@ -192,9 +174,7 @@ const AuthProvider = props => {
                     name: response.data.name,
                     avatarPath: response.data.avatarPath,
                   });
-                  // avatarPath to be dealt with
                   setErrorMessage('');
-                  setAuthStatus(LOGGED_IN);
                 },
                 () => {
                   setErrorMessage('Could not complete the login');
@@ -227,23 +207,11 @@ const AuthProvider = props => {
     setUserEmail('');
     setUserPassword('');
     setCurrentUser(null);
-    setAuthStatus(NOT_LOGGED_IN);
   }
-
-  const getAuthStatus = () => {
-    axios.get(hostName + '/api/user').then(
-      () => LOGGED_IN,
-      () => NOT_LOGGED_IN,
-    );
-  };
 
   return (
     <AuthContext.Provider
       value={{
-        getAuthStatus,
-        authStatus,
-        changeAuthStatusLogin,
-        changeAuthStatusSignup,
         userNameInput,
         userEmail,
         currentUser,

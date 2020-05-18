@@ -12,6 +12,7 @@ import 'react-day-picker/lib/style.css';
 
 import MainLayout from '../components/layout/MainLayout';
 import { AuthProvider } from '../contexts/AuthContext';
+import { TripProvider } from '../contexts/TripContext';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -24,10 +25,6 @@ const theme = createMuiTheme({
 });
 
 export default class MyApp extends App {
-  constructor() {
-    super();
-  }
-
   render() {
     const { Component, pageProps } = this.props;
     return (
@@ -45,9 +42,11 @@ export default class MyApp extends App {
         </Head>
         <ThemeProvider theme={theme}>
           <AuthProvider>
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
+            <TripProvider>
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+            </TripProvider>
           </AuthProvider>
         </ThemeProvider>
       </>

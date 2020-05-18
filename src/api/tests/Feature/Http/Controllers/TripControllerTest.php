@@ -407,6 +407,7 @@ class TripControllerTest extends TestCase
     /** @test */
     public function creates_a_new_activity_for_a_trip()
     {
+        Carbon::setTestNow('2020-01-01');
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
         $trip->users()->save($user);
@@ -434,7 +435,7 @@ class TripControllerTest extends TestCase
                 'end' => '2020-05-20T07:22:50+00:00',
                 'name' => 'Activity name here',
                 'description' => 'Activity description here',
-                'updated' => date(DATE_RFC3339, strtotime(now())),
+                'updated' => '2020-01-01T00:00:00+00:00',
                 'address' => '10 Some Street, Auckland, 1010 Auckland',
                 'gps' => [
                     'lat' => '-36.880765',

@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
+use App\Http\Resources\TravelResource;
 use App\Note;
 use App\Travel;
 use Illuminate\Http\Request;
 
 class TravelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -97,6 +103,29 @@ class TravelController extends Controller
         ];
 
         return response()->json($vm);
+    }
+
+    /**
+     * Adds user as a participant of the given activity
+     * @param Request $request
+     * @param Travel $travel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addUser(Request $request, Travel $travel)
+    {
+        $user = $request->user();
+
+        if (!$travel->trip->hasParticipant($user))
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
+
+        $travel->users()->save($user);
+
+        return response()->json([
+            'message' => "Successfully added \"$user->name\" to the Travel.",
+            'travel' => new TravelResource($travel)
+        ]);
     }
 
     /**

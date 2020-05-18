@@ -1,0 +1,59 @@
+.errorContainer {
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    font-size: 1.4rem;
+}
+.errorContainer a {
+    color: var(--trip-orange);
+    text-decoration: underline;
+}
+.errorContainer a:hover{
+    color: #ff8833;
+}
+
+.errorContainer h1{
+    font-size: 1.2em;
+}
+
+
+.photo {
+    z-index: -1;
+    filter: opacity(50%);
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+@media screen and (min-width: 1100px) {
+    .photo {
+        width: 100%;
+    }
+    .messageContainer{
+        margin-top: 7rem;
+    }
+}
+@media screen and (max-width: 1100px) {
+    .photo {
+        height: 100%;
+    }
+    .messageContainer{
+        margin-top: 3rem;
+    }
+}
+
+.credit {
+    color: #777;
+    font-size: 0.9rem;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+.messageContainer{
+    padding: 4rem;
+    background-color: rgba(256,256,256,0.7);
+}

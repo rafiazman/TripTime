@@ -36,6 +36,22 @@ div, input, button {
     display: inline-block;
     margin: 3px;
 }
+.people-button, .people-button-loading{
+    height: 2rem;
+    width: 3rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+    margin: 3px;
+    background-color: var(--trip-orange);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.people-button-loading{
+    box-sizing: border-box;
+    padding: 0.2rem 0.7rem;
+}
 
 textarea:focus, input:focus {
     outline-color: var(--trip-orange);
@@ -136,4 +152,12 @@ a:hover, .pretend-link:hover {
 
 button:focus {
     outline-color: var(--trip-orange);
+}
+
+.center-column{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

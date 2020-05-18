@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Http\Resources\ActivityResource;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Http\Resources\UserResource;
@@ -103,6 +104,29 @@ class ActivityController extends Controller
         ];
 
         return response()->json($vm);
+    }
+
+    /**
+     * Adds user as a participant of the given activity
+     * @param Request $request
+     * @param Activity $activity
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addUser(Request $request, Activity $activity)
+    {
+        $user = $request->user();
+
+        if (!$activity->trip->hasParticipant($user))
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
+
+        $activity->users()->save($user);
+
+        return response()->json([
+            'message' => "Successfully added \"$user->name\" to \"$activity->name\"",
+            'activity' => new ActivityResource($activity)
+        ]);
     }
 
     /**
