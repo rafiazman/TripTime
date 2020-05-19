@@ -18,24 +18,12 @@ class TravelMarkerPair extends React.Component {
     super(props);
     this.fromMarker = React.createRef();
     this.toMarker = React.createRef();
-
-    this.state = {
-      isDraggable: false,
-    };
-
-    this.setDraggable = this.setDraggable.bind(this);
   }
 
   toggleFocus(clickTo) {
     clickTo
       ? this.fromMarker.current.fireLeafletEvent('click')
       : this.toMarker.current.fireLeafletEvent('click');
-  }
-
-  setDraggable() {
-    this.setState(() => ({
-      isDraggable: true,
-    }));
   }
 
   submitUpdatedLocation(event, isFrom) {
@@ -70,7 +58,7 @@ class TravelMarkerPair extends React.Component {
           position={travel.to}
           icon={generateTravelIcon(travel.travel_rgb, travel.mode, true)}
           ref={this.toMarker}
-          draggable={this.state.isDraggable}
+          draggable={true}
           onDragend={e => this.submitUpdatedLocation(e, false)}
         >
           <Popup>
@@ -78,7 +66,6 @@ class TravelMarkerPair extends React.Component {
               travel={travel}
               tripId={this.props.tripId}
               onMap={true}
-              setDraggable={this.setDraggable}
             />
             <span className={styles.travelExplain}>
               Arrive here.
@@ -93,15 +80,11 @@ class TravelMarkerPair extends React.Component {
           position={travel.from}
           icon={generateTravelIcon(travel.travel_rgb, travel.mode, false)}
           ref={this.fromMarker}
-          draggable={this.state.isDraggable}
+          draggable={true}
           onDragend={e => this.submitUpdatedLocation(e, true)}
         >
           <Popup>
-            <TravelCard
-              travel={travel}
-              onMap={true}
-              setDraggable={this.setDraggable}
-            />
+            <TravelCard travel={travel} onMap={true} />
             <span className={styles.travelExplain}>
               Depart from here.
               <a href='#' onClick={() => this.toggleFocus(false)}>
