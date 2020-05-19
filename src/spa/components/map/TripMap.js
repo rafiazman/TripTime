@@ -17,6 +17,7 @@ import ReactLoading from 'react-loading';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import TravelMarkerPair from './TravelMarkerPair';
+import _ from 'underscore';
 
 export default class TripMap extends React.Component {
   constructor(props) {
@@ -49,40 +50,43 @@ export default class TripMap extends React.Component {
       .get(`/trip/${tripID}/activities`)
       .then(res => {
         const activities = res.data;
-        this.setState(state => ({
-          map: {
-            ...state.map,
-            center: [activities[0].gps.lat, activities[0].gps.lng],
-            zoom: 10,
-          },
+
+        this.setState(() => ({
           activities: activities,
         }));
+
+        return activities.map(a => [a.gps.lat, a.gps.lng]);
       })
-      .then(() => {
+      .then(activityCoords => {
         this.setState(() => ({ activityLoading: false }));
-      });
 
-    axios
-      .get(`/trip/${tripID}/travels`)
-      .then(res => {
-        const travels = res.data;
+        axios
+          .get(`/trip/${tripID}/travels`)
+          .then(res => {
+            const travels = res.data;
 
-        this.setState(state => ({
-          map: {
-            ...state.map,
-            center: [travels[0].from.lat, travels[0].from.lng],
-            zoom: 10,
-          },
-          travels: travels.map(t => {
-            return {
-              ...t,
-              travel_rgb: generateRandomRGB(),
-            };
-          }),
-        }));
-      })
-      .then(() => {
-        this.setState(() => ({ travelLoading: false }));
+            this.setState(() => ({
+              travels: travels.map(t => {
+                return {
+                  ...t,
+                  travel_rgb: generateRandomRGB(),
+                };
+              }),
+            }));
+
+            const travelFromCoords = travels.map(t => [t.from.lat, t.from.lng]);
+            const travelToCoords = travels.map(t => [t.to.lat, t.to.lng]);
+            const travelCoords = _.union(travelFromCoords, travelToCoords);
+
+            return _.union(travelCoords, activityCoords);
+          })
+          .then(allCoords => {
+            this.setState(() => ({ travelLoading: false }));
+
+            this.map.leafletElement.fitBounds(allCoords, {
+              padding: [10, 10],
+            });
+          });
       });
   }
 
@@ -176,7 +180,9 @@ export default class TripMap extends React.Component {
     return (
       <>
         <Map
-          ref={this.state.map.instance}
+          ref={ref => {
+            this.map = ref;
+          }}
           center={this.state.map.center}
           zoom={this.state.map.zoom}
           onMoveEnd={this.onMove.bind(this)}
