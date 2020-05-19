@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { createRef } from 'react';
-import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
-import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
+import { Map, Marker, Popup, TileLayer, withLeaflet } from 'react-leaflet';
+import { OpenStreetMapProvider, SearchControl } from 'react-leaflet-geosearch';
 import Control from 'react-leaflet-control';
 import { IconButton } from '@material-ui/core';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
@@ -26,6 +26,7 @@ export default class TripMap extends React.Component {
       map: {
         instance: createRef(),
         center: [-40.3523, 175.6082],
+        currentCenter: undefined,
         zoom: 6,
       },
       inBrowser: false,
@@ -52,7 +53,7 @@ export default class TripMap extends React.Component {
           map: {
             ...state.map,
             center: [activities[0].gps.lat, activities[0].gps.lng],
-            zoom: 8,
+            zoom: 10,
           },
           activities: activities,
         }));
@@ -70,7 +71,7 @@ export default class TripMap extends React.Component {
           map: {
             ...state.map,
             center: [travels[0].from.lat, travels[0].from.lng],
-            zoom: 8,
+            zoom: 10,
           },
           travels: travels.map(t => {
             return {
@@ -86,39 +87,47 @@ export default class TripMap extends React.Component {
   }
 
   addTravel() {
-    function createNewTravel() {
-      let date = new Date();
-      let from_date = date.toJSON();
-      date.setHours(date.getHours() + 1);
-      let to_date = date.toJSON();
+    let date = new Date();
+    let from_date = date.toJSON();
+    date.setHours(date.getHours() + 1);
+    let to_date = date.toJSON();
 
-      const myTravel = {
-        mode: 'bus',
-        description: 'Enter a description..',
-        from: {
-          time: from_date,
-          lat: '-38.1368',
-          lng: '176.2497',
-        },
-        to: {
-          time: to_date,
-          lat: '-38.6857',
-          lng: '176.0702',
-        },
-        travel_rgb: generateRandomRGB(),
-      };
+    const { lat, lng } = this.state.map.currentCenter;
 
-      return myTravel;
-    }
-
-    let travelToAdd = createNewTravel();
+    const travel = {
+      id: null,
+      mode: 'bus',
+      description: 'Description here',
+      from: {
+        time: from_date,
+        lat: (lat - 0.01).toString(),
+        lng: (lng - 0.01).toString(),
+      },
+      to: {
+        time: to_date,
+        lat: (lat + 0.01).toString(),
+        lng: (lng + 0.01).toString(),
+      },
+      travel_rgb: generateRandomRGB(),
+    };
 
     this.setState(prevState => ({
-      travels: [...prevState.travels, travelToAdd],
+      travels: [...prevState.travels, travel],
+    }));
+  }
+
+  onMove(e) {
+    this.setState(state => ({
+      map: {
+        ...state.map,
+        currentCenter: e.target.getCenter(),
+      },
     }));
   }
 
   submitUpdatedActivity(e, id) {
+    if (id === null) alert('Created thing dragged');
+
     const tripId = this.props.tripID;
     const { lat, lng } = e.target.getLatLng();
 
@@ -136,7 +145,11 @@ export default class TripMap extends React.Component {
       return null;
     }
 
-    const activity_markers = this.state.activities.map((a, i) => (
+    const prov = new OpenStreetMapProvider();
+    const GeoSearchControlElement = withLeaflet(SearchControl);
+
+    let activities = this.state.activities;
+    let activityMarkers = activities.map((a, i) => (
       <Marker
         key={i}
         position={a.gps}
@@ -155,14 +168,10 @@ export default class TripMap extends React.Component {
       </Marker>
     ));
 
-    const travel_markers = this.state.travels.map((travel, i) => {
-      return (
-        <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
-      );
-    });
-
-    const prov = new OpenStreetMapProvider();
-    const GeoSearchControlElement = withLeaflet(SearchControl);
+    let travels = this.state.travels;
+    let travelMarkers = travels.map((t, i) => (
+      <TravelMarkerPair travel={t} key={i} tripId={this.props.tripID} />
+    ));
 
     return (
       <>
@@ -170,6 +179,7 @@ export default class TripMap extends React.Component {
           ref={this.state.map.instance}
           center={this.state.map.center}
           zoom={this.state.map.zoom}
+          onMoveEnd={this.onMove.bind(this)}
         >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -202,8 +212,8 @@ export default class TripMap extends React.Component {
           <MarkerSplitter>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <>
-                {travel_markers}
-                {activity_markers}
+                {travelMarkers}
+                {activityMarkers}
               </>
             </MuiPickersUtilsProvider>
           </MarkerSplitter>

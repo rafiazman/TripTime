@@ -29,25 +29,29 @@ class TravelMarkerPair extends React.Component {
   submitUpdatedLocation(event, isFrom) {
     const tripId = this.props.tripId;
     const travel = this.props.travel;
-
     const { lat, lng } = event.target.getLatLng();
 
-    if (isFrom)
-      axios.patch(`/trip/${tripId}/travels`, {
-        id: travel.id,
-        from: {
-          lat: lat.toString(),
-          lng: lng.toString(),
-        },
-      });
-    else
-      axios.patch(`/trip/${tripId}/travels`, {
-        id: travel.id,
-        to: {
-          lat: lat.toString(),
-          lng: lng.toString(),
-        },
-      });
+    if (!travel.id) {
+      // TODO: POST new travel from addTravel() in TripMap.js
+      alert('Dragged created travel, send a POST');
+    } else {
+      if (isFrom)
+        axios.patch(`/trip/${tripId}/travels`, {
+          id: travel.id,
+          from: {
+            lat: lat.toString(),
+            lng: lng.toString(),
+          },
+        });
+      else
+        axios.patch(`/trip/${tripId}/travels`, {
+          id: travel.id,
+          to: {
+            lat: lat.toString(),
+            lng: lng.toString(),
+          },
+        });
+    }
   }
 
   render() {
