@@ -78,7 +78,7 @@ class TravelMarkerPair extends React.Component {
               travel={travel}
               tripId={this.props.tripId}
               onMap={true}
-              toggleDraggable={this.setDraggable}
+              setDraggable={this.setDraggable}
             />
             <span className={styles.travelExplain}>
               Arrive here.
@@ -100,7 +100,7 @@ class TravelMarkerPair extends React.Component {
             <TravelCard
               travel={travel}
               onMap={true}
-              toggleDraggable={this.setDraggable}
+              setDraggable={this.setDraggable}
             />
             <span className={styles.travelExplain}>
               Depart from here.
