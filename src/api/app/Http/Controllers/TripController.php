@@ -232,13 +232,13 @@ class TripController extends Controller
     public function addTravel(CreateTravelRequest $request, Trip $trip)
     {
         $fromLocation = new Location([
-            'name' => $request->input('from.address'),
-            'address' => $request->input('from.address'),
+            'name' => $request->input('from.address', 'Unspecified Name'),
+            'address' => $request->input('from.address', 'Unspecified Address'),
             'coordinates' => $request->input('from.lat') . ', ' . $request->input('from.lng')
         ]);
         $toLocation = new Location([
-            'name' => $request->input('to.address'),
-            'address' => $request->input('to.address'),
+            'name' => $request->input('to.address', 'Unspecified Name'),
+            'address' => $request->input('to.address', 'Unspecified Address'),
             'coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
         ]);
         $fromLocation->save();

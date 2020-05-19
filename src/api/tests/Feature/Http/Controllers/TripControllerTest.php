@@ -1081,4 +1081,48 @@ class TripControllerTest extends TestCase
         ]);
         $this->assertEquals(4, Location::all()->count());
     }
+
+    /** @test */
+    public function addTravels__set_default_name_when_creating_a_travel()
+    {
+        $user = factory(User::class)->create();
+        $trip = factory(Trip::class)->create();
+        $trip->users()->save($user);
+
+        $response = $this->actingAs($user)->json('post', "/api/trip/$trip->id/travels", [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'from' => [
+                'lat' => '-36.880765',
+                'lng' => '174.801228',
+                'time' => '2020-05-20T07:20:50.52Z',
+            ],
+            'to' => [
+                'lat' => '-36.880765',
+                'lng' => '175.801228',
+                'time' => '2020-05-20T09:20:50.52Z',
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('travels', [
+            'mode' => 'bus',
+            'description' => 'Travel description',
+            'start' => '2020-05-20 07:20:50',
+            'end' => '2020-05-20 09:20:50',
+            'trip_id' => $trip->id,
+            'from_coordinates' => "-36.880765, 174.801228",
+            'to_coordinates' => "-36.880765, 175.801228",
+        ]);
+        $this->assertDatabaseHas('locations', [
+            'name' => 'Unspecified Name',
+            'address' => 'Unspecified Address',
+            'coordinates' => "-36.880765, 174.801228"
+        ]);
+        $this->assertDatabaseHas('locations', [
+            'name' => 'Unspecified Name',
+            'address' => 'Unspecified Address',
+            'coordinates' => "-36.880765, 175.801228"
+        ]);
+    }
 }
