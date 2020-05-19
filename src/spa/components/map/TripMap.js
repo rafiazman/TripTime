@@ -6,6 +6,7 @@ import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
 import Control from 'react-leaflet-control';
 import { IconButton } from '@material-ui/core';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
 import { generateActivityIcon, generateTravelIcon } from './MarkerIcon';
 import PropTypes from 'prop-types';
 import MarkerSplitter from './MarkerSplitter';
@@ -84,6 +85,22 @@ export default class TripMap extends React.Component {
       });
   }
 
+  onClick() {
+    const hostName = process.env.API_HOSTNAME;
+    const tripID = this.props.tripID;
+    axios.defaults.withCredentials = true;
+    let travelToAdd = createNewTravel();
+
+    //axios post request
+    axios
+      .post(`${hostName}/api/trip/${tripID}/travels`, travelToAdd) //ERROR OVER HERE. WHAT FIELDS ARE REQUIRED? ERROR 422
+      .then(
+        this.setState(prevState => ({
+          travels: [...prevState.travels, travelToAdd],
+        })),
+      );
+  }
+
   render() {
     if (!this.state.inBrowser) {
       return null;
@@ -102,7 +119,7 @@ export default class TripMap extends React.Component {
       </Marker>
     ));
 
-    const travelMarkers = this.state.travels.map((travel, i) => (
+    const travel_markers = this.state.travels.map((travel, i) => (
       <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
     ));
 
@@ -126,19 +143,24 @@ export default class TripMap extends React.Component {
             searchLabel={'Search for a location...'}
             keepResult={false}
           />
+          <Control position='topleft'>
+            <IconButton
+              onClick={() => alert('Local activity button was clicked!')}
+            >
+              <LocalActivityIcon />
+            </IconButton>
+            <IconButton onClick={() => this.onClick()}>
+              <AddLocationIcon />
+            </IconButton>
+          </Control>
           <MarkerSplitter>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <>
-                {travelMarkers}
+                {travel_markers}
                 {activity_markers}
               </>
             </MuiPickersUtilsProvider>
           </MarkerSplitter>
-          <Control position='topleft'>
-            <IconButton aria-label='add custom marker'>
-              <LocalActivityIcon />
-            </IconButton>
-          </Control>
         </Map>
         {(this.state.activityLoading || this.state.travelLoading) && (
           <MapPlanLoading />
@@ -153,6 +175,33 @@ TripMap.propTypes = {
   travels: PropTypes.array,
   tripID: PropTypes.string.isRequired,
 };
+
+function createNewTravel() {
+  //Create new travel with required fields to be set by user (WHAT FIELDS ARE IN A TRAVEL AND HOW CAN I GET THEM INPUT BY USER NOW?)
+  //Pass in this travel into TravelMarkerPair as a prop
+  let date = new Date();
+  let from_date = JSON.stringify(date);
+  date.setHours(date.getHours() + 1);
+  let to_date = JSON.stringify(date);
+
+  const myTravel = {
+    mode: 'empty',
+    description: 'Enter a description..',
+    start: from_date,
+    end: to_date,
+    from: {
+      lat: '-38.1368',
+      lng: '176.2497',
+    },
+    to: {
+      lat: '-38.6857',
+      lng: '176.0702',
+    },
+    travel_rgb: generateRandomRGB(),
+  };
+
+  return myTravel;
+}
 
 function generateRandomRGB() {
   const goldenRatioConjugate = 0.618033988749895;
