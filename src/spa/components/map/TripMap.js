@@ -4,9 +4,10 @@ import React, { createRef } from 'react';
 import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
 import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
 import Control from 'react-leaflet-control';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Button } from '@material-ui/core';
 import LocalActivityIcon from '@material-ui/icons/LocalActivity';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
+import SaveIcon from '@material-ui/icons/Save';
 import { generateActivityIcon, generateTravelIcon } from './MarkerIcon';
 import PropTypes from 'prop-types';
 import MarkerSplitter from './MarkerSplitter';
@@ -17,6 +18,7 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import TravelMarkerPair from './TravelMarkerPair';
 
 export default class TripMap extends React.Component {
   constructor(props) {
@@ -68,7 +70,11 @@ export default class TripMap extends React.Component {
         res =>
           this.setState(() => ({
             travels: res.data.map(travel => {
-              return { ...travel, travel_rgb: generateRandomRGB() };
+              return {
+                ...travel,
+                travel_rgb: generateRandomRGB(),
+                isDraggable: false,
+              };
             }),
           })),
         () => this.setState(() => ({ travels: [] })),
@@ -85,20 +91,13 @@ export default class TripMap extends React.Component {
       });
   }
 
-  onClick() {
-    const hostName = process.env.API_HOSTNAME;
-    const tripID = this.props.tripID;
-    axios.defaults.withCredentials = true;
+  onClickAddTravel() {
+    this.setState(() => ({ isSaved: false }));
     let travelToAdd = createNewTravel();
 
-    //axios post request
-    axios
-      .post(`${hostName}/api/trip/${tripID}/travels`, travelToAdd) //ERROR OVER HERE. WHAT FIELDS ARE REQUIRED? ERROR 422
-      .then(
-        this.setState(prevState => ({
-          travels: [...prevState.travels, travelToAdd],
-        })),
-      );
+    this.setState(prevState => ({
+      travels: [...prevState.travels, travelToAdd],
+    }));
   }
 
   render() {
@@ -119,9 +118,11 @@ export default class TripMap extends React.Component {
       </Marker>
     ));
 
-    const travel_markers = this.state.travels.map((travel, i) => (
-      <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
-    ));
+    const travel_markers = this.state.travels.map((travel, i) => {
+      return (
+        <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
+      );
+    });
 
     const prov = OpenStreetMapProvider();
     const GeoSearchControlElement = withLeaflet(SearchControl);
@@ -149,7 +150,8 @@ export default class TripMap extends React.Component {
             >
               <LocalActivityIcon />
             </IconButton>
-            <IconButton onClick={() => this.onClick()}>
+
+            <IconButton onClick={() => this.onClickAddTravel()}>
               <AddLocationIcon />
             </IconButton>
           </Control>
@@ -180,20 +182,20 @@ function createNewTravel() {
   //Create new travel with required fields to be set by user (WHAT FIELDS ARE IN A TRAVEL AND HOW CAN I GET THEM INPUT BY USER NOW?)
   //Pass in this travel into TravelMarkerPair as a prop
   let date = new Date();
-  let from_date = JSON.stringify(date);
+  let from_date = date.toJSON();
   date.setHours(date.getHours() + 1);
-  let to_date = JSON.stringify(date);
+  let to_date = date.toJSON();
 
   const myTravel = {
-    mode: 'empty',
+    mode: 'bus',
     description: 'Enter a description..',
-    start: from_date,
-    end: to_date,
     from: {
+      time: from_date,
       lat: '-38.1368',
       lng: '176.2497',
     },
     to: {
+      time: to_date,
       lat: '-38.6857',
       lng: '176.0702',
     },
@@ -209,63 +211,6 @@ function generateRandomRGB() {
   h += goldenRatioConjugate;
   h %= 1;
   return HSVtoRGB(h, 0.95, 0.7);
-}
-
-class TravelMarkerPair extends React.Component {
-  static propTypes = {
-    travel: PropTypes.object.isRequired,
-    tripId: PropTypes.string,
-  };
-
-  constructor(props) {
-    super(props);
-    this.fromMarker = React.createRef();
-    this.toMarker = React.createRef();
-  }
-
-  toggleFocus(clickTo) {
-    clickTo
-      ? this.fromMarker.current.fireLeafletEvent('click')
-      : this.toMarker.current.fireLeafletEvent('click');
-  }
-
-  render() {
-    const travel = this.props.travel;
-    return (
-      <>
-        <Marker
-          position={travel.to}
-          icon={generateTravelIcon(travel.travel_rgb, travel.mode, true)}
-          ref={this.toMarker}
-        >
-          <Popup>
-            <TravelCard travel={travel} tripId={this.props.tripId} />
-            <span className={styles.travelExplain}>
-              Arrive here.
-              <a href='#' onClick={() => this.toggleFocus(true)}>
-                Go to departure point
-              </a>
-            </span>
-          </Popup>
-        </Marker>
-        <Marker
-          position={travel.from}
-          icon={generateTravelIcon(travel.travel_rgb, travel.mode, false)}
-          ref={this.fromMarker}
-        >
-          <Popup>
-            <TravelCard travel={travel} />
-            <span className={styles.travelExplain}>
-              Depart from here.
-              <a href='#' onClick={() => this.toggleFocus(false)}>
-                Go to destination point
-              </a>
-            </span>
-          </Popup>
-        </Marker>
-      </>
-    );
-  }
 }
 
 function HSVtoRGB(h, s, v) {
