@@ -118,17 +118,36 @@ export default class TripMap extends React.Component {
     }));
   }
 
+  submitUpdatedActivity(e, id) {
+    const tripId = this.props.tripID;
+    const { lat, lng } = e.target.getLatLng();
+
+    axios.patch(`/trip/${tripId}/activities`, {
+      id: id,
+      location: {
+        lat: lat.toString(),
+        lng: lng.toString(),
+      },
+    });
+  }
+
   render() {
     if (!this.state.inBrowser) {
       return null;
     }
 
-    const activity_markers = this.state.activities.map((v, i) => (
-      <Marker key={i} position={v.gps} icon={generateActivityIcon(v.type)}>
+    const activity_markers = this.state.activities.map((a, i) => (
+      <Marker
+        key={i}
+        position={a.gps}
+        icon={generateActivityIcon(a.type)}
+        draggable={true}
+        onDragEnd={e => this.submitUpdatedActivity(e, a.id)}
+      >
         <Popup>
           <ActivityCard
             onMap={true}
-            activity={v}
+            activity={a}
             messageIfNoEvent={''}
             tripId={this.props.tripID}
           />

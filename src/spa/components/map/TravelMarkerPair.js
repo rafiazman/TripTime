@@ -59,7 +59,7 @@ class TravelMarkerPair extends React.Component {
           icon={generateTravelIcon(travel.travel_rgb, travel.mode, true)}
           ref={this.toMarker}
           draggable={true}
-          onDragend={e => this.submitUpdatedLocation(e, false)}
+          onDragEnd={e => this.submitUpdatedLocation(e, false)}
         >
           <Popup>
             <TravelCard
