@@ -18,6 +18,7 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import TravelMarkerPair from './TravelMarkerPair';
 import _ from 'underscore';
+import moment from 'moment';
 
 export default class TripMap extends React.Component {
   constructor(props) {
@@ -90,6 +91,28 @@ export default class TripMap extends React.Component {
       });
   }
 
+  addActivity() {
+    const { lat, lng } = this.state.map.currentCenter;
+    const now = moment();
+
+    const activity = {
+      id: null,
+      name: 'Created Activity',
+      type: 'outdoors',
+      start: now.format(),
+      end: now.add(1, 'hours').format(),
+      description: 'Created Activity description',
+      gps: {
+        lat: lat,
+        lng: lng,
+      },
+    };
+
+    this.setState(prevState => ({
+      activities: [...prevState.activities, activity],
+    }));
+  }
+
   addTravel() {
     let date = new Date();
     let from_date = date.toJSON();
@@ -130,18 +153,20 @@ export default class TripMap extends React.Component {
   }
 
   submitUpdatedActivity(e, id) {
-    if (id === null) alert('Created thing dragged');
-
     const tripId = this.props.tripID;
     const { lat, lng } = e.target.getLatLng();
 
-    axios.patch(`/trip/${tripId}/activities`, {
-      id: id,
-      location: {
-        lat: lat.toString(),
-        lng: lng.toString(),
-      },
-    });
+    if (id === null) {
+      alert('Created thing dragged');
+    } else {
+      axios.patch(`/trip/${tripId}/activities`, {
+        id: id,
+        location: {
+          lat: lat.toString(),
+          lng: lng.toString(),
+        },
+      });
+    }
   }
 
   render() {
@@ -204,9 +229,7 @@ export default class TripMap extends React.Component {
           />
 
           <Control position='topleft'>
-            <IconButton
-              onClick={() => alert('Local activity button was clicked!')}
-            >
+            <IconButton onClick={() => this.addActivity()}>
               <LocalActivityIcon />
             </IconButton>
 
