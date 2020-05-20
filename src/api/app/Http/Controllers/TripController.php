@@ -264,11 +264,11 @@ class TripController extends Controller
         ]);
         $travel->save();
 
-        $tripVm = new TripResource($trip);
+        $travelVm = new TravelResource($travel);
 
         return response()->json([
             'message' => "Successfully added a new Travel to $trip->name",
-            'trip' => $tripVm
+            'travel' => $travelVm
         ]);
     }
 

@@ -92,55 +92,59 @@ export default class TripMap extends React.Component {
   }
 
   addActivity() {
+    const tripId = this.props.tripID;
     const { lat, lng } = this.state.map.currentCenter;
     const now = moment();
 
     const activity = {
-      id: null,
       name: 'Created Activity',
       type: 'outdoors',
-      start: now.format(),
-      end: now.add(1, 'hours').format(),
-      description: 'Created Activity description',
-      gps: {
-        lat: lat,
-        lng: lng,
+      start: now.add(0.5, 'hours').format(),
+      end: now.add(1.5, 'hours').format(),
+      description: 'Describe your activity here',
+      location: {
+        lat: lat.toString(),
+        lng: lng.toString(),
       },
     };
 
-    this.setState(prevState => ({
-      activities: [...prevState.activities, activity],
-    }));
+    axios.post(`/trip/${tripId}/activities`, activity).then(res => {
+      const activityFromDb = res.data.activity;
+
+      this.setState(prevState => ({
+        activities: [...prevState.activities, activityFromDb],
+      }));
+    });
   }
 
   addTravel() {
-    let date = new Date();
-    let from_date = date.toJSON();
-    date.setHours(date.getHours() + 1);
-    let to_date = date.toJSON();
-
+    const tripId = this.props.tripID;
+    const now = moment();
     const { lat, lng } = this.state.map.currentCenter;
 
     const travel = {
-      id: null,
       mode: 'bus',
-      description: 'Description here',
+      description: 'Describe your travel here',
       from: {
-        time: from_date,
+        time: now.add(0.5, 'hours').format(),
         lat: (lat - 0.01).toString(),
         lng: (lng - 0.01).toString(),
       },
       to: {
-        time: to_date,
+        time: now.add(1.5, 'hours').format(),
         lat: (lat + 0.01).toString(),
         lng: (lng + 0.01).toString(),
       },
-      travel_rgb: generateRandomRGB(),
     };
 
-    this.setState(prevState => ({
-      travels: [...prevState.travels, travel],
-    }));
+    axios.post(`/trip/${tripId}/travels`, travel).then(res => {
+      const travelFromDb = res.data.travel;
+      travelFromDb.travel_rgb = generateRandomRGB();
+
+      this.setState(prevState => ({
+        travels: [...prevState.travels, travelFromDb],
+      }));
+    });
   }
 
   onMove(e) {
@@ -156,17 +160,13 @@ export default class TripMap extends React.Component {
     const tripId = this.props.tripID;
     const { lat, lng } = e.target.getLatLng();
 
-    if (id === null) {
-      alert('Created thing dragged');
-    } else {
-      axios.patch(`/trip/${tripId}/activities`, {
-        id: id,
-        location: {
-          lat: lat.toString(),
-          lng: lng.toString(),
-        },
-      });
-    }
+    axios.patch(`/trip/${tripId}/activities`, {
+      id: id,
+      location: {
+        lat: lat.toString(),
+        lng: lng.toString(),
+      },
+    });
   }
 
   render() {
