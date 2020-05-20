@@ -16,6 +16,7 @@ import {
   faLandmark,
   faPalette,
   faPaw,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons';
 
 const activityTypes = {
@@ -30,6 +31,7 @@ const activityTypes = {
   landmark: faLandmark,
   art: faPalette,
   animal: faPaw,
+  empty: faStar,
 };
 
 export default function ActivityMarker(props) {

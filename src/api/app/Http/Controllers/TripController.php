@@ -231,18 +231,27 @@ class TripController extends Controller
 
     public function addTravel(CreateTravelRequest $request, Trip $trip)
     {
-        $fromLocation = new Location([
-            'name' => $request->input('from.address'),
-            'address' => $request->input('from.address'),
-            'coordinates' => $request->input('from.lat') . ', ' . $request->input('from.lng')
-        ]);
-        $toLocation = new Location([
-            'name' => $request->input('to.address'),
-            'address' => $request->input('to.address'),
-            'coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
-        ]);
-        $fromLocation->save();
-        $toLocation->save();
+        $fromCoordinate = $request->input('from.lat') . ', ' . $request->input('from.lng');
+        $toCoordinate = $request->input('to.lat') . ', ' . $request->input('to.lng');
+
+        //TODO: Test edge cases such as if one coordinate exists but the other doesn't.
+        if (!Location::where('coordinates', '=', $fromCoordinate)->exists()) {
+          $fromLocation = new Location([
+              'name' => $request->input('from.address', 'Unspecified Name'),
+              'address' => $request->input('from.address', 'Unspecified Address'),
+              'coordinates' => $request->input('from.lat') . ', ' . $request->input('from.lng')
+          ]);
+          $fromLocation->save();
+        }
+
+        if (!Location::where('coordinates', '=', $toCoordinate)->exists()) {
+          $toLocation = new Location([
+              'name' => $request->input('to.address', 'Unspecified Name'),
+              'address' => $request->input('to.address', 'Unspecified Address'),
+              'coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
+          ]);
+          $toLocation->save();
+        }
 
         $travel = new Travel([
             'mode' => $request->input('mode'),
@@ -255,11 +264,11 @@ class TripController extends Controller
         ]);
         $travel->save();
 
-        $tripVm = new TripResource($trip);
+        $travelVm = new TravelResource($travel);
 
         return response()->json([
             'message' => "Successfully added a new Travel to $trip->name",
-            'trip' => $tripVm
+            'travel' => $travelVm
         ]);
     }
 

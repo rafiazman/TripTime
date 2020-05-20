@@ -129,6 +129,7 @@ export default class TravelCard extends React.Component {
 
   render() {
     const travel = this.props.travel;
+
     return (
       <AuthContext.Consumer>
         {({ currentUser }) => {
@@ -153,7 +154,6 @@ export default class TravelCard extends React.Component {
                   ) && <JoinButton eventType={'travel'} eventID={travel.id} />
                 }
               />
-
               <div
                 className={styles.time}
                 style={{ marginBottom: '10px', marginTop: '5px' }}
@@ -235,4 +235,5 @@ export default class TravelCard extends React.Component {
 TravelCard.propTypes = {
   travel: PropTypes.object.isRequired,
   tripId: PropTypes.string,
+  onMap: PropTypes.bool.isRequired,
 };

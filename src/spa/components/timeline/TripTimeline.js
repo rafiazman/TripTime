@@ -20,7 +20,7 @@ export default function TripTimeline() {
         return (
           <div key={index} className={styles.travelCardContainer}>
             <div className={styles.travelCard}>
-              <TravelCard travel={event} tripId={tripID} />
+              <TravelCard travel={event} tripId={tripID} onMap={false} />
             </div>
           </div>
         );

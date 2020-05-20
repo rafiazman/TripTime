@@ -1,84 +1,172 @@
 /** @format */
 
 import React, { createRef } from 'react';
-import { Map, TileLayer, Marker, Popup, withLeaflet } from 'react-leaflet';
-import { SearchControl, OpenStreetMapProvider } from 'react-leaflet-geosearch';
-import { generateActivityIcon, generateTravelIcon } from './MarkerIcon';
+import { Map, Marker, Popup, TileLayer, withLeaflet } from 'react-leaflet';
+import { OpenStreetMapProvider, SearchControl } from 'react-leaflet-geosearch';
+import Control from 'react-leaflet-control';
+import { IconButton } from '@material-ui/core';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import { generateActivityIcon } from './MarkerIcon';
 import PropTypes from 'prop-types';
 import MarkerSplitter from './MarkerSplitter';
 import ActivityCard from '../cards/ActivityCard';
-import TravelCard from '../cards/TravelCard';
 import styles from '../../css/map.module.css';
-import axios from 'axios';
+import axios from '../../app/axios';
 import ReactLoading from 'react-loading';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import TravelMarkerPair from './TravelMarkerPair';
+import _ from 'underscore';
+import moment from 'moment';
 
 export default class TripMap extends React.Component {
   constructor(props) {
     super(props);
-    this.map = createRef();
+
+    this.state = {
+      map: {
+        instance: createRef(),
+        center: [-40.3523, 175.6082],
+        currentCenter: undefined,
+        zoom: 6,
+      },
+      inBrowser: false,
+      activities: [],
+      travels: [],
+      activityLoading: true,
+      travelLoading: true,
+    };
   }
 
-  state = {
-    inBrowser: false,
-    markers: [],
-    activities: [],
-    travels: [],
-    activityLoading: true,
-    travelLoading: true,
-  };
-
-  center = [-40.3523, 175.6082];
-  zoom = 6;
-  centerUpdated = false;
-
   componentDidMount() {
+    const tripID = this.props.tripID;
+    if (!tripID) return;
+
     this.setState({
       inBrowser: true,
     });
-    const hostName = process.env.API_HOSTNAME;
-    const tripID = this.props.tripID;
 
-    axios.defaults.withCredentials = true;
     axios
-      .get(`${hostName}/api/trip/${tripID}/activities`)
-      .then(
-        res => this.setState(() => ({ activities: res.data })),
-        () => this.setState(() => ({ activities: [] })),
-      )
-      .then(() => {
-        if (this.state.activities.length > 0) {
-          this.center = this.state.activities[0].gps;
-          this.centerUpdated = true;
-          this.zoom = 8;
-        }
+      .get(`/trip/${tripID}/activities`)
+      .then(res => {
+        const activities = res.data;
+
+        this.setState(() => ({
+          activities: activities,
+        }));
+
+        return activities.map(a => [a.gps.lat, a.gps.lng]);
       })
-      .then(() => {
+      .then(activityCoords => {
         this.setState(() => ({ activityLoading: false }));
-      });
 
-    axios
-      .get(`${hostName}/api/trip/${tripID}/travels`)
-      .then(
-        res =>
-          this.setState(() => ({
-            travels: res.data.map(travel => {
-              return { ...travel, travel_rgb: generateRandomRGB() };
-            }),
-          })),
-        () => this.setState(() => ({ travels: [] })),
-      )
-      .then(() => {
-        if (!this.centerUpdated)
-          if (this.state.travels.length > 0) {
-            this.center = this.state.travels[0].from.gps;
-            this.zoom = 8;
-          }
-      })
-      .then(() => {
-        this.setState(() => ({ travelLoading: false }));
+        axios
+          .get(`/trip/${tripID}/travels`)
+          .then(res => {
+            const travels = res.data;
+
+            this.setState(() => ({
+              travels: travels.map(t => {
+                return {
+                  ...t,
+                  travel_rgb: generateRandomRGB(),
+                };
+              }),
+            }));
+
+            const travelFromCoords = travels.map(t => [t.from.lat, t.from.lng]);
+            const travelToCoords = travels.map(t => [t.to.lat, t.to.lng]);
+            const travelCoords = _.union(travelFromCoords, travelToCoords);
+
+            return _.union(travelCoords, activityCoords);
+          })
+          .then(allCoords => {
+            this.setState(() => ({ travelLoading: false }));
+
+            this.map.leafletElement.fitBounds(allCoords, {
+              padding: [10, 10],
+            });
+          });
       });
+  }
+
+  addActivity() {
+    const tripId = this.props.tripID;
+    const { lat, lng } = this.state.map.currentCenter;
+    const now = moment();
+
+    const activity = {
+      name: 'Created Activity',
+      type: 'outdoors',
+      start: now.add(0.5, 'hours').format(),
+      end: now.add(1.5, 'hours').format(),
+      description: 'Describe your activity here',
+      location: {
+        lat: lat.toString(),
+        lng: lng.toString(),
+      },
+    };
+
+    axios.post(`/trip/${tripId}/activities`, activity).then(res => {
+      const activityFromDb = res.data.activity;
+
+      this.setState(prevState => ({
+        activities: [...prevState.activities, activityFromDb],
+      }));
+    });
+  }
+
+  addTravel() {
+    const tripId = this.props.tripID;
+    const now = moment();
+    const { lat, lng } = this.state.map.currentCenter;
+
+    const travel = {
+      mode: 'bus',
+      description: 'Describe your travel here',
+      from: {
+        time: now.add(0.5, 'hours').format(),
+        lat: (lat - 0.01).toString(),
+        lng: (lng - 0.01).toString(),
+      },
+      to: {
+        time: now.add(1.5, 'hours').format(),
+        lat: (lat + 0.01).toString(),
+        lng: (lng + 0.01).toString(),
+      },
+    };
+
+    axios.post(`/trip/${tripId}/travels`, travel).then(res => {
+      const travelFromDb = res.data.travel;
+      travelFromDb.travel_rgb = generateRandomRGB();
+
+      this.setState(prevState => ({
+        travels: [...prevState.travels, travelFromDb],
+      }));
+    });
+  }
+
+  onMove(e) {
+    this.setState(state => ({
+      map: {
+        ...state.map,
+        currentCenter: e.target.getCenter(),
+      },
+    }));
+  }
+
+  submitUpdatedActivity(e, id) {
+    const tripId = this.props.tripID;
+    const { lat, lng } = e.target.getLatLng();
+
+    axios.patch(`/trip/${tripId}/activities`, {
+      id: id,
+      location: {
+        lat: lat.toString(),
+        lng: lng.toString(),
+      },
+    });
   }
 
   render() {
@@ -86,12 +174,22 @@ export default class TripMap extends React.Component {
       return null;
     }
 
-    const activity_markers = this.state.activities.map((v, i) => (
-      <Marker key={i} position={v.gps} icon={generateActivityIcon(v.type)}>
+    const prov = new OpenStreetMapProvider();
+    const GeoSearchControlElement = withLeaflet(SearchControl);
+
+    let activities = this.state.activities;
+    let activityMarkers = activities.map((a, i) => (
+      <Marker
+        key={i}
+        position={a.gps}
+        icon={generateActivityIcon(a.type)}
+        draggable={true}
+        onDragEnd={e => this.submitUpdatedActivity(e, a.id)}
+      >
         <Popup>
           <ActivityCard
             onMap={true}
-            activity={v}
+            activity={a}
             messageIfNoEvent={''}
             tripId={this.props.tripID}
           />
@@ -99,20 +197,26 @@ export default class TripMap extends React.Component {
       </Marker>
     ));
 
-    const travelMarkers = this.state.travels.map((travel, i) => (
-      <TravelMarkerPair travel={travel} key={i} tripId={this.props.tripID} />
+    let travels = this.state.travels;
+    let travelMarkers = travels.map((t, i) => (
+      <TravelMarkerPair travel={t} key={i} tripId={this.props.tripID} />
     ));
-
-    const prov = OpenStreetMapProvider();
-    const GeoSearchControlElement = withLeaflet(SearchControl);
 
     return (
       <>
-        <Map ref={this.map} center={this.center} zoom={this.zoom}>
+        <Map
+          ref={ref => {
+            this.map = ref;
+          }}
+          center={this.state.map.center}
+          zoom={this.state.map.zoom}
+          onMoveEnd={this.onMove.bind(this)}
+        >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
+
           <GeoSearchControlElement
             provider={prov}
             showPopup={false}
@@ -123,15 +227,27 @@ export default class TripMap extends React.Component {
             searchLabel={'Search for a location...'}
             keepResult={false}
           />
+
+          <Control position='topleft'>
+            <IconButton onClick={() => this.addActivity()}>
+              <LocalActivityIcon />
+            </IconButton>
+
+            <IconButton onClick={() => this.addTravel()}>
+              <AddLocationIcon />
+            </IconButton>
+          </Control>
+
           <MarkerSplitter>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <>
                 {travelMarkers}
-                {activity_markers}
+                {activityMarkers}
               </>
             </MuiPickersUtilsProvider>
           </MarkerSplitter>
         </Map>
+
         {(this.state.activityLoading || this.state.travelLoading) && (
           <MapPlanLoading />
         )}
@@ -151,98 +267,42 @@ function generateRandomRGB() {
   let h = Math.random();
   h += goldenRatioConjugate;
   h %= 1;
+
+  function HSVtoRGB(h, s, v) {
+    let r, g, b, i, f, p, q, t;
+    const rd = Math.round;
+    if (arguments.length === 1) {
+      (s = h.s), (v = h.v), (h = h.h);
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+      case 0:
+        (r = v), (g = t), (b = p);
+        break;
+      case 1:
+        (r = q), (g = v), (b = p);
+        break;
+      case 2:
+        (r = p), (g = v), (b = t);
+        break;
+      case 3:
+        (r = p), (g = q), (b = v);
+        break;
+      case 4:
+        (r = t), (g = p), (b = v);
+        break;
+      case 5:
+        (r = v), (g = p), (b = q);
+        break;
+    }
+    return [rd(r * 255), rd(g * 255), rd(b * 255)];
+  }
+
   return HSVtoRGB(h, 0.95, 0.7);
-}
-
-class TravelMarkerPair extends React.Component {
-  static propTypes = {
-    travel: PropTypes.object.isRequired,
-    tripId: PropTypes.string,
-  };
-
-  constructor(props) {
-    super(props);
-    this.fromMarker = React.createRef();
-    this.toMarker = React.createRef();
-  }
-
-  toggleFocus(clickTo) {
-    clickTo
-      ? this.fromMarker.current.fireLeafletEvent('click')
-      : this.toMarker.current.fireLeafletEvent('click');
-  }
-
-  render() {
-    const travel = this.props.travel;
-    return (
-      <>
-        <Marker
-          position={travel.to}
-          icon={generateTravelIcon(travel.travel_rgb, travel.mode, true)}
-          ref={this.toMarker}
-        >
-          <Popup>
-            <TravelCard travel={travel} tripId={this.props.tripId} />
-            <span className={styles.travelExplain}>
-              Arrive here.
-              <a href='#' onClick={() => this.toggleFocus(true)}>
-                Go to departure point
-              </a>
-            </span>
-          </Popup>
-        </Marker>
-        <Marker
-          position={travel.from}
-          icon={generateTravelIcon(travel.travel_rgb, travel.mode, false)}
-          ref={this.fromMarker}
-        >
-          <Popup>
-            <TravelCard travel={travel} />
-            <span className={styles.travelExplain}>
-              Depart from here.
-              <a href='#' onClick={() => this.toggleFocus(false)}>
-                Go to destination point
-              </a>
-            </span>
-          </Popup>
-        </Marker>
-      </>
-    );
-  }
-}
-
-function HSVtoRGB(h, s, v) {
-  let r, g, b, i, f, p, q, t;
-  const rd = Math.round;
-  if (arguments.length === 1) {
-    (s = h.s), (v = h.v), (h = h.h);
-  }
-  i = Math.floor(h * 6);
-  f = h * 6 - i;
-  p = v * (1 - s);
-  q = v * (1 - f * s);
-  t = v * (1 - (1 - f) * s);
-  switch (i % 6) {
-    case 0:
-      (r = v), (g = t), (b = p);
-      break;
-    case 1:
-      (r = q), (g = v), (b = p);
-      break;
-    case 2:
-      (r = p), (g = v), (b = t);
-      break;
-    case 3:
-      (r = p), (g = q), (b = v);
-      break;
-    case 4:
-      (r = t), (g = p), (b = v);
-      break;
-    case 5:
-      (r = v), (g = p), (b = q);
-      break;
-  }
-  return [rd(r * 255), rd(g * 255), rd(b * 255)];
 }
 
 function MapPlanLoading() {
