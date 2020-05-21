@@ -46,6 +46,7 @@
     "dotenv": "^8.2.0",
     "file-loader": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
+    "immutability-helper": "^3.0.2",
     "isomorphic-unfetch": "^3.0.0",
     "laravel-echo": "^1.8.0",
     "leaflet": "^1.6.0",
