@@ -19,6 +19,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import TravelMarkerPair from './TravelMarkerPair';
 import _ from 'underscore';
 import moment from 'moment';
+import update from 'immutability-helper';
 
 export default class TripMap extends React.Component {
   // TODO: Rehandle colouring of markers
@@ -105,38 +106,50 @@ export default class TripMap extends React.Component {
           activities: [...prevState.activities, e.activity],
         }));
       })
-      .listen('UpdateTripActivity', () => {
-        // Get all markers from server again and update state
-        axios
-          .get(`/trip/${tripID}/activities`)
-          .then(res => {
-            const activities = res.data;
+      .listen('NewTripTravel', e => {
+        e.travel.travel_rgb = generateRandomRGB();
+        this.setState(prevState => ({
+          travels: [...prevState.travels, e.travel],
+        }));
+      })
+      .listen('UpdateTripActivity', e => {
+        this.setState(prevState => {
+          const prevActivities = prevState.activities;
+          const index = prevActivities.findIndex(x => x.id === e.activity.id);
 
-            this.setState(() => ({
-              activities: activities,
-            }));
-          })
-          .then(() => {
-            this.setState(() => ({ activityLoading: false }));
+          return {
+            activities: update(prevActivities, {
+              [index]: { $set: e.activity },
+            }),
+          };
+        });
+      })
+      .listen('UpdateTripTravel', e => {
+        this.setState(prevState => {
+          const prevTravels = prevState.travels;
+          const index = prevTravels.findIndex(x => x.id === e.travel.id);
+          e.travel.travel_rgb = prevTravels[index].travel_rgb;
 
-            axios
-              .get(`/trip/${tripID}/travels`)
-              .then(res => {
-                const travels = res.data;
-
-                this.setState(() => ({
-                  travels: travels.map(t => {
-                    return {
-                      ...t,
-                      travel_rgb: generateRandomRGB(),
-                    };
-                  }),
-                }));
-              })
-              .then(() => {
-                this.setState(() => ({ travelLoading: false }));
-              });
-          });
+          return {
+            travels: update(prevTravels, { [index]: { $set: e.travel } }),
+          };
+        });
+      })
+      .listen('DeleteTripActivity', e => {
+        this.setState(prevState => {
+          const prevActivities = prevState.activities;
+          return {
+            activities: prevActivities.filter(x => x.id !== e.activity.id),
+          };
+        });
+      })
+      .listen('DeleteTripTravel', e => {
+        this.setState(prevState => {
+          const prevTravels = prevState.travels;
+          return {
+            travels: prevTravels.filter(x => x.id !== e.travel.id),
+          };
+        });
       });
   }
 
@@ -180,14 +193,7 @@ export default class TripMap extends React.Component {
       },
     };
 
-    axios.post(`/trip/${tripId}/travels`, travel).then(res => {
-      const travelFromDb = res.data.travel;
-      travelFromDb.travel_rgb = generateRandomRGB();
-
-      this.setState(prevState => ({
-        travels: [...prevState.travels, travelFromDb],
-      }));
-    });
+    axios.post(`/trip/${tripId}/travels`, travel);
   }
 
   onMove(e) {
