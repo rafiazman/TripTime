@@ -5,7 +5,6 @@ import React from 'react';
 import Dashboard from '../../../components/dashboard/Dashboard';
 import TripList from '../../../components/dashboard/TripList';
 import axios from 'axios';
-// import myTripInfos from "../../../app/dummy-data/my-trip-infos";
 
 describe('Test Dashboard Loading', () => {
   const DATE_TO_USE = new Date(2020, 11, 17, 23, 24, 0);
