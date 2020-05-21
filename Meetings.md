@@ -1,10 +1,12 @@
 ---
 layout: default
-title: Contents
+title: Meetings
 ---
 
-This is a test to see if a meetings page is added correctly.
-
-Hope it works!
+| Date | Minutes |
+|------|---------|
+|      |         |
+|      |         |
+|      |         |
 
 [Go Back](./index.md)
