@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Events\NewTripActivity;
+use App\Events\NewTripTravel;
 use App\Events\UpdateTripActivity;
+use App\Events\UpdateTripTravel;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
@@ -271,6 +273,8 @@ class TripController extends Controller
         ]);
         $travel->save();
 
+        broadcast(new NewTripTravel($travel));
+
         $travelVm = new TravelResource($travel);
 
         return response()->json([
@@ -457,6 +461,8 @@ class TripController extends Controller
                 ]);
             $location->travel_tos()->save($travel);
         }
+
+        broadcast(new UpdateTripTravel($travel));
 
         $vm = [
             'message' => "Successfully updated travel with id: $travel->id",
