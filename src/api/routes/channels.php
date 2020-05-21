@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,11 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('messages.trip.{tripId}', function ($user, $tripId) {
+    $trip = \App\Trip::find((int) $tripId);
+    return $trip->hasParticipant($user);
+});
+
+Broadcast::channel('trip.{tripId}.markers', function ($user, $tripId) {
     $trip = \App\Trip::find((int) $tripId);
     return $trip->hasParticipant($user);
 });

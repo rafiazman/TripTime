@@ -46,7 +46,9 @@ export default class TripTeamLayout extends React.Component {
         <main>
           {this.props.children}
           <AuthContext.Consumer>
-            {({ currentUser }) => currentUser && <ChatBox />}
+            {({ currentUser }) =>
+              currentUser && <ChatBox tripId={this.props.tripID} />
+            }
           </AuthContext.Consumer>
         </main>
       </div>
@@ -57,4 +59,5 @@ export default class TripTeamLayout extends React.Component {
 TripTeamLayout.propTypes = {
   children: PropTypes.node.isRequired,
   activeLink: PropTypes.string.isRequired,
+  tripID: PropTypes.string.isRequired,
 };

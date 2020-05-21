@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Events\NewTripActivity;
+use App\Events\UpdateTripActivity;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
@@ -322,6 +324,8 @@ class TripController extends Controller
             'trip_id' => $trip->id,
         ]);
 
+        broadcast(new NewTripActivity($activity));
+
         return response()->json([
             'message' => "Successfully added \"$activity->name\" to database.",
             'activity' => new ActivityResource($activity)
@@ -388,6 +392,8 @@ class TripController extends Controller
                 ]);
             $location->activities()->save($activity);
         }
+
+        broadcast(new UpdateTripActivity($activity));
 
         $vm = [
             'message' => "Successfully updated activity with id: $activity->id",

@@ -21,6 +21,8 @@ import _ from 'underscore';
 import moment from 'moment';
 
 export default class TripMap extends React.Component {
+  // TODO: Rehandle colouring of markers
+
   constructor(props) {
     super(props);
 
@@ -39,13 +41,8 @@ export default class TripMap extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getAndDrawMarkers() {
     const tripID = this.props.tripID;
-    if (!tripID) return;
-
-    this.setState({
-      inBrowser: true,
-    });
 
     axios
       .get(`/trip/${tripID}/activities`)
@@ -91,6 +88,58 @@ export default class TripMap extends React.Component {
       });
   }
 
+  componentDidMount() {
+    const tripID = this.props.tripID;
+    if (!tripID) return;
+
+    this.setState({
+      inBrowser: true,
+    });
+
+    this.getAndDrawMarkers();
+
+    window.laravelEcho
+      .private(`trip.${tripID}.markers`)
+      .listen('NewTripActivity', e => {
+        this.setState(prevState => ({
+          activities: [...prevState.activities, e.activity],
+        }));
+      })
+      .listen('UpdateTripActivity', () => {
+        // Get all markers from server again and update state
+        axios
+          .get(`/trip/${tripID}/activities`)
+          .then(res => {
+            const activities = res.data;
+
+            this.setState(() => ({
+              activities: activities,
+            }));
+          })
+          .then(() => {
+            this.setState(() => ({ activityLoading: false }));
+
+            axios
+              .get(`/trip/${tripID}/travels`)
+              .then(res => {
+                const travels = res.data;
+
+                this.setState(() => ({
+                  travels: travels.map(t => {
+                    return {
+                      ...t,
+                      travel_rgb: generateRandomRGB(),
+                    };
+                  }),
+                }));
+              })
+              .then(() => {
+                this.setState(() => ({ travelLoading: false }));
+              });
+          });
+      });
+  }
+
   addActivity() {
     const tripId = this.props.tripID;
     const { lat, lng } = this.state.map.currentCenter;
@@ -108,13 +157,7 @@ export default class TripMap extends React.Component {
       },
     };
 
-    axios.post(`/trip/${tripId}/activities`, activity).then(res => {
-      const activityFromDb = res.data.activity;
-
-      this.setState(prevState => ({
-        activities: [...prevState.activities, activityFromDb],
-      }));
-    });
+    axios.post(`/trip/${tripId}/activities`, activity);
   }
 
   addTravel() {

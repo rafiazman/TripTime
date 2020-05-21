@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\Http\Resources\MessageResource;
-use App\Message;
+use App\Activity;
+use App\Http\Resources\ActivityResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,20 +12,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewMessage implements ShouldBroadcast
+class UpdateTripActivity implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $activity;
 
     /**
      * Create a new event instance.
      *
-     * @param Message $message
+     * @param Activity $activity
      */
-    public function __construct(Message $message)
+    public function __construct(Activity $activity)
     {
-        $this->message = $message;
+        $this->activity = $activity;
     }
 
     /**
@@ -35,7 +35,8 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('messages.trip.' . $this->message->trip->id);
+        $channelName = 'trip.' . $this->activity->trip->id . '.markers';
+        return new PrivateChannel($channelName);
     }
 
     /**
@@ -46,7 +47,7 @@ class NewMessage implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'message' => new MessageResource($this->message)
+            'activity' => new ActivityResource($this->activity)
         ];
     }
 }
