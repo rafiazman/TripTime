@@ -19,8 +19,7 @@ export default function DayView(props) {
     <View>
       <Text style={{ color: '#ff6400', fontSize: 16 }}>{day}</Text>
       {events.map((event, index) => {
-        if (event.type === 'travel')
-          return <TravelView travel={event} key={index} />;
+        if (event.mode) return <TravelView travel={event} key={index} />;
         else return <ActivityView activity={event} key={index} />;
       })}
     </View>

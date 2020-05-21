@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Events\DeleteTripActivity;
 use App\Http\Resources\ActivityResource;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
@@ -186,10 +187,35 @@ class ActivityController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Activity  $activity
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Activity $activity)
     {
-        //
+        $user = auth()->user();
+
+        if (!$activity->trip->hasParticipant($user))
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
+
+        try {
+            $activity->delete();
+
+            broadcast(new DeleteTripActivity($activity));
+
+            $vm = [
+                'message' => 'Successfully deleted the activity.',
+                'activity' => new ActivityResource($activity)
+            ];
+        }
+        catch (\Exception $e) {
+            $vm = [
+                'message' => 'Error when deleting activity',
+                'exception' => $e
+            ];
+        }
+        finally {
+            return response()->json($vm);
+        }
     }
 }

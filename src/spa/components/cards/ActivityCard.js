@@ -23,6 +23,7 @@ import { ActivityIcon } from './ActivityIcon';
 import { TripContext } from '../../contexts/TripContext';
 import UpdateProcessing from './UpdateProcessing';
 import JoinButton from './JoinButton';
+import DeleteActivityButton from './DeleteActivityButton';
 
 export default function ActivityCard(props) {
   const activity = props.activity;
@@ -182,6 +183,7 @@ export default function ActivityCard(props) {
                               component={<FontAwesomeIcon icon={faPencilAlt} />}
                             />
                           </span>
+
                           {editing && (
                             <ActivityDetailsDialog
                               activity={activity}
@@ -211,6 +213,11 @@ export default function ActivityCard(props) {
                               />
                             )}
                           </span>
+
+                          <DeleteActivityButton
+                            activityId={activity.id}
+                            onDelete={() => {}}
+                          />
                         </div>
                       </div>
                     );
@@ -240,5 +247,6 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  tripId: PropTypes.number,
+  onDelete: PropTypes.func.isRequired,
+  tripId: PropTypes.string,
 };

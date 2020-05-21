@@ -15,6 +15,7 @@ Route::post('/activity/{activity}/notes', 'ActivityController@addNote');
 Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
 
 Route::post('/activity/{activity}/join', 'ActivityController@addUser');
+Route::delete('/activity/{activity}', 'ActivityController@destroy');
 
 /*
  * TravelController
