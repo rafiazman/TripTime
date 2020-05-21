@@ -259,5 +259,5 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  tripId: PropTypes.string,
+  tripId: PropTypes.number,
 };
