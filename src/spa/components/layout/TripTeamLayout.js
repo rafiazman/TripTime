@@ -6,8 +6,9 @@ import SideBar from './SideBar';
 import ChatBox from '../chat/ChatBox';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../contexts/AuthContext';
-import Echo from 'laravel-echo';
+
 import axios from '../../app/axios';
+import Echo from 'laravel-echo';
 // eslint-disable-next-line no-unused-vars
 import Pusher from 'pusher-js'; // required to be in scope for Laravel Echo
 
