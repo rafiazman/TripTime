@@ -7,4 +7,4 @@ github_username: tantigers
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-minimal
+theme: minima
