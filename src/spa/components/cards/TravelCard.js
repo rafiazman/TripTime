@@ -234,6 +234,6 @@ export default class TravelCard extends React.Component {
 
 TravelCard.propTypes = {
   travel: PropTypes.object.isRequired,
-  tripId: PropTypes.string,
+  tripId: PropTypes.number,
   onMap: PropTypes.bool.isRequired,
 };

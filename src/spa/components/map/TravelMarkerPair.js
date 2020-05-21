@@ -11,7 +11,7 @@ import axios from '../../app/axios';
 class TravelMarkerPair extends React.Component {
   static propTypes = {
     travel: PropTypes.object.isRequired,
-    tripId: PropTypes.string,
+    tripId: PropTypes.number,
   };
 
   constructor(props) {
