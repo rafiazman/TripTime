@@ -1,1 +1,10 @@
+#basic options
+title: TripTime
+author: Tantigers
+email: example@email.com
+description: A wonderful site
+github_username: tantigers
+
+# Build settings
+markdown: kramdown
 theme: jekyll-theme-minimal
