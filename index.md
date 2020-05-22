@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Contents
+title: Tasks
 ---
 
 # Task breakdown and distribution #
@@ -8,9 +8,7 @@ title: Contents
 For this section, tasks will be defined as the Must-have features outlined in the project proposal.
 These are the features we determined would be part of a minimum viable product.
 
-## Must have features ##
-
-### Adding others to a trip ###
+## Adding others to a trip ##
 This task involved being able to;
 - Create an account and log in. This let us uniquely identify users.
 - Share a one-time unique link representing a trip, which users can then use to be added to it.
@@ -20,7 +18,7 @@ Distribution:
 **Anran Niu** worked on the front end functionality,
 **Rafi Azman** worked on backend and creating the API for this.
 
-### Live viewing and editing of group trip data ###
+## Live viewing and editing of group trip data ##
 This task involved being able to;
 - View the timeline of any given trip,
 - Add or remove users from any activity or travel (activities are standalone events whereas travels have a start and end point)
@@ -30,9 +28,9 @@ This task involved being able to;
 
 Distribution:
 **Anran Niu** worked on the front end functionality,
-**Rafi Azman** worked on the backend and API to enable this.
+**Rafi Azman** worked on the backend and API to enable this as well as on making the features update live in real time.
 
-### Viewing and editing a trip on a map ###
+## Viewing and editing a trip on a map ##
 This task involved being able to;
 - View an interactive map for any Trip
 - See activities/travels that are part of the trip, with each type of activity/travel having its own respective icon to represent it.
@@ -45,38 +43,43 @@ Distribution:
 **Anran Niu** worked on having an event details card pop up when a marker was clicked
 **Rafi Azman** worked on being able to move a marker, and adding activities/travels in a trip through the map
 
-### Sharing a trip itinerary ###
+## Sharing a trip itinerary ##
 - This task involved generating a PDF document of the trip itinerary to share with people.
 
 **Anran Niu** worked on this functionality.
 
-### Seeing notifications of changes ###
-- TBC
+## Unit tests and end-to-end tests ##
+This task involved;
+- Writing unit tests for all API calls in jest
+- Writing end to end tests on cypress
 
-### Having a CI/CD pipeline and automatic deployment ###
+Distribution:
+**Anran Niu** and **Rafi Azman** worked on writing the unit tests and some end to end tests.
+**Shakeel Khan** also worked on writing end to end tests.
+
+## Having a CI/CD pipeline and automatic deployment ##
 This task involved:
 - Using TravisCI to run all unit tests when code was pushed to any branch.
 - Requiring unit tests to pass before a pull request can be merged.
 - Having automatic deployment upon a pull request being merged.
 
+Distribution:
 **Shakeel Khan** worked on this functionality
 
-### Dockerizing our environment for easy consistent development ###
+## Dockerizing our environment for easy consistent development ##
 This task involved:
 - Defining how many and which docker services and containers to use in the project
 - Setting up the frontend and backend to run simultaneously  
 
+Distribution:
 **Rafi Azman** worked on this functionality
 
-## Should have features ##
-
-Some additional tasks were completed as well, and their breakdowns follow
-
-### The user can have conversations with trip mates in the group ###
+## The user can have conversations with trip mates in the group ##
 This task involved being able to;
 - Chat with other participants in a trip
 - Get an alert if a new message was received
 
+Distribution:
 **Anran Niu** worked on this functionality
 
-[Meeting minutes](./Meetings.md)
+[Back to top](#task-breakdown-and-distribution)
