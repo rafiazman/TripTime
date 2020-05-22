@@ -67,6 +67,29 @@ const TripProvider = props => {
       });
   }
 
+  async function updateOneTravel(travelPatch, travelID) {
+    const tripID = router.query.id;
+    await axios
+      .patch(`${hostName}/api/trip/${tripID}/travels`, {
+        id: travelID,
+        ...travelPatch,
+      })
+      .then(res => setOneEvent(TRAVEL, travelID, res.data.travel))
+      .catch(err => {
+        setDialogError({
+          title: 'Travel Update Failed',
+          message: `Sorry, we failed to update the travel ${
+            travelPatch.name
+          } because: ${
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An internal error happened'
+          }`,
+        });
+        setDialogErrorDisplay(true);
+      });
+  }
+
   async function updateOneActivity(activityPatch, activityID) {
     const tripID = router.query.id;
     await axios
@@ -134,6 +157,7 @@ const TripProvider = props => {
 
         travels,
         travelsLoading,
+        updateOneTravel,
 
         handleJoin,
 
