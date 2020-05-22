@@ -22,7 +22,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src/api:/var/www/html
+      - ./src/api:/var/www/html:delegated
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php

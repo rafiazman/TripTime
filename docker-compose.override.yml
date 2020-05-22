@@ -6,8 +6,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
     volumes:
-      - ./src/spa:/usr/app/
-      - ./src/spa/node_modules:/usr/app/node_modules
+      - ./src/spa:/usr/app/:delegated
+      - ./src/spa/node_modules:/usr/app/node_modules:delegated
       - /usr/app/.next
     command: npm run dev
   api:
