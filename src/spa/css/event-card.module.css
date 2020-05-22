@@ -1,24 +1,22 @@
 .eventCard {
     max-width: 20rem;
+    min-width: 10rem;
     border: 2px var(--trip-orange) solid;
     border-radius: 1rem;
     padding: 1rem;
     position: relative;
     background-color: rgba(256,256,256,0.9);
 }
-.options, .optionsOnMap {
+.options {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-.options, .optionsOnMap > span {
+.options > span {
     padding: 0 0.5rem;
 }
 
-.optionsOnMap > span{
-    font-size: 1rem;
-}
 
 .startTime, .endTime {
     color: var(--trip-orange);

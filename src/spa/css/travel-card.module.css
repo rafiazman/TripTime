@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 10px;
+    min-width: 10rem;
 }
 
 .travelTitle{
@@ -19,9 +20,13 @@
 }
 
 .options {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+}
+.options span {
+    padding: 0 0.2rem;
 }
 
 .noteCard{

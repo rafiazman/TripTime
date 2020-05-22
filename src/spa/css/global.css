@@ -47,6 +47,7 @@ div, input, button {
     text-align: center;
     font-weight: bold;
     font-size: 0.9rem;
+    border: 0;
 }
 .people-button-loading{
     box-sizing: border-box;
