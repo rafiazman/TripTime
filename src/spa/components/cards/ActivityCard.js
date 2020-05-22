@@ -1,12 +1,11 @@
 /** @format */
 
 import NotesCard from './NotesCard';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faMapMarkerAlt,
   faChevronCircleUp,
   faChevronCircleDown,
   faPencilAlt,
@@ -17,7 +16,6 @@ import TimeDisplay from '../TimeDisplay';
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
-import axios from 'axios';
 import ActivityDetailsDialog from './ActivityDetailsDialog';
 import moment from 'moment';
 import ErrorDialog from '../dialog/ErrorDialog';
@@ -37,10 +35,6 @@ export default function ActivityCard(props) {
   const [timeError, setTimeError] = useState(undefined);
   const [timeErrorDisplay, setTimeErrorDisplay] = useState(false);
   const [editProcessing, setEditProcessing] = useState(false);
-
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-  }, []);
 
   const toggleNotes = () => {
     setNotePopped(!notePopped);
@@ -181,11 +175,7 @@ export default function ActivityCard(props) {
                           {activity.description}
                         </div>
 
-                        <div
-                          className={
-                            onMap ? styles.optionsOnMap : styles.options
-                          }
-                        >
+                        <div className={styles.options}>
                           <span onClick={() => setEditing(true)}>
                             <Tooltip
                               text={'Edit Activity'}
@@ -203,16 +193,7 @@ export default function ActivityCard(props) {
                               }}
                             />
                           )}
-                          {!onMap && (
-                            <span>
-                              <Tooltip
-                                text={'Show on Map'}
-                                component={
-                                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                }
-                              />
-                            </span>
-                          )}
+
                           <span onClick={() => toggleNotes()}>
                             {notePopped ? (
                               <Tooltip
