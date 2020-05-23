@@ -36,6 +36,7 @@ export default function ActivityCard(props) {
   const [timeError, setTimeError] = useState(undefined);
   const [timeErrorDisplay, setTimeErrorDisplay] = useState(false);
   const [editProcessing, setEditProcessing] = useState(false);
+  const [deleteProcessing, setDeleteProcessing] = useState(false);
 
   const toggleNotes = () => {
     setNotePopped(!notePopped);
@@ -50,6 +51,13 @@ export default function ActivityCard(props) {
     } else {
       setTimeErrorDisplay(true);
     }
+  };
+
+  const handleDelete = deleteOneActivity => {
+    return activityID => {
+      setDeleteProcessing(true);
+      deleteOneActivity(activityID).then(() => setDeleteProcessing(false));
+    };
   };
 
   const checkTimeValid = ({ start, end }) => {
@@ -76,11 +84,13 @@ export default function ActivityCard(props) {
               className={styles.eventCard}
               style={onMap ? { border: '0' } : {}}
             >
-              {editProcessing ? (
-                <UpdateProcessing />
+              {editProcessing || deleteProcessing ? (
+                <UpdateProcessing
+                  message={deleteProcessing ? 'Deleting...' : 'Editing'}
+                />
               ) : (
                 <TripContext.Consumer>
-                  {({ updateOneActivity }) => {
+                  {({ updateOneActivity, deleteOneActivity }) => {
                     return (
                       <div className={onMap ? styles.cardOnMap : undefined}>
                         <strong>
@@ -216,7 +226,9 @@ export default function ActivityCard(props) {
 
                           <DeleteActivityButton
                             activityId={activity.id}
-                            onDelete={() => {}}
+                            onDelete={activityID =>
+                              handleDelete(deleteOneActivity)(activityID)
+                            }
                           />
                         </div>
                       </div>
@@ -247,6 +259,5 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  tripId: PropTypes.string,
+  tripId: PropTypes.number,
 };

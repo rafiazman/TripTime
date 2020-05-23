@@ -12,7 +12,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '../Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import axios from '../../app/axios';
 
 export default function DeleteActivityButton(props) {
   const { onDelete } = props;
@@ -27,11 +26,8 @@ export default function DeleteActivityButton(props) {
   };
 
   const handleOk = () => {
-    const activityId = props.activityId;
     setOpen(false);
-    axios.delete(`/activity/${activityId}`).then(() => {
-      onDelete();
-    });
+    onDelete(props.activityId);
   };
 
   return (
@@ -70,6 +66,6 @@ export default function DeleteActivityButton(props) {
 }
 
 DeleteActivityButton.propTypes = {
-  activityId: PropTypes.string.isRequired,
+  activityId: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
