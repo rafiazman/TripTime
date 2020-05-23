@@ -19,8 +19,11 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import TravelMarkerPair from './TravelMarkerPair';
 import _ from 'underscore';
 import moment from 'moment';
+import update from 'immutability-helper';
 
 export default class TripMap extends React.Component {
+  // TODO: Rehandle colouring of markers
+
   constructor(props) {
     super(props);
 
@@ -39,13 +42,8 @@ export default class TripMap extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getAndDrawMarkers() {
     const tripID = this.props.tripID;
-    if (!tripID) return;
-
-    this.setState({
-      inBrowser: true,
-    });
 
     axios
       .get(`/trip/${tripID}/activities`)
@@ -84,10 +82,89 @@ export default class TripMap extends React.Component {
           .then(allCoords => {
             this.setState(() => ({ travelLoading: false }));
 
-            this.map.leafletElement.fitBounds(allCoords, {
-              padding: [10, 10],
-            });
+            if (allCoords.length > 0)
+              this.map.leafletElement.fitBounds(allCoords, {
+                padding: [10, 10],
+              });
           });
+      });
+  }
+
+  componentDidMount() {
+    const tripID = this.props.tripID;
+    if (!tripID) return;
+
+    this.setState({
+      inBrowser: true,
+    });
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+
+      this.map.leafletElement.panTo([latitude, longitude], {
+        animate: false,
+      });
+      this.setState(state => ({
+        map: {
+          ...state.map,
+          zoom: 16,
+        },
+      }));
+    });
+
+    this.getAndDrawMarkers();
+
+    window.laravelEcho
+      .private(`trip.${tripID}.markers`)
+      .listen('NewTripActivity', e => {
+        this.setState(prevState => ({
+          activities: [...prevState.activities, e.activity],
+        }));
+      })
+      .listen('NewTripTravel', e => {
+        e.travel.travel_rgb = generateRandomRGB();
+        this.setState(prevState => ({
+          travels: [...prevState.travels, e.travel],
+        }));
+      })
+      .listen('UpdateTripActivity', e => {
+        this.setState(prevState => {
+          const prevActivities = prevState.activities;
+          const index = prevActivities.findIndex(x => x.id === e.activity.id);
+
+          return {
+            activities: update(prevActivities, {
+              [index]: { $set: e.activity },
+            }),
+          };
+        });
+      })
+      .listen('UpdateTripTravel', e => {
+        this.setState(prevState => {
+          const prevTravels = prevState.travels;
+          const index = prevTravels.findIndex(x => x.id === e.travel.id);
+          e.travel.travel_rgb = prevTravels[index].travel_rgb;
+
+          return {
+            travels: update(prevTravels, { [index]: { $set: e.travel } }),
+          };
+        });
+      })
+      .listen('DeleteTripActivity', e => {
+        this.setState(prevState => {
+          const prevActivities = prevState.activities;
+          return {
+            activities: prevActivities.filter(x => x.id !== e.activity.id),
+          };
+        });
+      })
+      .listen('DeleteTripTravel', e => {
+        this.setState(prevState => {
+          const prevTravels = prevState.travels;
+          return {
+            travels: prevTravels.filter(x => x.id !== e.travel.id),
+          };
+        });
       });
   }
 
@@ -108,13 +185,7 @@ export default class TripMap extends React.Component {
       },
     };
 
-    axios.post(`/trip/${tripId}/activities`, activity).then(res => {
-      const activityFromDb = res.data.activity;
-
-      this.setState(prevState => ({
-        activities: [...prevState.activities, activityFromDb],
-      }));
-    });
+    axios.post(`/trip/${tripId}/activities`, activity);
   }
 
   addTravel() {
@@ -137,14 +208,7 @@ export default class TripMap extends React.Component {
       },
     };
 
-    axios.post(`/trip/${tripId}/travels`, travel).then(res => {
-      const travelFromDb = res.data.travel;
-      travelFromDb.travel_rgb = generateRandomRGB();
-
-      this.setState(prevState => ({
-        travels: [...prevState.travels, travelFromDb],
-      }));
-    });
+    axios.post(`/trip/${tripId}/travels`, travel);
   }
 
   onMove(e) {

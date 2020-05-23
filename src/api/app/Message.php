@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Message extends Model
 {
+    protected $guarded = [];
+
     /**
      * Gets the author of this message
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +12,12 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('messages.trip.{tripId}', function ($user, $tripId) {
+    $trip = \App\Trip::find((int) $tripId);
+    return $trip->hasParticipant($user);
+});
+
+Broadcast::channel('trip.{tripId}.markers', function ($user, $tripId) {
+    $trip = \App\Trip::find((int) $tripId);
+    return $trip->hasParticipant($user);
 });

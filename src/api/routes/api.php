@@ -1,6 +1,12 @@
 <?php
 
 /*
+ * Broadcast Routes
+ */
+// https://laravel.com/docs/7.x/sanctum#authorizing-private-broadcast-channels
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
+
+/*
  * Authentication Controllers
  */
 Route::post('/login', 'Auth\LoginController@login');
@@ -16,6 +22,12 @@ Route::patch('/activity/{activity}/notes', 'ActivityController@updateNote');
 
 Route::post('/activity/{activity}/join', 'ActivityController@addUser');
 Route::delete('/activity/{activity}', 'ActivityController@destroy');
+
+/*
+ * MessageController
+ */
+Route::get('/trip/{trip}/messages', 'MessageController@index');
+Route::post('/trip/{trip}/messages', 'MessageController@create');
 
 /*
  * TravelController

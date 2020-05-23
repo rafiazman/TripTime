@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Events\NewTripActivity;
+use App\Events\NewTripTravel;
+use App\Events\UpdateTripActivity;
+use App\Events\UpdateTripTravel;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\CreateTravelRequest;
 use App\Http\Requests\CreateTripRequest;
@@ -22,7 +26,6 @@ class TripController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        // TODO: Incorporate Laravel Resources to transform Model to JSON
     }
 
     /**
@@ -183,7 +186,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $vm = new TripResource($trip);
 
@@ -201,7 +206,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $activities = $trip->activities;
 
@@ -220,7 +227,9 @@ class TripController extends Controller
         $user = $request->user();
 
         if (!$trip->hasParticipant($user))
-            return response()->json('', 401);
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
 
         $travels = $trip->travels;
 
@@ -263,6 +272,8 @@ class TripController extends Controller
             'to_coordinates' => $request->input('to.lat') . ', ' . $request->input('to.lng')
         ]);
         $travel->save();
+
+        broadcast(new NewTripTravel($travel));
 
         $travelVm = new TravelResource($travel);
 
@@ -316,6 +327,8 @@ class TripController extends Controller
             'end_time' => date('Y-m-d H:i:s', strtotime($request->end)),
             'trip_id' => $trip->id,
         ]);
+
+        broadcast(new NewTripActivity($activity));
 
         return response()->json([
             'message' => "Successfully added \"$activity->name\" to database.",
@@ -384,6 +397,8 @@ class TripController extends Controller
             $location->activities()->save($activity);
         }
 
+        broadcast(new UpdateTripActivity($activity));
+
         $vm = [
             'message' => "Successfully updated activity with id: $activity->id",
             'activity' => new ActivityResource($activity)
@@ -446,6 +461,8 @@ class TripController extends Controller
                 ]);
             $location->travel_tos()->save($travel);
         }
+
+        broadcast(new UpdateTripTravel($travel));
 
         $vm = [
             'message' => "Successfully updated travel with id: $travel->id",
