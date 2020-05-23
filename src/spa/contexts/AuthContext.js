@@ -1,12 +1,11 @@
 /** @format */
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../app/axios';
 import PageLoading from '../components/PageLoading';
 
 const AuthContext = React.createContext(undefined, undefined);
 const AuthProvider = props => {
-  const hostName = process.env.API_HOSTNAME;
   const [errorMessage, setErrorMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [userNameInput, setUserNameInput] = useState('');
@@ -21,7 +20,6 @@ const AuthProvider = props => {
 
   useEffect(() => {
     if (!currentUser) {
-      axios.defaults.withCredentials = true;
       loadCurrentAuthStatus();
     }
   }, []);
@@ -33,7 +31,7 @@ const AuthProvider = props => {
   function loadCurrentAuthStatus() {
     setLoading(true);
     axios
-      .get(hostName + '/api/user')
+      .get('/user')
       .then(
         response => {
           setCurrentUser({
@@ -61,7 +59,7 @@ const AuthProvider = props => {
 
   function checkNameOccupied(name) {
     axios
-      .head(`${hostName}/api/user/name/${name}`)
+      .head(`/user/name/${name}`)
       .then(() => {
         setNameOccupied(true);
       })
@@ -72,7 +70,7 @@ const AuthProvider = props => {
 
   function checkEmailOccupied(email) {
     axios
-      .head(`${hostName}/api/user/email/${email}`)
+      .head(`/user/email/${email}`)
       .then(() => {
         setEmailOccupied(true);
       })
@@ -100,14 +98,12 @@ const AuthProvider = props => {
   }
 
   async function signup() {
-    axios.defaults.withCredentials = true;
-
     // CSRF COOKIE
-    await axios.get(hostName + '/sanctum/csrf-cookie').then(
+    await axios.get('/csrf-cookie').then(
       async () => {
         // SIGNUP / REGISTER
         await axios
-          .post(hostName + '/api/register', {
+          .post('/register', {
             name: userNameInput,
             email: userEmail,
             password: userPassword,
@@ -116,7 +112,7 @@ const AuthProvider = props => {
           .then(
             async () => {
               // GET USER
-              await axios.get(hostName + '/api/user').then(
+              await axios.get('/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
@@ -156,18 +152,17 @@ const AuthProvider = props => {
   }
 
   async function login() {
-    axios.defaults.withCredentials = true;
-    await axios.get(hostName + '/sanctum/csrf-cookie').then(
+    await axios.get('/csrf-cookie').then(
       async () => {
         // LOGIN
         await axios
-          .post(hostName + '/api/login', {
+          .post('/login', {
             email: userEmail,
             password: userPassword,
           })
           .then(
             async () => {
-              await axios.get(hostName + '/api/user').then(
+              await axios.get('/user').then(
                 response => {
                   setCurrentUser({
                     id: response.data.id,
@@ -201,8 +196,7 @@ const AuthProvider = props => {
   }
 
   async function logout() {
-    axios.defaults.withCredentials = true;
-    await axios.get(hostName + '/api/logout');
+    await axios.get('/logout');
     setUserNameInput('');
     setUserEmail('');
     setUserPassword('');

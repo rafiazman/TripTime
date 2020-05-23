@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /*
+     * Set CSRF cookie route to /api/csrf-cookie
+     */
+    'prefix' => 'api',
 
     /*
     |--------------------------------------------------------------------------
