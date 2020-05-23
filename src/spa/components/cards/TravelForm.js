@@ -75,13 +75,6 @@ export default function TravelForm(props) {
   };
 
   const checkError = () => {
-    if (!travel.name) {
-      setError({
-        title: 'A name is required',
-        message: 'Please give your travel a time',
-      });
-      return true;
-    }
     if (moment(travel.start).isBefore(moment())) {
       setError({
         title: 'Invalid start time',
@@ -112,18 +105,6 @@ export default function TravelForm(props) {
       <>
         <div className={classes.root}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={10}>
-              <TextField
-                variant='outlined'
-                required
-                error={!travel.name}
-                helperText={!travel.name && 'A name is required'}
-                label='Name'
-                placeholder='Give your travel a name'
-                value={travel.name}
-                onChange={event => handleChange({ name: event.target.value })}
-              />
-            </Grid>
             <Grid item xs={12} sm={2}>
               <FormControl variant='outlined'>
                 <InputLabel id='travel-mode-label'>Mode</InputLabel>
@@ -142,7 +123,7 @@ export default function TravelForm(props) {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={5}>
               <DateTimePicker
                 label='From'
                 required
@@ -167,7 +148,7 @@ export default function TravelForm(props) {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={5}>
               <DateTimePicker
                 label='To'
                 required

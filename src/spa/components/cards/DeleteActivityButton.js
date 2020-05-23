@@ -33,10 +33,7 @@ export default function DeleteActivityButton(props) {
   return (
     <>
       <span onClick={handleClickOpen}>
-        <Tooltip
-          text='Delete Activity'
-          component={<FontAwesomeIcon icon={faTrash} />}
-        />
+        <Tooltip text='Delete' component={<FontAwesomeIcon icon={faTrash} />} />
       </span>
 
       <Dialog

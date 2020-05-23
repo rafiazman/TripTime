@@ -89,7 +89,7 @@ export default function ActivityCard(props) {
                   message={
                     deleteProcessing
                       ? 'Deleting Activity...'
-                      : 'Editing Activity'
+                      : 'Updating Activity'
                   }
                 />
               ) : (
@@ -152,9 +152,9 @@ export default function ActivityCard(props) {
                           <DateTimePicker
                             value={activity.start}
                             ampm={false}
-                            onChange={start =>
-                              handleEdit({ start }, updateOneActivity)
-                            }
+                            onChange={start => {
+                              handleEdit({ start }, updateOneActivity);
+                            }}
                             open={startChanging}
                             onClose={() => setStartChanging(false)}
                             TextFieldComponent={() => null}
@@ -193,7 +193,7 @@ export default function ActivityCard(props) {
                         <div className={styles.options}>
                           <span onClick={() => setEditing(true)}>
                             <Tooltip
-                              text={'Edit Activity'}
+                              text='Edit'
                               component={<FontAwesomeIcon icon={faPencilAlt} />}
                             />
                           </span>
@@ -227,7 +227,6 @@ export default function ActivityCard(props) {
                               />
                             )}
                           </span>
-
                           <DeleteActivityButton
                             activityId={activity.id}
                             onDelete={activityID =>

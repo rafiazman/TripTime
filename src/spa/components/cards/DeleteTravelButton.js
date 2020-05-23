@@ -33,10 +33,7 @@ export default function DeleteTravelButton(props) {
   return (
     <>
       <span onClick={handleClickOpen}>
-        <Tooltip
-          text='Delete Travel'
-          component={<FontAwesomeIcon icon={faTrash} />}
-        />
+        <Tooltip text='Delete' component={<FontAwesomeIcon icon={faTrash} />} />
       </span>
 
       <Dialog

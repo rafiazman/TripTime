@@ -17,6 +17,7 @@ import {
   faHorse,
   faChevronCircleUp,
   faChevronCircleDown,
+  faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import PeopleList from '../people/PeopleList';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -25,10 +26,12 @@ import Tooltip from '../Tooltip';
 import NotesCard from './NotesCard';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
-import axios from 'axios';
 import DeleteTravelButton from './DeleteTravelButton';
 import { TripContext } from '../../contexts/TripContext';
 import UpdateProcessing from './UpdateProcessing';
+import moment from 'moment';
+import ErrorDialog from '../dialog/ErrorDialog';
+import TravelDetailsDialog from './TravelDetailsDialog';
 
 const travelModeIcons = {
   bus: faBus,
@@ -47,22 +50,16 @@ export default class TravelCard extends React.Component {
     super(props);
 
     this.state = {
-      start: {
-        show: false,
-        dateTime: props.travel.start,
-      },
-      end: {
-        show: false,
-        dateTime: props.travel.end,
-      },
+      startTimeChanging: false,
+      endTimeChanging: false,
       notePopped: false,
       unreadNote: false,
       deleteProcessing: false,
+      editProcessing: false,
+      timeError: undefined,
+      timeErrorDisplay: false,
+      editing: false,
     };
-  }
-
-  componentDidMount() {
-    axios.defaults.withCredentials = true;
   }
 
   toggleNotes() {
@@ -80,65 +77,36 @@ export default class TravelCard extends React.Component {
     };
   }
 
-  toggleStartDateTimePicker() {
-    this.setState(state => ({
-      start: {
-        ...state.start,
-        show: !state.start.show,
-      },
-    }));
+  handleTravelEdit(travelPatch, updateOneTravel) {
+    if (this.checkTimeValid(travelPatch)) {
+      this.setState(() => ({ editProcessing: true }));
+      updateOneTravel(
+        {
+          ...travelPatch,
+          to: { time: travelPatch.end },
+          from: { time: travelPatch.start },
+        },
+        this.props.travel.id,
+      ).then(() => this.setState(() => ({ editProcessing: false })));
+    } else {
+      this.setState(() => ({ timeErrorDisplay: true }));
+    }
   }
 
-  toggleEndDateTimePicker() {
-    this.setState(state => ({
-      end: {
-        ...state.end,
-        show: !state.end.show,
-      },
-    }));
+  checkTimeValid({ start, end }) {
+    if (start && moment(start).isBefore(moment())) {
+      this.setState(() => ({
+        timeError: 'Travel plan should start in the future',
+      }));
+      return false;
+    }
+
+    if (end && moment(this.props.travel.start).isAfter(moment(end))) {
+      this.setState(() => ({ timeError: 'Travel should end after it starts' }));
+      return false;
+    }
+    return true;
   }
-
-  handleStartDateChange = newDate => {
-    const tripId = this.props.tripId;
-
-    axios
-      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/travels`, {
-        id: this.props.travel.id,
-        from: { time: newDate.format() },
-      })
-      .then(res => {
-        this.setState(state => ({
-          start: {
-            ...state.start,
-            dateTime: res.data.travel.start,
-          },
-        }));
-      })
-      .catch(() => {
-        alert('Error: Failed to update start date.');
-      });
-  };
-
-  handleEndDateChange = newDate => {
-    const tripId = this.props.tripId;
-
-    axios
-      .patch(`${process.env.API_HOSTNAME}/api/trip/${tripId}/travels`, {
-        id: this.props.travel.id,
-        to: { time: newDate.format() },
-      })
-      .then(res => {
-        this.setState(state => ({
-          end: {
-            ...state.end,
-            dateTime: res.data.travel.end,
-          },
-        }));
-      })
-      .catch(() => {
-        alert('Error: Failed to update start date.');
-      });
-  };
 
   render() {
     const travel = this.props.travel;
@@ -148,9 +116,15 @@ export default class TravelCard extends React.Component {
         {({ currentUser }) => {
           return (
             <TripContext.Consumer>
-              {({ deleteOneTravel }) =>
-                this.state.deleteProcessing ? (
-                  <UpdateProcessing message={'Deleting Travel...'} />
+              {({ deleteOneTravel, updateOneTravel }) =>
+                this.state.deleteProcessing || this.state.editProcessing ? (
+                  <UpdateProcessing
+                    message={
+                      this.state.deleteProcessing
+                        ? 'Deleting Travel...'
+                        : 'Updating Travel...'
+                    }
+                  />
                 ) : (
                   <div className={styles.travelCard}>
                     <div className={styles.travelTitle}>
@@ -185,49 +159,102 @@ export default class TravelCard extends React.Component {
                         <FontAwesomeIcon
                           icon={faClock}
                           style={{ verticalAlign: 'middle' }}
-                          onClick={() => this.toggleStartDateTimePicker()}
+                          onClick={() =>
+                            this.setState(() => ({ startTimeChanging: true }))
+                          }
                         />
                         <span
                           style={{ margin: '0 5px', verticalAlign: 'middle' }}
                         >
                           Departs:
                         </span>
-                        <TimeDisplay time={this.state.start.dateTime} />
+                        <TimeDisplay time={travel.start} />
                       </div>
 
                       <div>
                         <FontAwesomeIcon
                           icon={faClock}
                           style={{ verticalAlign: 'middle' }}
-                          onClick={() => this.toggleEndDateTimePicker()}
+                          onClick={() =>
+                            this.setState(() => ({ endTimeChanging: true }))
+                          }
                         />
                         <span
                           style={{ margin: '0 5px', verticalAlign: 'middle' }}
                         >
                           Arrives:
                         </span>
-                        <TimeDisplay time={this.state.end.dateTime} />
+                        <TimeDisplay time={travel.end} />
                       </div>
                     </div>
-
-                    <DateTimePicker
-                      value={this.state.start.dateTime}
-                      onChange={this.handleStartDateChange}
-                      open={this.state.start.show}
-                      onOpen={() => this.toggleStartDateTimePicker()}
-                      onClose={() => this.toggleStartDateTimePicker()}
-                      TextFieldComponent={() => null}
-                    />
-                    <DateTimePicker
-                      value={this.state.end.dateTime}
-                      onChange={this.handleEndDateChange}
-                      open={this.state.end.show}
-                      onOpen={() => this.toggleEndDateTimePicker()}
-                      onClose={() => this.toggleEndDateTimePicker()}
-                      TextFieldComponent={() => null}
-                    />
+                    {this.state.timeErrorDisplay && (
+                      <ErrorDialog
+                        open={this.state.timeErrorDisplay}
+                        message={this.state.timeError}
+                        title={'Invalid Time'}
+                        onClose={() =>
+                          this.setState(() => ({
+                            timeError: undefined,
+                            timeErrorDisplay: false,
+                          }))
+                        }
+                      />
+                    )}
+                    {this.state.startTimeChanging && (
+                      <DateTimePicker
+                        value={travel.start}
+                        ampm={false}
+                        onChange={start => {
+                          this.handleTravelEdit({ start }, updateOneTravel);
+                        }}
+                        open={this.state.startTimeChanging}
+                        onClose={() =>
+                          this.setState(() => ({ startTimeChanging: false }))
+                        }
+                        TextFieldComponent={() => null}
+                        showTodayButton
+                      />
+                    )}
+                    {this.state.endTimeChanging && (
+                      <DateTimePicker
+                        value={travel.end}
+                        ampm={false}
+                        onChange={end =>
+                          this.handleTravelEdit({ end }, updateOneTravel)
+                        }
+                        open={this.state.endTimeChanging}
+                        onClose={() =>
+                          this.setState(() => ({ endTimeChanging: false }))
+                        }
+                        TextFieldComponent={() => null}
+                        showTodayButton
+                      />
+                    )}
 
                     <div className={styles.options}>
+                      <span
+                        onClick={() => this.setState(() => ({ editing: true }))}
+                      >
+                        <Tooltip
+                          text={'Edit'}
+                          component={<FontAwesomeIcon icon={faPencilAlt} />}
+                        />
+                      </span>
+
+                      {this.state.editing && (
+                        <TravelDetailsDialog
+                          travel={travel}
+                          onCancel={() =>
+                            this.setState(() => ({ editing: false }))
+                          }
+                          open={this.state.editing}
+                          onOk={travel => {
+                            this.handleTravelEdit(travel, updateOneTravel);
+                            this.setState(() => ({ editing: false }));
+                          }}
+                        />
+                      )}
+
                       <span onClick={() => this.toggleNotes()}>
                         {this.state.notePopped ? (
                           <Tooltip
