@@ -82,9 +82,13 @@ export default class TripMap extends React.Component {
           .then(allCoords => {
             this.setState(() => ({ travelLoading: false }));
 
-            this.map.leafletElement.fitBounds(allCoords, {
-              padding: [10, 10],
-            });
+            if (allCoords.length > 0)
+              this.map.leafletElement.fitBounds(allCoords, {
+                padding: [10, 10],
+              });
+            else {
+              // TODO: Request current location from user's browser
+            }
           });
       });
   }
