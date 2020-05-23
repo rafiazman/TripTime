@@ -5,10 +5,10 @@ COPY . /src
 WORKDIR /src
 
 RUN if [ "$NODE_ENV" = "production" ]; then \
-        npm ci --only=prod && \
+        CYPRESS_INSTALL_BINARY=0 npm install --only=prod && \
         npm run build; \
     else \
-        npm ci; \
+        CYPRESS_INSTALL_BINARY=0 npm install; \
     fi
 
 FROM node:12.16.2-stretch
