@@ -21,4 +21,3 @@ COPY --from=build /src/.next /usr/app/.next
 COPY --from=build /src/public /usr/app/public
 
 EXPOSE 3000
-#CMD ["npm", "start"]

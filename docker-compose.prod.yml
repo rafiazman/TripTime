@@ -5,6 +5,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+    build:
+      dockerfile: Dockerfile.prod
     command: npm start
   api:
     ports:
