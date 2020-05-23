@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeleteTripTravel;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Http\Resources\TravelResource;
@@ -184,11 +185,27 @@ class TravelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Travel  $travel
-     * @return \Illuminate\Http\Response
+     * @param \App\Travel $travel
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy(Travel $travel)
     {
-        //
+        $user = auth()->user();
+
+        if (!$travel->trip->hasParticipant($user))
+            return response()->json([
+                'message' => 'You are not a participant of this trip.'
+            ], 401);
+
+        broadcast(new DeleteTripTravel($travel));
+
+        $travel->delete();
+
+        $vm = [
+            'message' => 'Successfully deleted the travel.',
+        ];
+
+        return response()->json($vm);
     }
 }

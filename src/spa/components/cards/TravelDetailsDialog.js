@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
-import ActivityForm from './ActivityForm';
+import TravelForm from './TravelForm';
 import PropTypes from 'prop-types';
 
-export default function ActivityDetailsDialog({
+export default function TravelDetailsDialog({
   open,
   title,
-  activity,
+  travel,
   onOk,
   onCancel,
 }) {
@@ -16,22 +16,22 @@ export default function ActivityDetailsDialog({
     <Dialog
       open={open !== undefined ? open : true}
       onClose={onCancel}
-      aria-labelledby='activity-dialog-title'
+      aria-labelledby='travel-dialog-title'
     >
-      <DialogTitle id='activity-dialog-title'>
-        {title ? title : 'Plan an Activity'}
+      <DialogTitle id='travel-dialog-title'>
+        {title ? title : 'Plan a Travel'}
       </DialogTitle>
       <DialogContent>
-        <ActivityForm onOk={onOk} onCancel={onCancel} activity={activity} />
+        <TravelForm onOk={onOk} onCancel={onCancel} travel={travel} />
       </DialogContent>
     </Dialog>
   );
 }
 
-ActivityDetailsDialog.propTypes = {
+TravelDetailsDialog.propTypes = {
   title: PropTypes.string,
   open: PropTypes.any,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  activity: PropTypes.object,
+  travel: PropTypes.object,
 };

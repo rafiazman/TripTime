@@ -92,7 +92,7 @@ export default function AddPeopleDialog({ onCancel, tripID }) {
 }
 
 AddPeopleDialog.propTypes = {
-  tripID: PropTypes.string.isRequired,
+  tripID: PropTypes.number.isRequired,
   tripName: PropTypes.string,
   onCancel: PropTypes.func,
 };

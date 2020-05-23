@@ -1,12 +1,11 @@
 /** @format */
 
 import NotesCard from './NotesCard';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../../css/event-card.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faMapMarkerAlt,
   faChevronCircleUp,
   faChevronCircleDown,
   faPencilAlt,
@@ -17,7 +16,6 @@ import TimeDisplay from '../TimeDisplay';
 import Tooltip from '../Tooltip';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
-import axios from 'axios';
 import ActivityDetailsDialog from './ActivityDetailsDialog';
 import moment from 'moment';
 import ErrorDialog from '../dialog/ErrorDialog';
@@ -25,6 +23,7 @@ import { ActivityIcon } from './ActivityIcon';
 import { TripContext } from '../../contexts/TripContext';
 import UpdateProcessing from './UpdateProcessing';
 import JoinButton from './JoinButton';
+import DeleteActivityButton from './DeleteActivityButton';
 
 export default function ActivityCard(props) {
   const activity = props.activity;
@@ -37,10 +36,7 @@ export default function ActivityCard(props) {
   const [timeError, setTimeError] = useState(undefined);
   const [timeErrorDisplay, setTimeErrorDisplay] = useState(false);
   const [editProcessing, setEditProcessing] = useState(false);
-
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-  }, []);
+  const [deleteProcessing, setDeleteProcessing] = useState(false);
 
   const toggleNotes = () => {
     setNotePopped(!notePopped);
@@ -55,6 +51,13 @@ export default function ActivityCard(props) {
     } else {
       setTimeErrorDisplay(true);
     }
+  };
+
+  const handleDelete = deleteOneActivity => {
+    return activityID => {
+      setDeleteProcessing(true);
+      deleteOneActivity(activityID).then(() => setDeleteProcessing(false));
+    };
   };
 
   const checkTimeValid = ({ start, end }) => {
@@ -81,11 +84,17 @@ export default function ActivityCard(props) {
               className={styles.eventCard}
               style={onMap ? { border: '0' } : {}}
             >
-              {editProcessing ? (
-                <UpdateProcessing />
+              {editProcessing || deleteProcessing ? (
+                <UpdateProcessing
+                  message={
+                    deleteProcessing
+                      ? 'Deleting Activity...'
+                      : 'Updating Activity'
+                  }
+                />
               ) : (
                 <TripContext.Consumer>
-                  {({ updateOneActivity }) => {
+                  {({ updateOneActivity, deleteOneActivity }) => {
                     return (
                       <div className={onMap ? styles.cardOnMap : undefined}>
                         <strong>
@@ -143,9 +152,9 @@ export default function ActivityCard(props) {
                           <DateTimePicker
                             value={activity.start}
                             ampm={false}
-                            onChange={start =>
-                              handleEdit({ start }, updateOneActivity)
-                            }
+                            onChange={start => {
+                              handleEdit({ start }, updateOneActivity);
+                            }}
                             open={startChanging}
                             onClose={() => setStartChanging(false)}
                             TextFieldComponent={() => null}
@@ -181,17 +190,14 @@ export default function ActivityCard(props) {
                           {activity.description}
                         </div>
 
-                        <div
-                          className={
-                            onMap ? styles.optionsOnMap : styles.options
-                          }
-                        >
+                        <div className={styles.options}>
                           <span onClick={() => setEditing(true)}>
                             <Tooltip
-                              text={'Edit Activity'}
+                              text='Edit'
                               component={<FontAwesomeIcon icon={faPencilAlt} />}
                             />
                           </span>
+
                           {editing && (
                             <ActivityDetailsDialog
                               activity={activity}
@@ -203,16 +209,7 @@ export default function ActivityCard(props) {
                               }}
                             />
                           )}
-                          {!onMap && (
-                            <span>
-                              <Tooltip
-                                text={'Show on Map'}
-                                component={
-                                  <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                }
-                              />
-                            </span>
-                          )}
+
                           <span onClick={() => toggleNotes()}>
                             {notePopped ? (
                               <Tooltip
@@ -230,6 +227,12 @@ export default function ActivityCard(props) {
                               />
                             )}
                           </span>
+                          <DeleteActivityButton
+                            activityId={activity.id}
+                            onDelete={activityID =>
+                              handleDelete(deleteOneActivity)(activityID)
+                            }
+                          />
                         </div>
                       </div>
                     );

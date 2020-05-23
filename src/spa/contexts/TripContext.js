@@ -67,6 +67,29 @@ const TripProvider = props => {
       });
   }
 
+  async function updateOneTravel(travelPatch, travelID) {
+    const tripID = router.query.id;
+    await axios
+      .patch(`${hostName}/api/trip/${tripID}/travels`, {
+        id: travelID,
+        ...travelPatch,
+      })
+      .then(res => setOneEvent(TRAVEL, travelID, res.data.travel))
+      .catch(err => {
+        setDialogError({
+          title: 'Travel Update Failed',
+          message: `Sorry, we failed to update the travel ${
+            travelPatch.name
+          } because: ${
+            err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'An internal error happened'
+          }`,
+        });
+        setDialogErrorDisplay(true);
+      });
+  }
+
   async function updateOneActivity(activityPatch, activityID) {
     const tripID = router.query.id;
     await axios
@@ -112,6 +135,48 @@ const TripProvider = props => {
     );
   }
 
+  async function deleteOneTravel(travelID) {
+    await axios
+      .delete(`${hostName}/api/travel/${travelID}`)
+      .then(() =>
+        setTravels(travels => travels.filter(travel => travel.id !== travelID)),
+      )
+      .catch(err => {
+        setDialogError({
+          title: 'Travel Delete Failed',
+          message: `Sorry, we failed to delete the travel
+         because: ${
+           err.response && err.response.data && err.response.data.message
+             ? err.response.data.message
+             : 'An internal error happened'
+         }`,
+        });
+        setDialogErrorDisplay(true);
+      });
+  }
+
+  async function deleteOneActivity(activityID) {
+    await axios
+      .delete(`${hostName}/api/activity/${activityID}`)
+      .then(() =>
+        setActivities(activities =>
+          activities.filter(activity => activity.id !== activityID),
+        ),
+      )
+      .catch(err => {
+        setDialogError({
+          title: 'Activity Delete Failed',
+          message: `Sorry, we failed to delete the activity
+         because: ${
+           err.response && err.response.data && err.response.data.message
+             ? err.response.data.message
+             : 'An internal error happened'
+         }`,
+        });
+        setDialogErrorDisplay(true);
+      });
+  }
+
   function setOneEvent(eventType, eventID, newEvent) {
     if (eventType === ACTIVITY)
       setActivities(activities =>
@@ -131,9 +196,12 @@ const TripProvider = props => {
         activities,
         activitiesLoading,
         updateOneActivity,
+        deleteOneActivity,
 
         travels,
         travelsLoading,
+        updateOneTravel,
+        deleteOneTravel,
 
         handleJoin,
 
