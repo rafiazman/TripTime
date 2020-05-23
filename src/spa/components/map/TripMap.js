@@ -86,9 +86,6 @@ export default class TripMap extends React.Component {
               this.map.leafletElement.fitBounds(allCoords, {
                 padding: [10, 10],
               });
-            else {
-              // TODO: Request current location from user's browser
-            }
           });
       });
   }
@@ -99,6 +96,20 @@ export default class TripMap extends React.Component {
 
     this.setState({
       inBrowser: true,
+    });
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+
+      this.map.leafletElement.panTo([latitude, longitude], {
+        animate: false,
+      });
+      this.setState(state => ({
+        map: {
+          ...state.map,
+          zoom: 16,
+        },
+      }));
     });
 
     this.getAndDrawMarkers();
