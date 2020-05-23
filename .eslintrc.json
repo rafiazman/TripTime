@@ -1,0 +1,56 @@
+{
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:jest/recommended",
+        "plugin:cypress/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "jest"
+    ],
+    "rules": {
+        "no-await-in-loop": "warn",
+        "no-console": "warn"
+    },
+    "overrides": [
+        {
+            "files": ["cypress/**/*.js", "cypress/**/*.jsx"],
+            "rules": {
+                "no-console": "off",
+                "no-unused-vars": "off",
+                "jest/no-disabled-tests": "off",
+                "jest/no-focused-tests": "off",
+                "jest/no-identical-title": "off",
+                "jest/prefer-to-have-length": "off",
+                "jest/valid-expect": "off",
+                "jest/expect-expect": "off",
+                "jest/valid-expect-in-promise": "off",
+                "cypress/no-unnecessary-waiting": "off",
+                "cypress/no-assigning-return-values": "off"
+            }
+        }
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}
