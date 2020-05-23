@@ -833,6 +833,7 @@ class TripControllerTest extends TestCase
     /** @test */
     public function edits_existing_activity_within_database()
     {
+        Carbon::setTestNow(Carbon::create(2020, 1, 1));
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
         $location = factory(Location::class)->create([

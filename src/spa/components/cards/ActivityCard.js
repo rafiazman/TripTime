@@ -70,7 +70,7 @@ export default function ActivityCard(props) {
       setTimeError('Activity should end after it starts!');
       return false;
     }
-    if (start && moment(start).isAfter(moment(activity.end))){
+    if (start && moment(start).isAfter(moment(activity.end))) {
       setTimeError('Activity should start before it ends!');
       return false;
     }
