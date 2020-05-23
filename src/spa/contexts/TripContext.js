@@ -29,7 +29,6 @@ const TripProvider = props => {
 
   function loadTrip() {
     const tripID = router.query.id;
-    // TODO: Implement API for getting "preview" of a trip for non-members
     axios
       .get(`${hostName}/api/trip/${tripID}`)
       .then(

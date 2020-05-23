@@ -2,7 +2,7 @@
 
 const activities = [
   {
-    id: '16b020e1-1214-4977-a40b-3df1b7407149',
+    id: 1,
     type: 'outdoors',
     start: '2020-03-30T09:00:00+13:00',
     end: '2020-03-30T16:00:00+13:00',
@@ -46,7 +46,7 @@ const activities = [
     ],
   },
   {
-    id: '0ea1142a-eab8-4a3c-b9bd-404722915a14',
+    id: 2,
     type: 'music',
     start: '2020-04-01T09:00:00+13:00',
     end: '2020-04-01T11:00:00+13:00',
@@ -67,7 +67,7 @@ const activities = [
     notes: [],
   },
   {
-    id: '2172269c-2437-418a-85d5-82f8ebfa372e',
+    id: 3,
     type: 'eating',
     start: '2020-04-01T11:00:00+13:00',
     end: '2020-04-01T13:00:00+13:00',
@@ -102,7 +102,7 @@ const activities = [
     ],
   },
   {
-    id: '862bb995-12a7-46fa-bf74-1b0c35a8c9aa',
+    id: 4,
     type: 'gathering',
     start: '2020-03-31T09:00:00+13:00',
     end: '2020-03-31T11:00:00+13:00',

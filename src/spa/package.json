@@ -39,6 +39,7 @@
     "@material/button": "^6.0.0",
     "@react-pdf/renderer": "^1.6.8",
     "@react-pdf/styled-components": "^1.4.0",
+    "@testing-library/react": "^10.0.4",
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
