@@ -8,6 +8,7 @@ services:
     container_name: react-spa
     environment:
       - NEXT_TELEMETRY_DISABLED=1
+      - CYPRESS_INSTALL_BINARY=0
     build:
       context: ./src/spa
       dockerfile: Dockerfile
