@@ -86,7 +86,11 @@ export default function ActivityCard(props) {
             >
               {editProcessing || deleteProcessing ? (
                 <UpdateProcessing
-                  message={deleteProcessing ? 'Deleting...' : 'Editing'}
+                  message={
+                    deleteProcessing
+                      ? 'Deleting Activity...'
+                      : 'Editing Activity'
+                  }
                 />
               ) : (
                 <TripContext.Consumer>

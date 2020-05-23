@@ -12,7 +12,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '../Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import axios from '../../app/axios';
 
 export default function DeleteTravelButton(props) {
   const { onDelete } = props;
@@ -27,11 +26,8 @@ export default function DeleteTravelButton(props) {
   };
 
   const handleOk = () => {
-    const travelId = props.travelId;
     setOpen(false);
-    axios.delete(`/travel/${travelId}`).then(() => {
-      onDelete();
-    });
+    onDelete(props.travelId);
   };
 
   return (
@@ -70,6 +66,6 @@ export default function DeleteTravelButton(props) {
 }
 
 DeleteTravelButton.propTypes = {
-  travelId: PropTypes.string.isRequired,
+  travelId: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
 };

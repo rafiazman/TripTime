@@ -135,6 +135,26 @@ const TripProvider = props => {
     );
   }
 
+  async function deleteOneTravel(travelID) {
+    await axios
+      .delete(`${hostName}/api/travel/${travelID}`)
+      .then(() =>
+        setTravels(travels => travels.filter(travel => travel.id !== travelID)),
+      )
+      .catch(err => {
+        setDialogError({
+          title: 'Travel Delete Failed',
+          message: `Sorry, we failed to delete the travel
+         because: ${
+           err.response && err.response.data && err.response.data.message
+             ? err.response.data.message
+             : 'An internal error happened'
+         }`,
+        });
+        setDialogErrorDisplay(true);
+      });
+  }
+
   async function deleteOneActivity(activityID) {
     await axios
       .delete(`${hostName}/api/activity/${activityID}`)
@@ -181,6 +201,7 @@ const TripProvider = props => {
         travels,
         travelsLoading,
         updateOneTravel,
+        deleteOneTravel,
 
         handleJoin,
 

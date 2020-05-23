@@ -27,6 +27,8 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
 import axios from 'axios';
 import DeleteTravelButton from './DeleteTravelButton';
+import { TripContext } from '../../contexts/TripContext';
+import UpdateProcessing from './UpdateProcessing';
 
 const travelModeIcons = {
   bus: faBus,
@@ -55,6 +57,7 @@ export default class TravelCard extends React.Component {
       },
       notePopped: false,
       unreadNote: false,
+      deleteProcessing: false,
     };
   }
 
@@ -66,6 +69,15 @@ export default class TravelCard extends React.Component {
     this.setState(state => ({
       notePopped: !state.notePopped,
     }));
+  }
+
+  handleDelete(deleteOneTravel) {
+    return travelID => {
+      this.setState(() => ({ deleteProcessing: true }));
+      deleteOneTravel(travelID).then(() =>
+        this.setState(() => ({ deleteProcessing: false })),
+      );
+    };
   }
 
   toggleStartDateTimePicker() {
@@ -135,99 +147,125 @@ export default class TravelCard extends React.Component {
       <AuthContext.Consumer>
         {({ currentUser }) => {
           return (
-            <div className={styles.travelCard}>
-              <div className={styles.travelTitle}>
-                <FontAwesomeIcon
-                  icon={travelModeIcons[travel.mode]}
-                  style={{ verticalAlign: 'middle', margin: '0 5px 0 0' }}
-                />
-                <span style={{ verticalAlign: 'middle' }}>
-                  {travel.description}
-                </span>
-              </div>
+            <TripContext.Consumer>
+              {({ deleteOneTravel }) =>
+                this.state.deleteProcessing ? (
+                  <UpdateProcessing message={'Deleting Travel...'} />
+                ) : (
+                  <div className={styles.travelCard}>
+                    <div className={styles.travelTitle}>
+                      <FontAwesomeIcon
+                        icon={travelModeIcons[travel.mode]}
+                        style={{ verticalAlign: 'middle', margin: '0 5px 0 0' }}
+                      />
+                      <span style={{ verticalAlign: 'middle' }}>
+                        {travel.description}
+                      </span>
+                    </div>
 
-              <PeopleList
-                people={travel.people}
-                addComponent={
-                  currentUser &&
-                  !travel.people.find(
-                    person => person.id === currentUser.id,
-                  ) && <JoinButton eventType={'travel'} eventID={travel.id} />
-                }
-              />
-              <div
-                className={styles.time}
-                style={{ marginBottom: '10px', marginTop: '5px' }}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    style={{ verticalAlign: 'middle' }}
-                    onClick={() => this.toggleStartDateTimePicker()}
-                  />
-                  <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
-                    Departs:
-                  </span>
-                  <TimeDisplay time={this.state.start.dateTime} />
-                </div>
-
-                <div>
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    style={{ verticalAlign: 'middle' }}
-                    onClick={() => this.toggleEndDateTimePicker()}
-                  />
-                  <span style={{ margin: '0 5px', verticalAlign: 'middle' }}>
-                    Arrives:
-                  </span>
-                  <TimeDisplay time={this.state.end.dateTime} />
-                </div>
-              </div>
-
-              <DateTimePicker
-                value={this.state.start.dateTime}
-                onChange={this.handleStartDateChange}
-                open={this.state.start.show}
-                onOpen={() => this.toggleStartDateTimePicker()}
-                onClose={() => this.toggleStartDateTimePicker()}
-                TextFieldComponent={() => null}
-              />
-              <DateTimePicker
-                value={this.state.end.dateTime}
-                onChange={this.handleEndDateChange}
-                open={this.state.end.show}
-                onOpen={() => this.toggleEndDateTimePicker()}
-                onClose={() => this.toggleEndDateTimePicker()}
-                TextFieldComponent={() => null}
-              />
-
-              <div className={styles.options}>
-                <span onClick={() => this.toggleNotes()}>
-                  {this.state.notePopped ? (
-                    <Tooltip
-                      text={'Hide Notes'}
-                      component={<FontAwesomeIcon icon={faChevronCircleUp} />}
+                    <PeopleList
+                      people={travel.people}
+                      addComponent={
+                        currentUser &&
+                        !travel.people.find(
+                          person => person.id === currentUser.id,
+                        ) && (
+                          <JoinButton
+                            eventType={'travel'}
+                            eventID={travel.id}
+                          />
+                        )
+                      }
                     />
-                  ) : (
-                    <Tooltip
-                      text={'Show Notes'}
-                      component={<FontAwesomeIcon icon={faChevronCircleDown} />}
+                    <div
+                      className={styles.time}
+                      style={{ marginBottom: '10px', marginTop: '5px' }}
+                    >
+                      <div>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          style={{ verticalAlign: 'middle' }}
+                          onClick={() => this.toggleStartDateTimePicker()}
+                        />
+                        <span
+                          style={{ margin: '0 5px', verticalAlign: 'middle' }}
+                        >
+                          Departs:
+                        </span>
+                        <TimeDisplay time={this.state.start.dateTime} />
+                      </div>
+
+                      <div>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          style={{ verticalAlign: 'middle' }}
+                          onClick={() => this.toggleEndDateTimePicker()}
+                        />
+                        <span
+                          style={{ margin: '0 5px', verticalAlign: 'middle' }}
+                        >
+                          Arrives:
+                        </span>
+                        <TimeDisplay time={this.state.end.dateTime} />
+                      </div>
+                    </div>
+
+                    <DateTimePicker
+                      value={this.state.start.dateTime}
+                      onChange={this.handleStartDateChange}
+                      open={this.state.start.show}
+                      onOpen={() => this.toggleStartDateTimePicker()}
+                      onClose={() => this.toggleStartDateTimePicker()}
+                      TextFieldComponent={() => null}
                     />
-                  )}
-                </span>
+                    <DateTimePicker
+                      value={this.state.end.dateTime}
+                      onChange={this.handleEndDateChange}
+                      open={this.state.end.show}
+                      onOpen={() => this.toggleEndDateTimePicker()}
+                      onClose={() => this.toggleEndDateTimePicker()}
+                      TextFieldComponent={() => null}
+                    />
 
-                <DeleteTravelButton travelId={travel.id} onDelete={() => {}} />
-              </div>
+                    <div className={styles.options}>
+                      <span onClick={() => this.toggleNotes()}>
+                        {this.state.notePopped ? (
+                          <Tooltip
+                            text={'Hide Notes'}
+                            component={
+                              <FontAwesomeIcon icon={faChevronCircleUp} />
+                            }
+                          />
+                        ) : (
+                          <Tooltip
+                            text={'Show Notes'}
+                            component={
+                              <FontAwesomeIcon icon={faChevronCircleDown} />
+                            }
+                          />
+                        )}
+                      </span>
 
-              {this.state.notePopped && (
-                <NotesCard
-                  type={{ name: 'travel', id: travel.id }}
-                  notes={travel.notes}
-                  me={currentUser}
-                  className={styles.noteCard}
-                />
-              )}
-            </div>
+                      <DeleteTravelButton
+                        travelId={travel.id}
+                        onDelete={travelID => {
+                          this.handleDelete(deleteOneTravel)(travelID);
+                        }}
+                      />
+                    </div>
+
+                    {this.state.notePopped && (
+                      <NotesCard
+                        type={{ name: 'travel', id: travel.id }}
+                        notes={travel.notes}
+                        me={currentUser}
+                        className={styles.noteCard}
+                      />
+                    )}
+                  </div>
+                )
+              }
+            </TripContext.Consumer>
           );
         }}
       </AuthContext.Consumer>
