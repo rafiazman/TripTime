@@ -198,24 +198,14 @@ class ActivityController extends Controller
                 'message' => 'You are not a participant of this trip.'
             ], 401);
 
-        try {
-            $activity->delete();
+        broadcast(new DeleteTripActivity($activity));
 
-            broadcast(new DeleteTripActivity($activity));
+        $activity->delete();
 
-            $vm = [
-                'message' => 'Successfully deleted the activity.',
-                'activity' => new ActivityResource($activity)
-            ];
-        }
-        catch (\Exception $e) {
-            $vm = [
-                'message' => 'Error when deleting activity',
-                'exception' => $e
-            ];
-        }
-        finally {
-            return response()->json($vm);
-        }
+        $vm = [
+            'message' => 'Successfully deleted the activity.',
+        ];
+
+        return response()->json($vm);
     }
 }

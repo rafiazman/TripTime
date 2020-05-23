@@ -25,6 +25,7 @@ Route::post('/travel/{travel}/notes', 'TravelController@addNote');
 Route::patch('/travel/{travel}/notes', 'TravelController@updateNote');
 
 Route::post('/travel/{travel}/join', 'TravelController@addUser');
+Route::delete('/travel/{travel}', 'TravelController@destroy');
 
 /*
  * TripController

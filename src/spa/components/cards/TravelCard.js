@@ -26,6 +26,7 @@ import NotesCard from './NotesCard';
 import { AuthContext } from '../../contexts/AuthContext';
 import { DateTimePicker } from '@material-ui/pickers';
 import axios from 'axios';
+import DeleteTravelButton from './DeleteTravelButton';
 
 const travelModeIcons = {
   bus: faBus,
@@ -214,6 +215,8 @@ export default class TravelCard extends React.Component {
                     />
                   )}
                 </span>
+
+                <DeleteTravelButton travelId={travel.id} onDelete={() => {}} />
               </div>
 
               {this.state.notePopped && (
