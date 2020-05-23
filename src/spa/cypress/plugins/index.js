@@ -18,6 +18,13 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
+  on('task', {
+    query({ sql }) {
+      console.log('%s', sql);
+
+      return null
+    }
+  })
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 };
