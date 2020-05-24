@@ -1,6 +1,7 @@
 /** @format */
 import React, { useEffect, useState } from 'react';
 import styles from '../../../css/calendar.module.css';
+// eslint-disable-next-line no-unused-vars
 import CalendarSummary from '../../../components/calendar/CalendarSummary';
 import Link from 'next/link';
 import TripTeamLayout from '../../../components/layout/TripTeamLayout';
@@ -10,6 +11,7 @@ import axios from 'axios';
 
 export default function Calendar(props) {
   const tripID = props.tripID;
+  // eslint-disable-next-line no-unused-vars
   const [activities, setActivities] = useState([]);
   useEffect(() => {
     const hostName = process.env.API_HOSTNAME;
