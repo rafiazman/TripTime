@@ -28,19 +28,24 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 | master  | <img src="https://travis-ci.org/tantigers/TripTime.svg?branch=master" alt="master build status"> |
 | develop | <img src="https://travis-ci.org/tantigers/TripTime.svg?branch=develop" alt="develop build status"> |
 
+### GitHub Pages (for COMPSCI 732)
+The GitHub Pages for this project with team project meeting minutes, task breakdown and assignment 
+can be found [here](https://tantigers.github.io/TripTime).
+
 ## Usage
 Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
+
+### Quick Start
+```shell script
+$ cp src/spa/.env.example src/spa/.env
+$ docker-compose up -d
+$ docker-compose run --rm artisan migrate
+```
 
 ### Development
 To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
 ```shell script
 $ docker-compose up
-```
-
-### Development (API only)
-To run the API only (served on http://localhost:8080/), execute the following command:
-```shell script
-$ docker-compose -f docker-compose.api-only.yml up
 ```
 
 ### Production
