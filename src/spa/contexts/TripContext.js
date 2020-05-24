@@ -29,6 +29,7 @@ const TripProvider = props => {
 
   function loadTrip() {
     const tripID = router.query.id;
+    if (!tripID) return;
     axios
       .get(`${hostName}/api/trip/${tripID}`)
       .then(
