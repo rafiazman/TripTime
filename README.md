@@ -45,6 +45,7 @@ $ docker-compose up -d
 $ docker-compose run --rm composer install
 $ docker-compose run --rm artisan migrate
 ```
+After executing above commands, go to http://localhost:3000.
 
 ### Development
 To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
