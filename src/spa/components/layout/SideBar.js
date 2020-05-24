@@ -52,7 +52,7 @@ class SideBar extends React.Component {
           )}
         </div>
         <div className={layoutStyles.sideBar}>
-          <div className={layoutStyles.linksContainer}>
+          <div className={'links-container'}>
             {linkNames.map((linkName, index) => (
               <TripLink
                 tripID={this.props.router.query.id}
