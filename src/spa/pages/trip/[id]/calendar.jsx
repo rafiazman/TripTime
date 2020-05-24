@@ -29,7 +29,7 @@ export default function Calendar(props) {
         >
           {currentUser ? (
             <div className={styles.calendarContainer}>
-              <CalendarSummary events={activities} />
+              {/*<CalendarSummary events={activities} />*/}
               <div style={{ marginTop: '4rem' }}>
                 <p>Hi {currentUser.name},</p>
                 <p>
