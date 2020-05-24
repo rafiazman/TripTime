@@ -1,0 +1,23 @@
+{
+  "name": "triptime",
+  "version": "0.0.1",
+  "description": "TripTime",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "(cd src/spa && npm install)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tantigers/TripTime.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tantigers/TripTime/issues"
+  },
+  "homepage": "https://github.com/tantigers/TripTime#readme"
+}
