@@ -18,10 +18,11 @@ describe('ActivityCard Layouts and Behaviours', function() {
           }}
         >
           <ActivityCard
+            onDelete={() => {}}
             onMap={false}
             activity={activities[0]}
             messageIfNoEvent={''}
-            tripId={1}
+            tripId={'1'}
           />
         </TripContext.Provider>
       </AuthContext.Provider>,
