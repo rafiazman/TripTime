@@ -162,3 +162,15 @@ button:focus {
     justify-content: center;
     align-items: center;
 }
+
+
+.links-container {
+    position: relative;
+    top: 15%;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
