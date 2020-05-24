@@ -37,8 +37,12 @@ Before executing the commands below, ensure that you are in the same directory a
 
 ### Quick Start
 ```shell script
-$ cp src/spa/.env.example src/spa/.env
+$ cd src/spa
+$ npm install
+$ cp .env.example .env
+$ cd ../..
 $ docker-compose up -d
+$ docker-compose run --rm composer install
 $ docker-compose run --rm artisan migrate
 ```
 
