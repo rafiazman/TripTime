@@ -1,15 +1,17 @@
-version: '3'
+version: '3.7'
 
 services:
   spa:
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-    volumes:
-      - ./src/spa:/usr/app/:delegated
-      - ./src/spa/node_modules:/usr/app/node_modules:delegated
-      - /usr/app/.next
-    command: npm run dev
-  api:
+    build:
+      context: ./src/spa-react
+      dockerfile: Dockerfile
+
+  php:
+    build:
+      args:
+        user: container-user
+        uid: 1000
+      context: ./src/api
+      dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "8080:8080"
