@@ -75,12 +75,12 @@ The containerised MySQL server can be accessed at `127.0.0.1:4306` using any cli
 
 To run `composer` commands within the container
 ```shell script
-$ docker-compose run --rm composer --version
+$ docker-compose exec php composer
 ```
 
 To run `artisan` commands within the container
 ```shell script
-$ docker-compose run --rm artisan --version
+$ docker-compose exec php php artisan
 ```
 
 ## Screenshots

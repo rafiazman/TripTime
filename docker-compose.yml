@@ -1,41 +1,42 @@
-version: '3'
+version: '3.7'
 
 networks:
   triptime:
 
 services:
   spa:
-    container_name: react-spa
+    restart: always
+    stdin_open: true
+    volumes:
+      - './src/spa:/app'
+      - '/app/node_modules'
     environment:
       - NEXT_TELEMETRY_DISABLED=1
       - CYPRESS_INSTALL_BINARY=0
-    build:
-      context: ./src/spa
-      dockerfile: Dockerfile
-    restart: always
+      - PUSHER_APP_KEY=accecccf74f749839e36
+      - PUSHER_APP_CLUSTER=ap4
     networks:
       - triptime
-
-  api:
-    image: nginx:1.17-alpine
-    container_name: api-laravel
-    ports:
-      - "8080:80"
-    volumes:
-      - ./src/api:/var/www/html:delegated
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
-      - mysql
-      - spa
+
+  php:
+    container_name: php
+    build:
+      args:
+        user: container-user
+        uid: 1000
+      context: ./src/api
+      dockerfile: Dockerfile
+    volumes:
+      - ./src/api:/var/www/html
+      - /var/www/html/vendor
+    ports:
+      - "9000:9000"
     networks:
       - triptime
-    restart: always
-    healthcheck:
-      test: curl --fail -s http://localhost:80 || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 2
+    depends_on:
+      - mysql
 
   mysql:
     image: mysql:5.7.29
@@ -53,42 +54,5 @@ services:
       MYSQL_ROOT_PASSWORD: app_password
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
-    networks:
-      - triptime
-
-  php:
-    build:
-      context: ./src/api
-      dockerfile: Dockerfile
-    container_name: php
-    volumes:
-      - ./src/api:/var/www/html
-    ports:
-      - "9000:9000"
-    networks:
-      - triptime
-
-  composer:
-    image: composer:latest
-    container_name: composer
-    volumes:
-      - ./src/api:/var/www/html
-    working_dir: /var/www/html
-    depends_on:
-      - php
-    networks:
-      - triptime
-
-  artisan:
-    build:
-      context: ./src/api
-      dockerfile: Dockerfile
-    container_name: artisan
-    volumes:
-      - ./src/api:/var/www/html
-    depends_on:
-      - mysql
-    working_dir: /var/www/html
-    entrypoint: ['php', '/var/www/html/artisan']
     networks:
       - triptime
