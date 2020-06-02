@@ -266,6 +266,4 @@ ActivityCard.propTypes = {
   activity: PropTypes.object,
   messageIfNoEvent: PropTypes.string,
   onMap: PropTypes.bool.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  tripId: PropTypes.string,
 };
