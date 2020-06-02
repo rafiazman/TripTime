@@ -1,6 +1,16 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const muiTheme = createMuiTheme({
+  palette: {
+    primary: { main: '#ff6400' },
+    secondary: {
+      main: '#888',
+    },
+  },
+});
 
 function App() {
   return (

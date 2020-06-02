@@ -1,13 +1,22 @@
 version: '3'
 
 services:
-  spa:
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-    build:
-      dockerfile: Dockerfile.prod
-    command: npm start
-  api:
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: nginx
+    volumes:
+      - ./src/api:/var/www/html:delegated
+    depends_on:
+      - php
+      - mysql
+      - spa
+    networks:
+      - triptime
+    restart: always
     ports:
       - "80:80"
+    healthcheck:
+      test: curl --fail -s http://localhost:80 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 2
