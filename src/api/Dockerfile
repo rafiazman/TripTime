@@ -28,4 +28,6 @@ WORKDIR /var/www/html
 # Install app dependencies
 COPY . ./
 RUN composer install
+
+# Laravel initialisation
 RUN php artisan key:generate
