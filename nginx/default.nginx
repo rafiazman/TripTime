@@ -1,6 +1,6 @@
 proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=STATIC:10m inactive=7d use_temp_path=off;
 
-upstream nextjs_upstream {
+upstream spa-react {
     server spa:3000;
 }
 
@@ -22,14 +22,16 @@ server {
     gzip_comp_level 4;
     gzip_types text/css application/javascript image/svg+xml;
 
-    location /api {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
 
-    location /sanctum {
-        try_files $uri $uri/ /index.php?$query_string;
+        proxy_pass http://spa-react;
+        proxy_redirect off;
     }
-
     location /_next/static {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -38,9 +40,8 @@ server {
         proxy_cache_bypass $http_upgrade;
 
         proxy_cache STATIC;
-        proxy_pass http://nextjs_upstream;
+        proxy_pass http://spa-react;
     }
-
     location /static {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -51,19 +52,11 @@ server {
         proxy_cache STATIC;
         proxy_ignore_headers Cache-Control;
         proxy_cache_valid 60m;
-        proxy_pass http://nextjs_upstream;
+        proxy_pass http://spa-react;
     }
-
-    location / {
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-
-        proxy_pass http://nextjs_upstream;
+    location /api {
+        try_files $uri $uri/ /index.php?$query_string;
     }
-
     location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;

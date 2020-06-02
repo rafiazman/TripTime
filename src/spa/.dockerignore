@@ -1,9 +1,10 @@
-node_modules
-npm-debug.log
-Dockerfile*
-docker-compose*
-.dockerignore
-.git
+.git/
 .gitignore
+.next/
+.dockerignore
+*Dockerfile
+docker-compose*
+node_modules/
+npm-debug.log
 README.md
 LICENSE

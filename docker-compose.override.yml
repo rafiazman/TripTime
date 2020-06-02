@@ -1,15 +1,18 @@
-version: '3'
+version: '3.7'
 
 services:
   spa:
+    container_name: nextjs-dev
+    build:
+      context: ./src/spa
+      dockerfile: dev.Dockerfile
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-    volumes:
-      - ./src/spa:/usr/app/:delegated
-      - ./src/spa/node_modules:/usr/app/node_modules:delegated
-      - /usr/app/.next
-    command: npm run dev
-  api:
+      - APP_HOSTNAME=http://localhost:3000
+      - API_HOSTNAME=http://localhost:8080
     ports:
-      - "3000:80"
+      - "3000:3000"
+
+  php:
+    ports:
+      - "8080:8080"
+    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]

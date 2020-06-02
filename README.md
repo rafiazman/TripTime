@@ -37,16 +37,16 @@ Before executing the commands below, ensure that you are in the same directory a
 
 ### Quick Start
 ```shell script
-$ cd src/spa
-$ npm install
-$ cp .env.example .env
-$ cd ../..
-$ docker-compose up -d
-$ docker-compose run --rm composer install
-$ docker-compose run --rm artisan migrate
+$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+$ docker-compose exec php php artisan migrate
 ```
 
-After running these commands, open http://localhost:3000 in a web browser and register an account.
+After running these commands, open http://localhost in a web browser and register an account.
+
+When finished, terminate the Docker containers with:
+```shell script
+$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+```
 
 ### Development
 To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
@@ -70,17 +70,22 @@ To terminate the application and stop the Docker container:
 $ docker-compose down
 ```
 
+Or if ran using production config:
+```shell script
+$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+```
+
 ### Laravel
 The containerised MySQL server can be accessed at `127.0.0.1:4306` using any client of choice.
 
 To run `composer` commands within the container
 ```shell script
-$ docker-compose run --rm composer --version
+$ docker-compose exec php composer
 ```
 
 To run `artisan` commands within the container
 ```shell script
-$ docker-compose run --rm artisan --version
+$ docker-compose exec php php artisan
 ```
 
 ## Screenshots

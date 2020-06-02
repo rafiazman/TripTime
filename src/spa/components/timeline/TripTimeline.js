@@ -31,12 +31,7 @@ export default function TripTimeline() {
             key={index}
             className={left ? styles.timelineLeft : styles.timelineRight}
           >
-            <ActivityCard
-              onMap={false}
-              activity={event}
-              onClose={null}
-              tripId={tripID}
-            />
+            <ActivityCard onMap={false} activity={event} onClose={null} />
           </div>
         );
       }
