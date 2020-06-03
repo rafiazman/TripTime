@@ -229,7 +229,7 @@ const AuthProvider = props => {
       {/* eslint-disable-next-line react/prop-types */}
       {props.children}
       {loading && (
-        <PageLoading message='Wait a sec, TripTime is trying to recognise you :)' />
+        <PageLoading message='Wait a sec, TripTime is trying to recognise you 🙂' />
       )}
     </AuthContext.Provider>
   );

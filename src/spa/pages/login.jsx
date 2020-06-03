@@ -21,7 +21,7 @@ export default class Login extends React.Component {
     return (
       <>
         {this.state.loading && (
-          <PageLoading message='Welcome! TripTime is logging you in :)' />
+          <PageLoading message='Welcome! TripTime is logging you in 🙂' />
         )}
         <AuthContext.Consumer>
           {({
