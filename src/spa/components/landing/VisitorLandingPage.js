@@ -19,7 +19,7 @@ class VisitorLandingPage extends React.Component {
 
         <LandingSlide
           alignLeft={false}
-          image={'/img/feature-preview/map-plot.jpg'}
+          image={'/img/feature-preview/map.png'}
           title={'Plot'}
           description={
             'Pin new destinations on the map and your friends will see them immediately.'
@@ -29,7 +29,7 @@ class VisitorLandingPage extends React.Component {
 
         <LandingSlide
           alignLeft={true}
-          image={'/img/feature-preview/chat-box.jpg'}
+          image={'/img/feature-preview/chat.png'}
           title={'Collaborate'}
           description={
             'Chat with your friends as you plan your next trip together.'
