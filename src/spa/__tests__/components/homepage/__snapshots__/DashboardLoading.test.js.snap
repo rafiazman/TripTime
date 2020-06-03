@@ -34,7 +34,7 @@ exports[`Test Dashboard Loading Check if Dashboard displays three loading bars w
           />
         </svg>
          
-        Your Current Trip: 
+        Your Current Trips:
          
       </h2>
       <div
@@ -93,7 +93,7 @@ exports[`Test Dashboard Loading Check if Dashboard displays three loading bars w
           />
         </svg>
          
-        You are Planning for: 
+        Your Planned Trips:
          
       </h2>
       <div

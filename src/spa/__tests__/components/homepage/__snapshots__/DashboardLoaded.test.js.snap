@@ -34,7 +34,7 @@ exports[`Test Dashboard Loaded Check if Dashboard displays TripCards when it is 
           />
         </svg>
          
-        Your Current Trip: 
+        Your Current Trips:
          
       </h2>
       <div>
@@ -189,7 +189,7 @@ exports[`Test Dashboard Loaded Check if Dashboard displays TripCards when it is 
           />
         </svg>
          
-        You are Planning for: 
+        Your Planned Trips:
          
       </h2>
       <div>
