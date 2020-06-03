@@ -12,9 +12,12 @@ import ReactLoading from 'react-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToolbox, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { TripContext } from '../../../../contexts/TripContext';
+import {AuthContext} from "../../../../contexts/AuthContext";
 
-export default function Pdf() {
+export default function Pdf({tripID}) {
   return (
+    <AuthContext.Consumer>
+      {({currentUser})=>
     <TripContext.Consumer>
       {({
         trip,
@@ -24,7 +27,7 @@ export default function Pdf() {
         activitiesLoading,
         tripLoading,
       }) => (
-        <TripTeamLayout user={undefined} activeLink={'Tools'}>
+        <TripTeamLayout user={currentUser} activeLink={'Tools'} tripID={tripID}>
           {activitiesLoading || travelsLoading || tripLoading ? (
             <div className={styles.pdfLoading}>
               <ReactLoading type='spinningBubbles' color='#ff4200' />
@@ -72,7 +75,8 @@ export default function Pdf() {
           )}
         </TripTeamLayout>
       )}
-    </TripContext.Consumer>
+    </TripContext.Consumer>}
+    </AuthContext.Consumer>
   );
 }
 Pdf.getInitialProps = ({ query }) => {
@@ -80,5 +84,5 @@ Pdf.getInitialProps = ({ query }) => {
 };
 
 Pdf.propTypes = {
-  tripID: PropTypes.string.isRequired,
+  tripID: PropTypes.string,
 };
