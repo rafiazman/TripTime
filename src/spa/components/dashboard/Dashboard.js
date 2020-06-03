@@ -69,7 +69,7 @@ export default class Dashboard extends React.Component {
           <Greeting name={this.props.name} />
           <TripList
             icon={faShoePrints}
-            title='Your Current Trip: '
+            title='Your Current Trips:'
             tripInfoList={currentTrips}
             displayIfNoTrip={<h3>Your next adventure is yet to come...</h3>}
             loading={this.state.currentLoading}
@@ -77,15 +77,15 @@ export default class Dashboard extends React.Component {
 
           <TripList
             icon={faPen}
-            title='You are Planning for: '
+            title='Your Planned Trips:'
             tripInfoList={planningTrips}
             displayIfNoTrip={
               <h3>
-                No plans yet.
+                <span style={{ marginRight: '5px' }}>No plans yet.</span>
                 <Link href='/newtrip'>
                   <a>Plan for a trip</a>
-                </Link>{' '}
-                today!
+                </Link>
+                <span style={{ marginLeft: '5px' }}>today!</span>
               </h3>
             }
             loading={this.state.planningLoading}

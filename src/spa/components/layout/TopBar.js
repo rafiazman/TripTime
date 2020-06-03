@@ -52,7 +52,7 @@ class TopBar extends React.Component {
     return (
       <>
         {this.state.loggingOut && (
-          <PageLoading message='TripTime is logging you out. See you soon :)' />
+          <PageLoading message='TripTime is logging you out. See you soon 🙂' />
         )}
         <AuthContext.Consumer>
           {({ currentUser, logout }) => (

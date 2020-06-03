@@ -1,5 +1,4 @@
 .bar {
-    width: 100vw;
     padding: 0.5rem;
     grid-area: header;
     font-weight: 500;
