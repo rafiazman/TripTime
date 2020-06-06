@@ -101,13 +101,19 @@ export default class TravelCard extends React.Component {
       return false;
     }
 
-    if (end && moment(start? start:this.props.travel.start).isAfter(moment(end))) {
+    if (
+      end &&
+      moment(start ? start : this.props.travel.start).isAfter(moment(end))
+    ) {
       this.setState(() => ({
         timeError: 'Travel should end after it starts!',
       }));
       return false;
     }
-    if (start && moment(start).isAfter(moment(end? end:this.props.travel.end))) {
+    if (
+      start &&
+      moment(start).isAfter(moment(end ? end : this.props.travel.end))
+    ) {
       this.setState(() => ({
         timeError: 'Travel should start before it ends!',
       }));
