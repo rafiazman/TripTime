@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\DeleteTripTravel;
+use App\Events\UpdateTripTravel;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Http\Resources\TravelResource;
@@ -97,6 +98,7 @@ class TravelController extends Controller
         $note->save();
 
         $travel->notes()->save($note);
+        broadcast(new UpdateTripTravel($travel));
 
         $vm = [
             'message' => "Successfully added note.",
@@ -122,6 +124,7 @@ class TravelController extends Controller
             ], 401);
 
         $travel->users()->save($user);
+        broadcast(new UpdateTripTravel($travel));
 
         return response()->json([
             'message' => "Successfully added \"$user->name\" to the Travel.",
@@ -150,6 +153,8 @@ class TravelController extends Controller
         ])->first();
         $note->body = $request->input('content');
         $note->save();
+
+        broadcast(new UpdateTripTravel($travel));
 
         $vm = [
             'message' => "Successfully updated note.",

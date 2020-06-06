@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Events\DeleteTripActivity;
+use App\Events\UpdateTripActivity;
 use App\Http\Resources\ActivityResource;
 use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
@@ -99,6 +100,8 @@ class ActivityController extends Controller
 
         $activity->notes()->save($note);
 
+        broadcast(new UpdateTripActivity($activity));
+
         $vm = [
             'message' => "Successfully added note to \"$activity->name\"",
             'note' => new NoteResource($note)
@@ -123,6 +126,8 @@ class ActivityController extends Controller
             ], 401);
 
         $activity->users()->save($user);
+
+        broadcast(new UpdateTripActivity($activity));
 
         return response()->json([
             'message' => "Successfully added \"$user->name\" to \"$activity->name\"",
@@ -151,6 +156,8 @@ class ActivityController extends Controller
         ])->first();
         $note->body = $request->input('content');
         $note->save();
+
+        broadcast(new UpdateTripActivity($activity));
 
         $vm = [
             'message' => "Successfully updated note for \"$activity->name\"",
