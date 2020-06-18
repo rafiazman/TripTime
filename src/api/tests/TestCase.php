@@ -14,6 +14,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Set "current time" for this test to a specific datetime
-        Carbon::setTestNow(Carbon::create(2020, 1, 1, 1));
+        Carbon::setTestNow(Carbon::create(2020, 1, 1));
     }
 }

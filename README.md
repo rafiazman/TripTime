@@ -58,7 +58,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 To run tests for the project, run these commands from the root directory of the project.
 
 ### Frontend
-Front-end tests are executing using [Jest](https://jestjs.io/), at the moment there exists only some unit tests and snapshot tests.
+Front-end tests are executed using [Jest](https://jestjs.io/), at the moment there exists only some unit tests and snapshot tests.
 ```shell script
 $ npm run test
 ```
