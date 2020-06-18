@@ -7,7 +7,10 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "(cd src/spa && npm run test)",
+    "test:api": "(docker-compose exec php php artisan test)",
+    "test:e2e": "(cd src/spa && npx cypress run --spec \"cypress/integration/*\")",
+    "cypress": "(cd src/spa && npm run cypress:open)",
     "postinstall": "(cd src/spa && npm install)"
   },
   "repository": {

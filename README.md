@@ -10,7 +10,9 @@
 <h4 align="center">Live, real-time collaboration brought to an online map interface.</h4>
 
 <p align="center">
+  <a href="#quick-start">Quick Start</a> •
   <a href="#usage">Usage</a> •
+  <a href="#testing">Testing</a> •
   <a href="#screenshots">Screenshots</a> •
   <a href="#contributors">Contributors</a>
 </p>
@@ -32,10 +34,14 @@ TripTime is an application for groups of friends to plan a trip together. Users 
 The GitHub Pages for this project with team project meeting minutes, task breakdown and assignment 
 can be found [here](https://tantigers.github.io/TripTime).
 
-## Usage
+## Quick Start
+In order to run the project, you will need to ensure that you have the following installed on your machine:
+ - [Docker](https://www.docker.com/)
+ - docker-compose (installed by default with Docker on Windows)
+ - npm (installed with Node.js on Windows)
+
 Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
 
-### Quick Start
 ```shell script
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 $ docker-compose exec php php artisan migrate
@@ -47,6 +53,29 @@ When finished, terminate the Docker containers with:
 ```shell script
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 ```
+
+## Testing
+To run tests for the project, run these commands from the root directory of the project.
+
+### Frontend
+Front-end tests are executing using [Jest](https://jestjs.io/), at the moment there exists only some unit tests and snapshot tests.
+```shell script
+$ npm run test
+```
+
+### Backend
+To run back-end tests, ensure that Docker containers are currently running (as specified in Quick Start) then execute the command:
+```shell script
+$ npm run test:api
+```
+
+### End-to-end
+For end-to-end tests we have used [Cypress](https://www.cypress.io/). These tests can be executed through the following command:
+```shell script
+$ npm run test:e2e
+```
+
+## Usage
 
 ### Development
 To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
