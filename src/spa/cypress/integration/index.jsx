@@ -6,6 +6,6 @@ describe('The index page should', () => {
   });
 
   it('contain an option to log in', () => {
-    cy.contains('Log in');
+    cy.contains('Log In');
   });
 });
