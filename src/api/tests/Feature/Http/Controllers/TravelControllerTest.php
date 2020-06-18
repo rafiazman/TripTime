@@ -143,9 +143,6 @@ class TravelControllerTest extends TestCase
     /** @test */
     public function updated_notes_have_updated_timestamp_changed()
     {
-        // Set "current time" for this test to a specific datetime
-        Carbon::setTestNow(Carbon::create(2020, 1, 1));
-
         $user = factory(User::class)->create();
         $trip = factory(Trip::class)->create();
         factory(Location::class)->create([
@@ -176,8 +173,8 @@ class TravelControllerTest extends TestCase
             'updated_at' => '2020-01-01 00:00:00',
         ]);
 
-        // Clear mocked date
-        Carbon::setTestNow();
+        // Clear mocked date and set it to a future date
+        Carbon::setTestNow(Carbon::create(2020, 1, 2));
 
         $response = $this->actingAs($user)
             ->json('patch', "/api/travel/$travel->id/notes", [
