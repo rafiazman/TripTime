@@ -27,7 +27,7 @@ describe('The user can create a new trip and get redirected to the new trip home
       })
       .as('getOneTrip');
   });
-  it('Create a new trip', () => {
+  it('Create a new trip and get redirected to the trip page that displays the trip title', () => {
     cy.visit(appHostname)
       .get('header')
       .contains('Sign Up')
@@ -35,7 +35,7 @@ describe('The user can create a new trip and get redirected to the new trip home
       .get("[name='email']")
       .type('new-user@cypres.com')
       .get("[name='nickname']")
-      .type('cypress new user')
+      .type('cypress')
       .get("[name='password']")
       .type('testpassword')
       .get("[name='confirm-password']")
@@ -56,9 +56,6 @@ describe('The user can create a new trip and get redirected to the new trip home
           cy.get("[type='submit']").click();
         }
       })
-      .wait('@getTrips')
-      .its('status')
-      .should('equal', 200)
       .get('header')
       .contains('New Trip')
       .click()
@@ -71,10 +68,8 @@ describe('The user can create a new trip and get redirected to the new trip home
       .get("[placeholder='To']")
       .type(endDate + '{enter}')
       .wait('@newTrip')
-      .its('status')
-      .should('equal', 200)
       .wait('@getOneTrip')
-      .its('status')
-      .should('equal', 200);
+      .get('h1')
+      .contains('Cypress test trip');
   });
 });
