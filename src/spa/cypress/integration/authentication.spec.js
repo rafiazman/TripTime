@@ -63,7 +63,7 @@ describe('Test the log in and sign up functionalities', () => {
       .type('testpassword')
       .get("[name='confirm-password']")
       .type('testpassword')
-      .wait(500)
+      .wait(1000)
       .get('body')
       .then($body => {
         if ($body.text().includes('Sorry')) {
