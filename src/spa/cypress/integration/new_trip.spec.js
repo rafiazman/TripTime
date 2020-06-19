@@ -40,6 +40,7 @@ describe('The user can create a new trip and get redirected to the new trip home
       .type('testpassword')
       .get("[name='confirm-password']")
       .type('testpassword')
+      .wait(500)
       .get('body')
       .then($body => {
         if ($body.text().includes('Sorry')) {
@@ -56,6 +57,7 @@ describe('The user can create a new trip and get redirected to the new trip home
           cy.get("[type='submit']").click();
         }
       })
+      .wait('@getTrips')
       .get('header')
       .contains('New Trip')
       .click()
