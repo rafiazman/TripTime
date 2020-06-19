@@ -15,6 +15,7 @@ services:
       - CYPRESS_INSTALL_BINARY=0
       - PUSHER_APP_KEY=accecccf74f749839e36
       - PUSHER_APP_CLUSTER=ap4
+      - PORT=3000
     networks:
       - triptime
     depends_on:
@@ -46,7 +47,7 @@ services:
     ports:
       - "4306:3306"
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./mysql:/var/lib/mysql:delegated
     environment:
       MYSQL_DATABASE: triptime
       MYSQL_USER: app

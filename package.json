@@ -7,11 +7,19 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "(cd src/spa && npm run test)",
+    "predev": "docker-compose -f docker-compose.yml -f docker-compose.override.yml build --parallel --quiet",
+    "dev": "docker-compose up -d",
+    "dev:stop": "docker-compose -f docker-compose.yml -f docker-compose.override.yml down",
+    "preprod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --parallel --quiet",
+    "prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
+    "prod:stop": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down",
+    "migrate": "docker-compose exec php php artisan migrate",
+    "test": "npm run test:api && npm run test:spa",
+    "test:spa": "(cd src/spa && npm run test)",
     "test:api": "(docker-compose exec php php artisan test)",
     "test:e2e": "(cd src/spa && npx cypress run --spec \"cypress/integration/*\")",
     "cypress": "(cd src/spa && npm run cypress:open)",
-    "postinstall": "(cd src/spa && npm install)"
+    "postinstall": "(docker-compose -f docker-compose.builder.yml run --rm nodejs) && (docker-compose -f docker-compose.builder.yml run --rm composer)"
   },
   "repository": {
     "type": "git",
