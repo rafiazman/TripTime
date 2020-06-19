@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  nodejs:
+    image: node:12.17.0-alpine
+    volumes:
+      - ./src/spa:/app
+    working_dir: /app
+    command: npm install
+
+  composer:
+    image: composer
+    volumes:
+      - ./src/api:/app
+    working_dir: /app
+    command: composer install
