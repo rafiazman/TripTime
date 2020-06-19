@@ -1,77 +1,80 @@
 /** @format */
 let startDate;
 let endDate;
+const appHostname = '/';
+const apiHostname = 'http://localhost';
 
-// TODO: Fix breaking test
-describe.skip('The user can create a new trip and get redirected to the new trip homepage', () => {
+describe('The user can create a new trip and get redirected to the new trip homepage', () => {
   beforeEach(() => {
     startDate = Cypress.moment()
-      .add(1, 'days')
-      .format('MMM DD, YYYY');
-    endDate = Cypress.moment()
+      .add(1, 'year')
+      .startOf('year')
+      .format('MMMM DD, YYYY');
+    endDate = Cypress.moment(startDate)
       .add(2, 'days')
-      .format('MMM DD, YYYY');
-  });
-  it('Create a new trip', () => {
+      .format('MMMM DD, YYYY');
     cy.server()
-      .route({
-        method: 'GET',
-        url: 'http://localhost/api/user',
-      })
-      .as('getUser')
-      .route({
-        method: 'POST',
-        url: 'http://localhost/api/login',
-      })
-      .as('logIn')
-      .route({ method: 'POST', url: 'http://localhost/api/trips' })
+      .route({ method: 'POST', url: `${apiHostname}/api/trips` })
       .as('newTrip')
       .route({
         method: 'GET',
-        url: 'http://localhost/api/user',
+        url: `${apiHostname}/api/trips/*`,
       })
-      .as('getUser')
+      .as('getTrips')
       .route({
         method: 'GET',
-        url: 'http://localhost/api/trip/*',
+        url: `${apiHostname}/api/trip/*`,
       })
-      .as('getTrip');
-
-    cy.visit('http://localhost')
-      .wait('@getUser')
-      // .should('have.property', 'status', 401)
+      .as('getOneTrip');
+  });
+  it('Create a new trip', () => {
+    cy.visit(appHostname)
       .get('header')
-      .contains('Log In')
+      .contains('Sign Up')
       .click()
-      .get("[value='Log in']")
-      .get("[type='email']")
-      .type('test@test.com')
-      .get("[type='password']")
-      .type('testtest')
-      .get("[type='submit']")
-      .click()
-      .wait('@logIn')
-      .wait('@getUser')
+      .get("[name='email']")
+      .type('new-user@cypres.com')
+      .get("[name='nickname']")
+      .type('cypress new user')
+      .get("[name='password']")
+      .type('testpassword')
+      .get("[name='confirm-password']")
+      .type('testpassword')
+      .get('body')
+      .then($body => {
+        if ($body.text().includes('Sorry')) {
+          cy.get('header')
+            .contains('Log In')
+            .click()
+            .get('[type="email"]')
+            .type('new-user@cypres.com')
+            .get('[type="password"]')
+            .type('testpassword')
+            .get("[type='submit']")
+            .click();
+        } else {
+          cy.get("[type='submit']").click();
+        }
+      })
+      .wait('@getTrips')
+      .its('status')
+      .should('equal', 200)
       .get('header')
-      .get("[href='/newtrip']")
+      .contains('New Trip')
       .click()
-      .get('[name=trip-name]')
-      .type('cypress test case 5 trip')
-      .get('[name=trip-description]')
-      .type('cypress test case 5 trip trip desription')
+      .get("[name='trip-name']")
+      .type('Cypress test trip')
+      .get("[name='trip-description']")
+      .type('Cypress trip description')
       .get('[placeholder="From"]')
       .type(startDate)
-      .get('[placeholder="To"]')
+      .get("[placeholder='To']")
       .type(endDate + '{enter}')
       .wait('@newTrip')
-      .should('have.property', 'status', 200)
-      .url()
-      .should('contain', '/trip')
-      .wait('@getTrip')
-      .should('have.property', 'status', 200)
-      .wait('@getUser')
-      .get('.links-container')
-      .contains('Map')
-      .click();
+      .its('status')
+      .should('equal', 200)
+      .wait('@getOneTrip')
+      .its('status')
+      .should('equal', 200);
   });
 });
