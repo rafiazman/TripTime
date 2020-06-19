@@ -2,7 +2,7 @@
 const appHostname = '/';
 const apiHostname = 'http://localhost';
 
-describe('The user gets rejected with invalid auth details. The user can create a new account. The user can log in', () => {
+describe('Test the log in and sign up functionalities', () => {
   beforeEach(() => {
     cy.server()
       .route({
@@ -24,20 +24,17 @@ describe('The user gets rejected with invalid auth details. The user can create 
       .as('getUser')
       .route({
         method: 'GET',
-        url: `${apiHostname}/api/trip/*`,
+        url: `${apiHostname}/api/trips/*`,
       })
-      .as('getTrip')
+      .as('getTrips')
       .route({ method: 'HEAD', url: `${apiHostname}/api/user/email/*` })
       .as('checkEmail')
       .route({ method: 'POST', url: `${apiHostname}/api/register` })
       .as('signUp');
   });
 
-  it('Log in as a non-existing user', () => {
+  it('Invalid log in details should be rejected and notify user', () => {
     cy.visit(appHostname)
-      .wait('@getUser')
-      .its('status')
-      .should('equal', 401)
       .get('header')
       .contains('Log In')
       .click()
@@ -49,22 +46,19 @@ describe('The user gets rejected with invalid auth details. The user can create 
       .get("[type='submit']")
       .click()
       .wait('@logIn')
-      .its('status')
-      .should('equal', 422);
+      .get('.failed')
+      .contains('The given data was invalid.');
   });
 
-  it('Create a new user', () => {
+  it('Should be able to create a new user if emails and names are not occupied, and get greeted upon logging in', () => {
     cy.visit(appHostname)
-      .wait('@getUser')
-      .its('status')
-      .should('equal', 401)
       .get('header')
       .contains('Sign Up')
       .click()
       .get("[name='email']")
       .type('new-user@cypres.com')
       .get("[name='nickname']")
-      .type('cypress new user')
+      .type('cypress')
       .get("[name='password']")
       .type('testpassword')
       .get("[name='confirm-password']")
@@ -80,13 +74,16 @@ describe('The user gets rejected with invalid auth details. The user can create 
             .get('[type="password"]')
             .type('testpassword')
             .get("[type='submit']")
-            .click();
+            .click()
+            .wait('@logIn');
         } else {
-          cy.get("[type='submit']").click();
+          cy.get("[type='submit']")
+            .click()
+            .wait('@signUp');
         }
       })
-      .wait('@getUser')
-      .its('status')
-      .should('equal', 200);
+      .wait('@getTrips')
+      .get('h1')
+      .contains('cypress');
   });
 });
