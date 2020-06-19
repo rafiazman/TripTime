@@ -40,33 +40,23 @@ In order to run the project, you will need to ensure that you have the following
  - docker-compose (installed by default with Docker on Windows)
  - npm (installed with Node.js on Windows)
 
-Before executing the commands below, ensure that you are in the same directory as `docker-compose.yml`.
-
+From the project root directory, execute the following commands:
 ```shell script
-$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-$ docker-compose exec php php artisan migrate
+$ npm run prod
+$ npm run migrate
 ```
 
 After running these commands, open http://localhost in a web browser and register an account.
 
 When finished, terminate the Docker containers with:
 ```shell script
-$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+$ npm run prod:stop
 ```
 
 ## Testing
-To run tests for the project, run these commands from the root directory of the project.
-
-### Frontend
-Front-end tests are executed using [Jest](https://jestjs.io/), at the moment there exists only some unit tests and snapshot tests.
+To run tests for the project, run these commands from the root directory of the project. Ensure that the production/development server is currently running before execution.
 ```shell script
 $ npm run test
-```
-
-### Backend
-To run back-end tests, ensure that Docker containers are currently running (as specified in Quick Start) then execute the command:
-```shell script
-$ npm run test:api
 ```
 
 ### End-to-end
@@ -78,30 +68,23 @@ $ npm run test:e2e
 ## Usage
 
 ### Development
-To run the web application with hot module reload, execute the following command and go to http://localhost:3000.
+To run the web application with hot module reload and have the application served at http://localhost:3000
 ```shell script
-$ docker-compose up
+# Start dev server
+$ npm run dev
+
+# Terminate dev server
+$ npm run dev:stop 
 ```
 
 ### Production
-To run the web application in production:
+To run the web application in production and have the application served at http://localhost
 ```shell script
-$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-```
-This deploys all three services using the configuration in `docker-compose.yml` and `docker-compose.prod.yml` (but not the dev configuration in `docker-compose.override.yml`).
+# Start prod server
+$ npm run prod
 
-The application will be served on http://localhost
-
-### Termination
-
-To terminate the application and stop the Docker container:
-```shell script
-$ docker-compose down
-```
-
-Or if ran using production config:
-```shell script
-$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+# Terminate prod server
+$ npm run prod:stop
 ```
 
 ### Laravel
