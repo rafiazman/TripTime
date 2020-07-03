@@ -8,6 +8,8 @@
 </h1>
 
 <h4 align="center">Live, real-time collaboration brought to an online map interface.</h4>
+<h4 align="center">03/07/2020 UPDATE: This repo has now been moved into two separate repositories. 
+    <br>https://github.com/tantigers/triptime-web <br>https://github.com/tantigers/triptime-api</h4>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> •
